@@ -27,7 +27,7 @@ class HomeView extends React.Component {
       });
       try { 
          const res = await AsyncStorage.getItem('loginSession')
-         if (res == null) {
+         if (res == null) { 
             PushNotification.localNotification({
                channelId: "1", 
                color: "red", // (optional) default: system default
