@@ -21,6 +21,41 @@ class HomeView extends React.Component {
       }
    }
    componentDidMount = async () => {
+      PushNotification.configure({
+         // (optional) Called when Token is generated (iOS and Android)
+         onRegister: function (token) {
+            console.log('TOKEN:', token)
+         },
+         // (required) Called when a remote or local notification is opened or received
+         onNotification: async function (notification) {
+            console.log('REMOTE NOTIFICATION ==>', notification)
+            PushNotification.createChannel({
+               channelId: "1", // (required)
+               channelName: "Falhub", // (required)
+            });
+            try { 
+               const res = await AsyncStorage.getItem('loginSession')
+               if (res == null) { 
+                  PushNotification.localNotification({
+                     channelId: "1", 
+                     //color: "red", // (optional) default: system default
+                     vibrate: true, // (optional) default: true
+                     title: notification.title,
+                     message: notification.message
+                  });
+               }
+            } catch (error) {
+               console.log(error) 
+            }
+
+            // process the notification here
+         },
+         // Android only: GCM or FCM Sender ID
+         senderID: '232744567398',
+         popInitialNotification: true,
+         requestPermissions: true
+      })
+      /*
       PushNotification.createChannel({
          channelId: "1", // (required)
          channelName: "Falhub", // (required)
@@ -30,7 +65,8 @@ class HomeView extends React.Component {
          if (res == null) { 
             PushNotification.localNotification({
                channelId: "1", 
-               color: "red", // (optional) default: system default
+               smallIcon: "ic_launcher",
+               //color: "red", // (optional) default: system default
                vibrate: true, // (optional) default: true
                title: "Falhub'a Hoşgeldiniz",
                message: "Falhub'da eşsiz bir deneyim için lütfen kayıt olup, giriş yapınız."
@@ -38,7 +74,7 @@ class HomeView extends React.Component {
          }
       } catch (error) {
          console.log(error) 
-      }
+      } */
    }
 
    render() {
