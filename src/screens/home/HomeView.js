@@ -97,7 +97,6 @@ class HomeView extends React.Component {
    }
 }
 
-
 export default HomeViewFnc = () => {
    const navigation = useNavigation();
    return (
@@ -117,7 +116,7 @@ const styles = StyleSheet.create({
    contentTitle: { fontSize: 25, color: '#ffa31a', marginTop: 20, marginLeft: 20, fontWeight: '700' },
    contentTitleUnder: { fontSize: 17, color: 'white', marginTop: 20, marginLeft: 20, fontWeight: '700' },
    contentButton: { borderRadius: 2, width: '50%', padding: 10, backgroundColor: '#ffa31a', justifyContent: 'center', marginTop: 20, alignSelf: 'center' },
-   contentButtonText: { fontSize: 15, fontWeight: '700', textAlign: 'center' },
+   contentButtonText: {color:'black', fontSize: 15, fontWeight: '700', textAlign: 'center' },
    content2: { justifyContent: 'center', width: '100%', height: 200, marginTop: 40 },
    content2ImageBg: { width: '100%', height: '100%', justifyContent: 'center' },
    content2Title: { fontSize: 25, color: 'white', alignSelf: 'center', marginTop: 20, marginLeft: 20, fontWeight: '700', }

@@ -40,7 +40,7 @@ const TabNavigator = () => {
       headerStyle: { backgroundColor: 'black', shadowColor: 'transparent', height: 70 },
       headerTitleStyle: { color: '#ffa31a' },
       headerTitleAlign: 'center'
-    }} initialRouteName='Home' >
+    }} initialRouteName='Anasayfa' >
       <Tab.Screen options={{ tabBarIcon: ({ color }) => <Icon name={'home'} color={color} size={30}></Icon>, tabBarLabel: 'Anasayfa', headerTitle: () => <HomeHeader></HomeHeader> }} component={HomeView} name='Home' />
       <Tab.Screen options={{ tabBarIcon: ({ color }) => <IconFontAwesome name={'moon-o'} color={color} size={30}></IconFontAwesome>, tabBarLabel: 'Astroloji' }} component={AstrologyView} name='Astroloji' />
       <Tab.Screen options={{ tabBarIcon: ({ color }) => <IconFontAwesome name={'user-o'} color={color} size={30}></IconFontAwesome>, tabBarLabel: 'Profil' }} component={ProfileView} name='Profil' />
