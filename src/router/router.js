@@ -40,7 +40,7 @@ const TabNavigator = () => {
       headerStyle: { backgroundColor: 'black', shadowColor: 'transparent', height: 70 },
       headerTitleStyle: { color: '#ffa31a' },
       headerTitleAlign: 'center'
-    }} initialRouteName='Anasayfa' >
+    }} initialRouteName='Profil' >
       <Tab.Screen options={{ tabBarIcon: ({ color }) => <Icon name={'home'} color={color} size={30}></Icon>, tabBarLabel: 'Anasayfa', headerTitle: () => <HomeHeader></HomeHeader> }} component={HomeView} name='Home' />
       <Tab.Screen options={{ tabBarIcon: ({ color }) => <IconFontAwesome name={'moon-o'} color={color} size={30}></IconFontAwesome>, tabBarLabel: 'Astroloji' }} component={AstrologyView} name='Astroloji' />
       <Tab.Screen options={{ tabBarIcon: ({ color }) => <IconFontAwesome name={'user-o'} color={color} size={30}></IconFontAwesome>, tabBarLabel: 'Profil' }} component={ProfileView} name='Profil' />
@@ -53,7 +53,7 @@ class Router extends React.Component {
   render() {
     return (
       <NavigationContainer >
-        <Stack.Navigator initialRouteName='AppStartScreen' screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName='Tab' screenOptions={{ headerShown: false }}>
           <Stack.Screen component={TabNavigator} name={'Tab'} />
           <Stack.Screen component={AppStartScreen} name={'AppStartScreen'} />
           <Stack.Screen component={AppAraScreen} name={'AppAraScreen'} />

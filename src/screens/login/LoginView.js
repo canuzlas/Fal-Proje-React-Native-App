@@ -3,6 +3,9 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, RefreshCon
 import { useNetInfo } from "@react-native-community/netinfo";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/core';
+import { GoogleSignin, GoogleSigninButton, statusCodes } from '@react-native-google-signin/google-signin';
+
+
 
 class LoginView extends React.Component {
    constructor(props) {
@@ -40,14 +43,41 @@ class LoginView extends React.Component {
    goBack = () => {
       this.props.navigation.goBack()
    }
-   componentDidMount(){
-      if(this.props.alertInfo === 'thanLogin'){
-         Alert.alert('Bilgilendirme','Profil sayfasına girmek için giriş yap.!',[{text:'tamam'}])
-      }else if(this.props.alertInfo === 'thanKahveFali'){
-         Alert.alert('Bilgilendirme','Kahve falı göndermek için giriş yap.!',[{text:'tamam'}])
-      }else{
-         return null 
+   componentDidMount() {
+      if (alertInfo == undefined) null
+      if (this.props.alertInfo === 'thanLogin') {
+         Alert.alert('Bilgilendirme', 'Profil sayfasına girmek için giriş yap.!', [{ text: 'tamam' }])
+      } else if (this.props.alertInfo === 'thanKahveFali') {
+         Alert.alert('Bilgilendirme', 'Kahve falı göndermek için giriş yap.!', [{ text: 'tamam' }])
+      } else {
+         return null
       }
+   }
+   _signIn = async () => {
+      GoogleSignin.configure({
+         androidClientId: '229619422761-hoibmpd0o7ovqehncqlle4c4ur1oruoh.apps.googleusercontent.com'
+      });
+
+      try {
+         await GoogleSignin.hasPlayServices();
+         const userInfo = await GoogleSignin.signIn();
+         //If login is successful you'll get user info object in userInfo below I'm just printing it to console. You can store this object in a usestate or use it as you like user is logged in.
+         console.log(userInfo)
+      } catch (error) {
+         if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+            alert("You cancelled the sign in.");
+         } else if (error.code === statusCodes.IN_PROGRESS) {
+            alert("Google sign In operation is in process");
+         } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+            alert("Play Services not available");
+         } else {
+            alert("Something unknown went wrong with Google sign in. " + error.message);
+         }
+      }
+   }
+
+   signOut = async () => {
+      await GoogleSignin.signOut();
    }
    render() {
       return (
@@ -69,6 +99,14 @@ class LoginView extends React.Component {
                   </View>
                   <TouchableOpacity onPress={this.login} style={styles.button}><Text style={styles.buttonText}>Giriş Yap</Text></TouchableOpacity>
                </View>
+               {/* GOOGLE BELASI */}
+               <GoogleSigninButton
+                  style={{ width: 192, height: 48 }}
+                  size={GoogleSigninButton.Size.Wide}
+                  color={GoogleSigninButton.Color.Dark}
+                  onPress={this._signIn}
+                  disabled={this.state.isSigninInProgress}
+               />
                {/* footer */}
                <View style={styles.footer}>
                   <View style={styles.line}></View>
@@ -90,12 +128,14 @@ class LoginView extends React.Component {
    }
 }
 
-export default LoginViewFnc = ({route}) => {
+export default LoginViewFnc = ({ route }) => {
    const navigation = useNavigation();
    const netInfo = useNetInfo();
-   const {alertInfo} = route.params
+   let alertInfo
+   route.params ? alertInfo = route.params.alertInfo : alertInfo = null
+
    return (
-      <LoginView netInfo={netInfo} navigation={navigation} alertInfo={alertInfo}></LoginView>
+      <LoginView netInfo={netInfo} navigation={navigation} alertInfo={alertInfo} ></LoginView>
    )
 
 }
@@ -110,7 +150,7 @@ const styles = StyleSheet.create({
    backButton: { position: 'absolute', left: 15 },
    headerText: { color: '#ffa31a', fontSize: 20, fontWeight: '600' },
    logoView: { justifyContent: 'center', marginTop: 5 },
-   loginLogo: {  alignSelf: 'center' },
+   loginLogo: { alignSelf: 'center' },
    loginForm: { alignItems: 'center', marginTop: 15 },
    textInput:
    {
