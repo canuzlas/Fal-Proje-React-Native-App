@@ -21,6 +21,7 @@
     "burc-api": "^1.0.2",
     "react": "17.0.2",
     "react-native": "0.65.1",
+    "react-native-fbsdk-next": "^6.1.1",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-make": "^1.0.1",
     "react-native-push-notification": "^8.1.1",

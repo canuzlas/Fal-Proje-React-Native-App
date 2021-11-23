@@ -4,6 +4,8 @@ import { useNetInfo } from "@react-native-community/netinfo";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/core';
 import { GoogleSignin, GoogleSigninButton, statusCodes } from '@react-native-google-signin/google-signin';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LoginManager, Profile } from 'react-native-fbsdk-next';
 
 
 
@@ -44,7 +46,7 @@ class LoginView extends React.Component {
       this.props.navigation.goBack()
    }
    componentDidMount() {
-      if (alertInfo == undefined) null
+      if (this.props.alertInfo == undefined) null
       if (this.props.alertInfo === 'thanLogin') {
          Alert.alert('Bilgilendirme', 'Profil sayfasına girmek için giriş yap.!', [{ text: 'tamam' }])
       } else if (this.props.alertInfo === 'thanKahveFali') {
@@ -61,8 +63,10 @@ class LoginView extends React.Component {
       try {
          await GoogleSignin.hasPlayServices();
          const userInfo = await GoogleSignin.signIn();
-         //If login is successful you'll get user info object in userInfo below I'm just printing it to console. You can store this object in a usestate or use it as you like user is logged in.
-         console.log(userInfo)
+        
+         await AsyncStorage.setItem("User", JSON.stringify(userInfo))
+         await AsyncStorage.setItem("UserLoggedAt", "google")
+         this.props.navigation.navigate('Tab')
       } catch (error) {
          if (error.code === statusCodes.SIGN_IN_CANCELLED) {
             alert("You cancelled the sign in.");
@@ -76,8 +80,27 @@ class LoginView extends React.Component {
       }
    }
 
-   signOut = async () => {
-      await GoogleSignin.signOut();
+   // signOut = async () => {
+   //    await GoogleSignin.signOut();
+   // }
+   facebookLogin = async () => {
+      try {
+         const result = await LoginManager.logInWithPermissions(["public_profile"])
+
+         if (!result.isCancelled) {
+      
+            const currentProfile = await Profile.getCurrentProfile()
+            
+            await AsyncStorage.setItem("User", JSON.stringify(currentProfile))
+            await AsyncStorage.setItem("UserLoggedAt", "facebook")
+            this.props.navigation.navigate('Tab')
+         }
+
+      } catch (error) {
+         console.log(error)
+      }
+
+
    }
    render() {
       return (
@@ -101,12 +124,16 @@ class LoginView extends React.Component {
                </View>
                {/* GOOGLE BELASI */}
                <GoogleSigninButton
-                  style={{ width: 192, height: 48 }}
+                  style={{ width: 192, height: 48, alignSelf: 'center', marginTop: 25 }}
                   size={GoogleSigninButton.Size.Wide}
-                  color={GoogleSigninButton.Color.Dark}
+                  color={GoogleSigninButton.Color.Light}
                   onPress={this._signIn}
                   disabled={this.state.isSigninInProgress}
                />
+               {/* FACEBOOK BELASI */}
+               <TouchableOpacity style={{ alignSelf: 'center', justifyContent: 'center', marginTop: 20 }} onPress={this.facebookLogin}><Text style={{ color: 'white' }}>FaceBook Giriş</Text></TouchableOpacity>
+
+
                {/* footer */}
                <View style={styles.footer}>
                   <View style={styles.line}></View>

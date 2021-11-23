@@ -219,62 +219,62 @@ class AstrologyView extends Component {
                </Modal>
                {/* Balık */}
                <TouchableOpacity onPress={() => this.setState({ isVisible: true })} style={styles.button}>
-                  <ImageBackground imageStyle={{ opacity: 0.1 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg.jpg')}>
+                  <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg.jpg')}>
                      <Text style={styles.buttonText}>Koç</Text>
                   </ImageBackground>
                </TouchableOpacity>
                <TouchableOpacity onPress={() => this.setState({ isVisible1: true })} style={styles.button}>
-                  <ImageBackground imageStyle={{ opacity: 0.1 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg1.jpg')}>
+                  <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg1.jpg')}>
                      <Text style={styles.buttonText}>Boğa</Text>
                   </ImageBackground>
                </TouchableOpacity>
                <TouchableOpacity onPress={() => this.setState({ isVisible2: true })} style={styles.button}>
-                  <ImageBackground imageStyle={{ opacity: 0.1 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg.jpg')}>
+                  <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg.jpg')}>
                      <Text style={styles.buttonText}>İkizler</Text>
                   </ImageBackground>
                </TouchableOpacity>
                <TouchableOpacity onPress={() => this.setState({ isVisible3: true })} style={styles.button}>
-                  <ImageBackground imageStyle={{ opacity: 0.1 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg1.jpg')}>
+                  <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg1.jpg')}>
                      <Text style={styles.buttonText}>Yengeç</Text>
                   </ImageBackground>
                </TouchableOpacity>
                <TouchableOpacity onPress={() => this.setState({ isVisible4: true })} style={styles.button}>
-                  <ImageBackground imageStyle={{ opacity: 0.1 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg.jpg')}>
+                  <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg.jpg')}>
                      <Text style={styles.buttonText}>Aslan</Text>
                   </ImageBackground>
                </TouchableOpacity>
                <TouchableOpacity onPress={() => this.setState({ isVisible5: true })} style={styles.button}>
-                  <ImageBackground imageStyle={{ opacity: 0.1 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg1.jpg')}>
+                  <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg1.jpg')}>
                      <Text style={styles.buttonText}>Başak</Text>
                   </ImageBackground>
                </TouchableOpacity>
                <TouchableOpacity onPress={() => this.setState({ isVisible6: true })} style={styles.button}>
-                  <ImageBackground imageStyle={{ opacity: 0.1 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg.jpg')}>
+                  <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg.jpg')}>
                      <Text style={styles.buttonText}>Terazi</Text>
                   </ImageBackground>
                </TouchableOpacity>
                <TouchableOpacity onPress={() => this.setState({ isVisible7: true })} style={styles.button}>
-                  <ImageBackground imageStyle={{ opacity: 0.1 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg1.jpg')}>
+                  <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg1.jpg')}>
                      <Text style={styles.buttonText}>Akrep</Text>
                   </ImageBackground>
                </TouchableOpacity>
                <TouchableOpacity onPress={() => this.setState({ isVisible8: true })} style={styles.button}>
-                  <ImageBackground imageStyle={{ opacity: 0.1 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg.jpg')}>
+                  <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg.jpg')}>
                      <Text style={styles.buttonText}>Yay</Text>
                   </ImageBackground>
                </TouchableOpacity>
                <TouchableOpacity onPress={() => this.setState({ isVisible9: true })} style={styles.button}>
-                  <ImageBackground imageStyle={{ opacity: 0.1 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg1.jpg')}>
+                  <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg1.jpg')}>
                      <Text style={styles.buttonText}>Oğlak</Text>
                   </ImageBackground>
                </TouchableOpacity>
                <TouchableOpacity onPress={() => this.setState({ isVisible10: true })} style={styles.button}>
-                  <ImageBackground imageStyle={{ opacity: 0.1 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg.jpg')}>
+                  <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg.jpg')}>
                      <Text style={styles.buttonText}>Kova</Text>
                   </ImageBackground>
                </TouchableOpacity>
                <TouchableOpacity onPress={() => this.setState({ isVisible11: true })} style={styles.button}>
-                  <ImageBackground imageStyle={{ opacity: 0.1 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg1.jpg')}>
+                  <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg1.jpg')}>
                      <Text style={styles.buttonText}>Balık</Text>
                   </ImageBackground>
                </TouchableOpacity>
