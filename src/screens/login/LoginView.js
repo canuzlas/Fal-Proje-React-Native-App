@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/core';
 import { GoogleSignin, GoogleSigninButton, statusCodes } from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LoginManager, Profile } from 'react-native-fbsdk-next';
+import { LoginManager, Profile, Settings } from 'react-native-fbsdk-next';
 
 
 
@@ -56,14 +56,16 @@ class LoginView extends React.Component {
       }
    }
    _signIn = async () => {
-      GoogleSignin.configure({
-         androidClientId: '229619422761-hoibmpd0o7ovqehncqlle4c4ur1oruoh.apps.googleusercontent.com'
-      });
 
       try {
+         await GoogleSignin.configure({
+            webClientId: '232744567398-fclqsccnqab64tr6m727l69mpr7cmio8.apps.googleusercontent.com',
+            offlineAccess: true,
+         });
+
          await GoogleSignin.hasPlayServices();
          const userInfo = await GoogleSignin.signIn();
-        
+         console.log(userInfo)
          await AsyncStorage.setItem("User", JSON.stringify(userInfo))
          await AsyncStorage.setItem("UserLoggedAt", "google")
          this.props.navigation.navigate('Tab')
@@ -75,7 +77,7 @@ class LoginView extends React.Component {
          } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
             alert("Play Services not available");
          } else {
-            alert("Something unknown went wrong with Google sign in. " + error.message);
+            alert(error);
          }
       }
    }
@@ -84,22 +86,43 @@ class LoginView extends React.Component {
    //    await GoogleSignin.signOut();
    // }
    facebookLogin = async () => {
-      try {
-         const result = await LoginManager.logInWithPermissions(["public_profile"])
+      /*  try {
 
+
+         const result = await LoginManager.logInWithPermissions(["public_profile"])
+         alert(result)
          if (!result.isCancelled) {
-      
+
             const currentProfile = await Profile.getCurrentProfile()
-            
+            alert(currentProfile)
             await AsyncStorage.setItem("User", JSON.stringify(currentProfile))
             await AsyncStorage.setItem("UserLoggedAt", "facebook")
             this.props.navigation.navigate('Tab')
          }
 
       } catch (error) {
-         console.log(error)
-      }
-
+         alert(error)
+      }*/
+     
+      await Settings.setAppID('4770259456354337');
+      await Settings.initializeSDK()
+      LoginManager.logInWithPermissions(["public_profile"]).then(
+        async (result) => {
+            if (result.isCancelled) {
+               console.log("Login cancelled");
+            } else {
+               const currentProfile = await Profile.getCurrentProfile()
+               await AsyncStorage.setItem("User", JSON.stringify(currentProfile))
+               await AsyncStorage.setItem("UserLoggedAt", "facebook")
+               console.log(currentProfile)
+               this.props.navigation.navigate('Tab')
+              
+            }
+         },
+         function (error) {
+            console.log("Login fail with error: " + error);
+         }
+      );
 
    }
    render() {
@@ -115,16 +138,16 @@ class LoginView extends React.Component {
                </View>
                {/* Form */}
                <View style={styles.loginForm}>
-                  <TextInput onChangeText={(text) => this.setState({ email: text })} placeholderTextColor={this.state.userNameIsEmpty ? 'red' : null} style={styles.textInput} placeholder={this.state.userNameIsEmpty ? '* Bu Alan Boş Bırakılamaz' : 'Email yada Kullanıcı Adı'}></TextInput>
+                  <TextInput onChangeText={(text) => this.setState({ email: text })} placeholderTextColor={this.state.userNameIsEmpty ? 'red' : 'black'} style={styles.textInput} placeholder={this.state.userNameIsEmpty ? '* Bu Alan Boş Bırakılamaz' : 'Email yada Kullanıcı Adı'}></TextInput>
                   <View>
-                     <TextInput onChangeText={(text) => this.setState({ password: text })} placeholderTextColor={this.state.userNameIsEmpty ? 'red' : null} secureTextEntry={this.state.securityText} style={styles.textInput} placeholder={this.state.passwordIsEmpty ? '* Bu Alan Boş Bırakılamaz' : 'Şifre'}></TextInput>
+                     <TextInput onChangeText={(text) => this.setState({ password: text })} placeholderTextColor={this.state.userNameIsEmpty ? 'red' : 'black'} secureTextEntry={this.state.securityText} style={styles.textInput} placeholder={this.state.passwordIsEmpty ? '* Bu Alan Boş Bırakılamaz' : 'Şifre'}></TextInput>
                      <TouchableOpacity onPress={() => this.setState({ securityText: !this.state.securityText })} style={{ position: 'absolute', right: 8, marginTop: 17 }}><Icon name={this.state.securityText ? 'eye-off-outline' : 'eye-outline'} size={30} color={'black'} /></TouchableOpacity>
                   </View>
                   <TouchableOpacity onPress={this.login} style={styles.button}><Text style={styles.buttonText}>Giriş Yap</Text></TouchableOpacity>
                </View>
                {/* GOOGLE BELASI */}
                <GoogleSigninButton
-                  style={{ width: 192, height: 48, alignSelf: 'center', marginTop: 25 }}
+                  style={{ width: 220, height: 55, alignSelf: 'center', marginTop: 25 }}
                   size={GoogleSigninButton.Size.Wide}
                   color={GoogleSigninButton.Color.Light}
                   onPress={this._signIn}

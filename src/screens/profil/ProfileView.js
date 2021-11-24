@@ -1,9 +1,9 @@
 import * as React from 'react'
-import { View, StyleSheet, Image, Text, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, Image, Text, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native'
 import { useNavigation } from '@react-navigation/core'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { GoogleSignin } from '@react-native-google-signin/google-signin'
-import { LoginManager } from 'react-native-fbsdk-next';
+import { LoginManager,Settings } from 'react-native-fbsdk-next';
 
 class ProfileView extends React.Component {
    constructor(props) {
@@ -19,8 +19,8 @@ class ProfileView extends React.Component {
    componentDidMount() {
       this.setState({ loop: this.state.loop++ })
    }
-   componentDidUpdate = async (prevProps,prevState) => {
-      
+   componentDidUpdate = async (prevProps, prevState) => {
+
       if (prevState.loop != this.state.loop) {
          const User = await AsyncStorage.getItem('User')
          const UserLoggedAt = await AsyncStorage.getItem('UserLoggedAt')
@@ -34,13 +34,18 @@ class ProfileView extends React.Component {
          }
       }
    }
-   
+   componentWillUnmount = async() => {
+      this.setState = (state,callback)=>{
+         return;
+     };
+   }
+
    goToLoginPage() {
       this.props.navigation.navigate('Login', { alertInfo: null })
    }
    signOutGoogle = async () => {
-      GoogleSignin.configure({
-         androidClientId: '229619422761-hoibmpd0o7ovqehncqlle4c4ur1oruoh.apps.googleusercontent.com'
+      await GoogleSignin.configure({
+         webClientId: '232744567398-fclqsccnqab64tr6m727l69mpr7cmio8.apps.googleusercontent.com'
       });
       await GoogleSignin.signOut();
       await AsyncStorage.clear();
@@ -48,6 +53,8 @@ class ProfileView extends React.Component {
       this.setState({ user: null, loop: this.state.loop++ })
    }
    signOutFaceBook = async () => {
+      await Settings.setAppID('4770259456354337');
+      await Settings.initializeSDK()
       await LoginManager.logOut()
       await AsyncStorage.setItem("User", "")
       await AsyncStorage.setItem("UserLoggedAt", "")
@@ -65,15 +72,15 @@ class ProfileView extends React.Component {
             this.state.userLogged ?
                this.state.UserLoggedAt === 'google' ?
                   <View>
-                     <Text>{this.state.user}</Text>
-                     <Text>Giriş Yöntemi : {this.state.UserLoggedAt}</Text>
-                     <TouchableOpacity onPress={this.signOutGoogle} style={{ marginTop: 50, alignSelf: 'center' }}><Text>Çıkış Yap</Text></TouchableOpacity>
+                     <Text style={{ color: 'white' }}>{this.state.user}</Text>
+                     <Text style={{ color: 'white' }}>Giriş Yöntemi : {this.state.UserLoggedAt}</Text>
+                     <TouchableOpacity onPress={this.signOutGoogle} style={{ marginTop: 50, alignSelf: 'center' }}><Text style={{ color: 'white' }}>Çıkış Yap</Text></TouchableOpacity>
                   </View>
                   :
                   <View>
-                     <Text>{this.state.user}</Text>
-                     <Text>Giriş Yöntemi : {this.state.UserLoggedAt}</Text>
-                     <TouchableOpacity onPress={this.signOutFaceBook} style={{ marginTop: 50, alignSelf: 'center' }}><Text>Çıkış Yap</Text></TouchableOpacity>
+                     <Text style={{ color: 'white' }}>{this.state.user}</Text>
+                     <Text style={{ color: 'white' }}>Giriş Yöntemi : {this.state.UserLoggedAt}</Text>
+                     <TouchableOpacity onPress={this.signOutFaceBook} style={{ marginTop: 50, alignSelf: 'center' }}><Text style={{ color: 'white' }}>Çıkış Yap</Text></TouchableOpacity>
                   </View>
 
                :
@@ -90,7 +97,11 @@ class ProfileView extends React.Component {
 export default () => {
    const navigation = useNavigation()
    return (
-      <ProfileView navigation={navigation}></ProfileView>
+      <SafeAreaView>
+         <ScrollView contentContainerStyle={{flexGrow:1, justifyContent:'center'}} style={{width:'100%',height:'100%', backgroundColor:'black'}}>
+            <ProfileView navigation={navigation}></ProfileView>
+         </ScrollView>
+      </SafeAreaView>
    )
 }
 
