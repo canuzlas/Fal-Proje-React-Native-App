@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, Button, Modal, SafeAreaView, ScrollView, TouchableOpacity, ImageBackground, Image } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import IonIcon from 'react-native-vector-icons/Ionicons';
+import trDate from 'tr-date'
+const date = new trDate()
 
 class AstrologyView extends Component {
    constructor(props) {
       super(props)
       this.state = {
+         date: null,
          pageLoading: true,
          koc: null,
          akrep: null,
@@ -34,6 +38,7 @@ class AstrologyView extends Component {
       }
    }
    componentDidMount = async () => {
+      this.setState({ date: String(date.getTime()) })
       const koc = await AsyncStorage.getItem('koc');
       const akrep = await AsyncStorage.getItem('akrep');
       const aslan = await AsyncStorage.getItem('aslan');
@@ -69,12 +74,27 @@ class AstrologyView extends Component {
                   visible={this.state.isVisible}
                >
                   {/*All views of Modal*/}
-                  <View style={styles.modal}>
-                     <Text style={{ color: 'white' }}>{String(this.state.koc.GunlukYorum)}</Text>
-                     <TouchableOpacity onPress={() => this.setState({ isVisible: !this.state.isVisible })} style={styles.modalButton}><Text style={styles.modalButtonText}>Kapat</Text></TouchableOpacity>
-                  </View>
+
+                  <ImageBackground style={styles.astrologyModalBgGif} source={require('../../assets/astrologyModalBgGif/modalBg.gif')} imageStyle={{ opacity: 0.3, resizeMode: 'stretch' }}>
+
+                     <TouchableOpacity onPress={() => this.setState({ isVisible: !this.state.isVisible })} style={styles.modalBackButton}>
+                        <IonIcon name={'chevron-back'} size={50} color={'#ffa31a'}></IonIcon>
+                     </TouchableOpacity>
+                     <Text style={styles.burcNameText}>
+                        KOÇ
+                     </Text>
+                     <Text style={{ color: '#ffa31a' }}>{this.state.date}</Text>
+                     <View style={styles.modalHeaderLine}></View>
+
+                     <View style={{ paddingLeft: 10 }}>
+                        <Text style={{ color: 'white', fontSize: 18, }}>{String(this.state.koc.GunlukYorum)}</Text>
+                     </View>
+                  </ImageBackground>
+
                </Modal>
                {/* KOÇ */}
+
+
                {/* Boğa */}
                <Modal
                   animationType={"slide"}
@@ -82,12 +102,27 @@ class AstrologyView extends Component {
                   visible={this.state.isVisible1}
                >
                   {/*All views of Modal*/}
-                  <View style={styles.modal}>
-                     <Text style={{ color: 'white' }}>{String(this.state.boga.GunlukYorum)}</Text>
-                     <TouchableOpacity onPress={() => this.setState({ isVisible1: !this.state.isVisible1 })} style={styles.modalButton}><Text style={styles.modalButtonText}>Kapat</Text></TouchableOpacity>
-                  </View>
+
+                  <ImageBackground style={styles.astrologyModalBgGif} source={require('../../assets/astrologyModalBgGif/modalBg.gif')} imageStyle={{ opacity: 0.3, resizeMode: 'stretch' }}>
+
+                     <TouchableOpacity onPress={() => this.setState({ isVisible1: !this.state.isVisible1 })} style={styles.modalBackButton}>
+                        <IonIcon name={'chevron-back'} size={50} color={'#ffa31a'}></IonIcon>
+                     </TouchableOpacity>
+                     <Text style={styles.burcNameText}>
+                        BOĞA
+                     </Text>
+                     <Text style={{ color: '#ffa31a' }}>{this.state.date}</Text>
+                     <View style={styles.modalHeaderLine}></View>
+
+                     <View style={{ paddingLeft: 10 }}>
+                        <Text style={{ color: 'white', fontSize: 18, }}>{String(this.state.boga.GunlukYorum)}</Text>
+                     </View>
+                  </ImageBackground>
                </Modal>
                {/* Boğa */}
+
+
+
                {/* İkizler */}
                <Modal
                   animationType={"slide"}
@@ -95,12 +130,26 @@ class AstrologyView extends Component {
                   visible={this.state.isVisible2}
                >
                   {/*All views of Modal*/}
-                  <View style={styles.modal}>
-                     <Text style={{ color: 'white' }}>{String(this.state.ikizler.GunlukYorum)}</Text>
-                     <TouchableOpacity onPress={() => this.setState({ isVisible2: !this.state.isVisible2 })} style={styles.modalButton}><Text style={styles.modalButtonText}>Kapat</Text></TouchableOpacity>
-                  </View>
+
+                  <ImageBackground style={styles.astrologyModalBgGif} source={require('../../assets/astrologyModalBgGif/modalBg.gif')} imageStyle={{ opacity: 0.3, resizeMode: 'stretch' }}>
+
+                     <TouchableOpacity onPress={() => this.setState({ isVisible2: !this.state.isVisible2 })} style={styles.modalBackButton}>
+                        <IonIcon name={'chevron-back'} size={50} color={'#ffa31a'}></IonIcon>
+                     </TouchableOpacity>
+                     <Text style={styles.burcNameText}>
+                        İKİZLER
+                     </Text>
+                     <Text style={{ color: '#ffa31a' }}>{this.state.date}</Text>
+                     <View style={styles.modalHeaderLine}></View>
+
+                     <View style={{ paddingLeft: 10 }}>
+                        <Text style={{ color: 'white', fontSize: 18, }}>{String(this.state.ikizler.GunlukYorum)}</Text>
+                     </View>
+                  </ImageBackground>
                </Modal>
                {/* İkizler */}
+
+
                {/* Yengeç */}
                <Modal
                   animationType={"slide"}
@@ -108,12 +157,26 @@ class AstrologyView extends Component {
                   visible={this.state.isVisible3}
                >
                   {/*All views of Modal*/}
-                  <View style={styles.modal}>
-                     <Text style={{ color: 'white' }}>{String(this.state.yengec.GunlukYorum)}</Text>
-                     <TouchableOpacity onPress={() => this.setState({ isVisible3: !this.state.isVisible3 })} style={styles.modalButton}><Text style={styles.modalButtonText}>Kapat</Text></TouchableOpacity>
-                  </View>
+
+                  <ImageBackground style={styles.astrologyModalBgGif} source={require('../../assets/astrologyModalBgGif/modalBg.gif')} imageStyle={{ opacity: 0.3, resizeMode: 'stretch' }}>
+
+                     <TouchableOpacity onPress={() => this.setState({ isVisible3: !this.state.isVisible3 })} style={styles.modalBackButton}>
+                        <IonIcon name={'chevron-back'} size={50} color={'#ffa31a'}></IonIcon>
+                     </TouchableOpacity>
+                     <Text style={styles.burcNameText}>
+                        YENGEÇ
+                     </Text>
+                     <Text style={{ color: '#ffa31a' }}>{this.state.date}</Text>
+                     <View style={styles.modalHeaderLine}></View>
+
+                     <View style={{ paddingLeft: 10 }}>
+                        <Text style={{ color: 'white', fontSize: 18, }}>{String(this.state.yengec.GunlukYorum)}</Text>
+                     </View>
+                  </ImageBackground>
                </Modal>
                {/* Yengeç */}
+
+
                {/* Aslan */}
                <Modal
                   animationType={"slide"}
@@ -121,12 +184,26 @@ class AstrologyView extends Component {
                   visible={this.state.isVisible4}
                >
                   {/*All views of Modal*/}
-                  <View style={styles.modal}>
-                     <Text style={{ color: 'white' }}>{String(this.state.aslan.GunlukYorum)}</Text>
-                     <TouchableOpacity onPress={() => this.setState({ isVisible4: !this.state.isVisible4 })} style={styles.modalButton}><Text style={styles.modalButtonText}>Kapat</Text></TouchableOpacity>
-                  </View>
+
+                  <ImageBackground style={styles.astrologyModalBgGif} source={require('../../assets/astrologyModalBgGif/modalBg.gif')} imageStyle={{ opacity: 0.3, resizeMode: 'stretch' }}>
+
+                     <TouchableOpacity onPress={() => this.setState({ isVisible4: !this.state.isVisible4 })} style={styles.modalBackButton}>
+                        <IonIcon name={'chevron-back'} size={50} color={'#ffa31a'}></IonIcon>
+                     </TouchableOpacity>
+                     <Text style={styles.burcNameText}>
+                        ASLAN
+                     </Text>
+                     <Text style={{ color: '#ffa31a' }}>{this.state.date}</Text>
+                     <View style={styles.modalHeaderLine}></View>
+
+                     <View style={{ paddingLeft: 10 }}>
+                        <Text style={{ color: 'white', fontSize: 18, }}>{String(this.state.aslan.GunlukYorum)}</Text>
+                     </View>
+                  </ImageBackground>
                </Modal>
                {/* Aslan */}
+
+
                {/* Başak */}
                <Modal
                   animationType={"slide"}
@@ -134,12 +211,26 @@ class AstrologyView extends Component {
                   visible={this.state.isVisible5}
                >
                   {/*All views of Modal*/}
-                  <View style={styles.modal}>
-                     <Text style={{ color: 'white' }}>{String(this.state.basak.GunlukYorum)}</Text>
-                     <TouchableOpacity onPress={() => this.setState({ isVisible5: !this.state.isVisible5 })} style={styles.modalButton}><Text style={styles.modalButtonText}>Başak</Text></TouchableOpacity>
-                  </View>
+
+                  <ImageBackground style={styles.astrologyModalBgGif} source={require('../../assets/astrologyModalBgGif/modalBg.gif')} imageStyle={{ opacity: 0.3, resizeMode: 'stretch' }}>
+
+                     <TouchableOpacity onPress={() => this.setState({ isVisible5: !this.state.isVisible5 })} style={styles.modalBackButton}>
+                        <IonIcon name={'chevron-back'} size={50} color={'#ffa31a'}></IonIcon>
+                     </TouchableOpacity>
+                     <Text style={styles.burcNameText}>
+                        BAŞAK
+                     </Text>
+                     <Text style={{ color: '#ffa31a' }}>{this.state.date}</Text>
+                     <View style={styles.modalHeaderLine}></View>
+
+                     <View style={{ paddingLeft: 10 }}>
+                        <Text style={{ color: 'white', fontSize: 18, }}>{String(this.state.basak.GunlukYorum)}</Text>
+                     </View>
+                  </ImageBackground>
                </Modal>
                {/* Başak */}
+
+
                {/* Terazi */}
                <Modal
                   animationType={"slide"}
@@ -147,12 +238,26 @@ class AstrologyView extends Component {
                   visible={this.state.isVisible6}
                >
                   {/*All views of Modal*/}
-                  <View style={styles.modal}>
-                     <Text style={{ color: 'white' }}>{String(this.state.terazi.GunlukYorum)}</Text>
-                     <TouchableOpacity onPress={() => this.setState({ isVisible6: !this.state.isVisible6 })} style={styles.modalButton}><Text style={styles.modalButtonText}>Kapat</Text></TouchableOpacity>
-                  </View>
+
+                  <ImageBackground style={styles.astrologyModalBgGif} source={require('../../assets/astrologyModalBgGif/modalBg.gif')} imageStyle={{ opacity: 0.3, resizeMode: 'stretch' }}>
+
+                     <TouchableOpacity onPress={() => this.setState({ isVisible6: !this.state.isVisible6 })} style={styles.modalBackButton}>
+                        <IonIcon name={'chevron-back'} size={50} color={'#ffa31a'}></IonIcon>
+                     </TouchableOpacity>
+                     <Text style={styles.burcNameText}>
+                        TERAZİ
+                     </Text>
+                     <Text style={{ color: '#ffa31a' }}>{this.state.date}</Text>
+                     <View style={styles.modalHeaderLine}></View>
+
+                     <View style={{ paddingLeft: 10 }}>
+                        <Text style={{ color: 'white', fontSize: 18, }}>{String(this.state.terazi.GunlukYorum)}</Text>
+                     </View>
+                  </ImageBackground>
                </Modal>
                {/* Terazi */}
+
+
                {/* Akrep */}
                <Modal
                   animationType={"slide"}
@@ -160,12 +265,26 @@ class AstrologyView extends Component {
                   visible={this.state.isVisible7}
                >
                   {/*All views of Modal*/}
-                  <View style={styles.modal}>
-                     <Text style={{ color: 'white' }}>{String(this.state.akrep.GunlukYorum)}</Text>
-                     <TouchableOpacity onPress={() => this.setState({ isVisible7: !this.state.isVisible7 })} style={styles.modalButton}><Text style={styles.modalButtonText}>Kapat</Text></TouchableOpacity>
-                  </View>
+
+                  <ImageBackground style={styles.astrologyModalBgGif} source={require('../../assets/astrologyModalBgGif/modalBg.gif')} imageStyle={{ opacity: 0.3, resizeMode: 'stretch' }}>
+
+                     <TouchableOpacity onPress={() => this.setState({ isVisible7: !this.state.isVisible7 })} style={styles.modalBackButton}>
+                        <IonIcon name={'chevron-back'} size={50} color={'#ffa31a'}></IonIcon>
+                     </TouchableOpacity>
+                     <Text style={styles.burcNameText}>
+                        AKREP
+                     </Text>
+                     <Text style={{ color: '#ffa31a' }}>{this.state.date}</Text>
+                     <View style={styles.modalHeaderLine}></View>
+
+                     <View style={{ paddingLeft: 10 }}>
+                        <Text style={{ color: 'white', fontSize: 18, }}>{String(this.state.akrep.GunlukYorum)}</Text>
+                     </View>
+                  </ImageBackground>
                </Modal>
                {/* Akrep */}
+
+
                {/* Yay */}
                <Modal
                   animationType={"slide"}
@@ -173,12 +292,26 @@ class AstrologyView extends Component {
                   visible={this.state.isVisible8}
                >
                   {/*All views of Modal*/}
-                  <View style={styles.modal}>
-                     <Text style={{ color: 'white' }}>{String(this.state.yay.GunlukYorum)}</Text>
-                     <TouchableOpacity onPress={() => this.setState({ isVisible8: !this.state.isVisible8 })} style={styles.modalButton}><Text style={styles.modalButtonText}>Kapat</Text></TouchableOpacity>
-                  </View>
+
+                  <ImageBackground style={styles.astrologyModalBgGif} source={require('../../assets/astrologyModalBgGif/modalBg.gif')} imageStyle={{ opacity: 0.3, resizeMode: 'stretch' }}>
+
+                     <TouchableOpacity onPress={() => this.setState({ isVisible8: !this.state.isVisible8 })} style={styles.modalBackButton}>
+                        <IonIcon name={'chevron-back'} size={50} color={'#ffa31a'}></IonIcon>
+                     </TouchableOpacity>
+                     <Text style={styles.burcNameText}>
+                        YAY
+                     </Text>
+                     <Text style={{ color: '#ffa31a' }}>{this.state.date}</Text>
+                     <View style={styles.modalHeaderLine}></View>
+
+                     <View style={{ paddingLeft: 10 }}>
+                        <Text style={{ color: 'white', fontSize: 18, }}>{String(this.state.yay.GunlukYorum)}</Text>
+                     </View>
+                  </ImageBackground>
                </Modal>
                {/* Yay */}
+
+
                {/* Oğlak */}
                <Modal
                   animationType={"slide"}
@@ -186,12 +319,26 @@ class AstrologyView extends Component {
                   visible={this.state.isVisible9}
                >
                   {/*All views of Modal*/}
-                  <View style={styles.modal}>
-                     <Text style={{ color: 'white' }}>{String(this.state.oglak.GunlukYorum)}</Text>
-                     <TouchableOpacity onPress={() => this.setState({ isVisible9: !this.state.isVisible9 })} style={styles.modalButton}><Text style={styles.modalButtonText}>Kapat</Text></TouchableOpacity>
-                  </View>
+
+                  <ImageBackground style={styles.astrologyModalBgGif} source={require('../../assets/astrologyModalBgGif/modalBg.gif')} imageStyle={{ opacity: 0.3, resizeMode: 'stretch' }}>
+
+                     <TouchableOpacity onPress={() => this.setState({ isVisible9: !this.state.isVisible9 })} style={styles.modalBackButton}>
+                        <IonIcon name={'chevron-back'} size={50} color={'#ffa31a'}></IonIcon>
+                     </TouchableOpacity>
+                     <Text style={styles.burcNameText}>
+                        OĞLAK
+                     </Text>
+                     <Text style={{ color: '#ffa31a' }}>{this.state.date}</Text>
+                     <View style={styles.modalHeaderLine}></View>
+
+                     <View style={{ paddingLeft: 10 }}>
+                        <Text style={{ color: 'white', fontSize: 18, }}>{String(this.state.oglak.GunlukYorum)}</Text>
+                     </View>
+                  </ImageBackground>
                </Modal>
                {/* Oğlak */}
+
+
                {/* Kova */}
                <Modal
                   animationType={"slide"}
@@ -199,12 +346,26 @@ class AstrologyView extends Component {
                   visible={this.state.isVisible10}
                >
                   {/*All views of Modal*/}
-                  <View style={styles.modal}>
-                     <Text style={{ color: 'white' }}>{String(this.state.kova.GunlukYorum)}</Text>
-                     <TouchableOpacity onPress={() => this.setState({ isVisible10: !this.state.isVisible10 })} style={styles.modalButton}><Text style={styles.modalButtonText}>Kapat</Text></TouchableOpacity>
-                  </View>
+
+                  <ImageBackground style={styles.astrologyModalBgGif} source={require('../../assets/astrologyModalBgGif/modalBg.gif')} imageStyle={{ opacity: 0.3, resizeMode: 'stretch' }}>
+
+                     <TouchableOpacity onPress={() => this.setState({ isVisible10: !this.state.isVisible10 })} style={styles.modalBackButton}>
+                        <IonIcon name={'chevron-back'} size={50} color={'#ffa31a'}></IonIcon>
+                     </TouchableOpacity>
+                     <Text style={styles.burcNameText}>
+                        KOVA
+                     </Text>
+                     <Text style={{ color: '#ffa31a' }}>{this.state.date}</Text>
+                     <View style={styles.modalHeaderLine}></View>
+
+                     <View style={{ paddingLeft: 10 }}>
+                        <Text style={{ color: 'white', fontSize: 18, }}>{String(this.state.kova.GunlukYorum)}</Text>
+                     </View>
+                  </ImageBackground>
                </Modal>
                {/* Kova */}
+
+
                {/* Balık */}
                <Modal
                   animationType={"slide"}
@@ -212,12 +373,26 @@ class AstrologyView extends Component {
                   visible={this.state.isVisible11}
                >
                   {/*All views of Modal*/}
-                  <View style={styles.modal}>
-                     <Text style={{ color: 'white' }}>{String(this.state.balik.GunlukYorum)}</Text>
-                     <TouchableOpacity onPress={() => this.setState({ isVisible11: !this.state.isVisible11 })} style={styles.modalButton}><Text style={styles.modalButtonText}>Kapat</Text></TouchableOpacity>
-                  </View>
+
+                  <ImageBackground style={styles.astrologyModalBgGif} source={require('../../assets/astrologyModalBgGif/modalBg.gif')} imageStyle={{ opacity: 0.3, resizeMode: 'stretch' }}>
+
+                     <TouchableOpacity onPress={() => this.setState({ isVisible11: !this.state.isVisible11 })} style={styles.modalBackButton}>
+                        <IonIcon name={'chevron-back'} size={50} color={'#ffa31a'}></IonIcon>
+                     </TouchableOpacity>
+                     <Text style={styles.burcNameText}>
+                        BALIK
+                     </Text>
+                     <Text style={{ color: '#ffa31a' }}>{this.state.date}</Text>
+                     <View style={styles.modalHeaderLine}></View>
+
+                     <View style={{ paddingLeft: 10 }}>
+                        <Text style={{ color: 'white', fontSize: 18, }}>{String(this.state.balik.GunlukYorum)}</Text>
+                     </View>
+                  </ImageBackground>
                </Modal>
                {/* Balık */}
+
+
                <TouchableOpacity onPress={() => this.setState({ isVisible: true })} style={styles.button}>
                   <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg.jpg')}>
                      <Text style={styles.buttonText}>Koç</Text>
@@ -287,7 +462,7 @@ class AstrologyView extends Component {
 export default AstrologyViewFnc = () => {
    return (
       <SafeAreaView>
-         <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }} style={{width: '100%', height: '100%', backgroundColor: 'black'}} >
+         <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }} style={{ width: '100%', height: '100%', backgroundColor: 'black' }} >
             <AstrologyView></AstrologyView>
          </ScrollView>
       </SafeAreaView>
@@ -307,25 +482,33 @@ const styles = StyleSheet.create({
       width: '100%',
       height: '100%'
    },
-   modal: {
+   astrologyModalBgGif: {
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: "black",
-      height: 400,
+      height: '100%',
       width: '100%',
-      borderRadius: 10,
-      borderWidth: 1,
-      borderColor: 'black',
-      marginTop: 80,
-
-
    },
-   modalButton: {
+   modalBackButton: {
       position: 'absolute',
       top: 10,
-      right: 10,
+      left: 10,
       justifyContent: 'center'
    },
+   burcNameText: {
+      color: '#ffa31a',
+      fontSize: 30,
+      position: 'absolute',
+      top: 15
+   },
+   modalHeaderLine: {
+      width: "100%",
+      borderWidth: 0.5,
+      borderColor: '#ffa31a',
+      position: 'absolute',
+      top: 70
+   },
+
    modalButtonText: {
       color: 'white',
       fontSize: 20
