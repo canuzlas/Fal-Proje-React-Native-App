@@ -158,8 +158,9 @@ class LoginView extends React.Component {
 
 
                {/* footer */}
+               <View style={styles.line}></View>
                <View style={styles.footer}>
-                  <View style={styles.line}></View>
+                  {/* <View style={styles.line}></View> */}
                   <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 20 }}>
                      <Text style={styles.footerText}>Hesabın Yok Mu?</Text>
                      <TouchableOpacity onPress={this.goToRegisterPage}><Text style={styles.resgisterFreeText}>Ücretsiz Kaydol !</Text></TouchableOpacity>
@@ -192,7 +193,7 @@ export default LoginViewFnc = ({ route }) => {
 
 const styles = StyleSheet.create({
    //line
-   line: { borderWidth: 0.2, borderColor: '#ffa31a' },
+   line: { borderWidth: 0.2, borderColor: '#ffa31a',width:'100%',position:'absolute', bottom:50 },
 
    //login Page
    backgroundColorView: { backgroundColor: 'black', width: '100%', height: '100%' },
@@ -208,7 +209,7 @@ const styles = StyleSheet.create({
    },
    button: { width: 220, height: 50, backgroundColor: '#ffa31a', justifyContent: 'center', marginTop: 15, borderRadius: 30 },
    buttonText: { alignSelf: 'center', color: 'white', fontSize: 20, fontWeight: '600' },
-   footer: { justifyContent: 'center', marginTop: 200 },
+   footer: { justifyContent: 'center', position:'absolute', bottom:10, alignSelf:'center' },
    footerText: { color: 'white', fontSize: 15, alignSelf: 'center' },
    resgisterFreeText: { color: '#ffa31a', fontSize: 20, marginLeft: 5 },
 

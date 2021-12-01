@@ -21,14 +21,17 @@
     "burc-api": "^1.0.2",
     "react": "17.0.2",
     "react-native": "0.65.1",
+    "react-native-confirmation-code-input": "^1.0.4",
     "react-native-fbsdk-next": "^6.1.1",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-make": "^1.0.1",
     "react-native-push-notification": "^8.1.1",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.6.0",
+    "react-native-sms-verifycode": "^2.4.3",
     "react-native-vector-icons": "^8.1.0",
-    "tr-date": "^2.1.1"
+    "tr-date": "^2.1.1",
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

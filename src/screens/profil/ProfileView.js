@@ -3,7 +3,7 @@ import { View, StyleSheet, Image, Text, TouchableOpacity, SafeAreaView, ScrollVi
 import { useNavigation } from '@react-navigation/core'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { GoogleSignin } from '@react-native-google-signin/google-signin'
-import { LoginManager,Settings } from 'react-native-fbsdk-next';
+import { LoginManager, Settings } from 'react-native-fbsdk-next';
 
 class ProfileView extends React.Component {
    constructor(props) {
@@ -16,7 +16,8 @@ class ProfileView extends React.Component {
          loop: 0
       }
    }
-   componentDidMount() {
+   componentDidMount = async () => {
+      console.log('did')
       this.setState({ loop: this.state.loop++ })
    }
    componentDidUpdate = async (prevProps, prevState) => {
@@ -24,20 +25,18 @@ class ProfileView extends React.Component {
       if (prevState.loop != this.state.loop) {
          const User = await AsyncStorage.getItem('User')
          const UserLoggedAt = await AsyncStorage.getItem('UserLoggedAt')
-         console.log(User)
+
          if (User === null) {
-            console.log("if")
             this.setState({ pageLoading: false, userLogged: false, loop: this.state.loop++ })
          } else {
-            console.log("else")
             this.setState({ pageLoading: false, userLogged: true, user: User, UserLoggedAt: UserLoggedAt, loop: this.state.loop })
          }
       }
    }
-   componentWillUnmount = async() => {
-      this.setState = (state,callback)=>{
+   componentWillUnmount = async () => {
+      this.setState = (state, callback) => {
          return;
-     };
+      };
    }
 
    goToLoginPage() {
@@ -61,6 +60,12 @@ class ProfileView extends React.Component {
       this.props.navigation.navigate('Tab')
       this.setState({ user: null, loop: this.state.loop++ })
    }
+   signOutEmailPhone = async () => {
+      await AsyncStorage.setItem("User", "")
+      await AsyncStorage.setItem("UserLoggedAt", "")
+      this.props.navigation.navigate('Tab')
+      this.setState({ user: null, loop: this.state.loop++ })
+   }
    render() {
       return (
          this.state.pageLoading ?
@@ -77,11 +82,18 @@ class ProfileView extends React.Component {
                      <TouchableOpacity onPress={this.signOutGoogle} style={{ marginTop: 50, alignSelf: 'center' }}><Text style={{ color: 'white' }}>Çıkış Yap</Text></TouchableOpacity>
                   </View>
                   :
-                  <View>
-                     <Text style={{ color: 'white' }}>{this.state.user}</Text>
-                     <Text style={{ color: 'white' }}>Giriş Yöntemi : {this.state.UserLoggedAt}</Text>
-                     <TouchableOpacity onPress={this.signOutFaceBook} style={{ marginTop: 50, alignSelf: 'center' }}><Text style={{ color: 'white' }}>Çıkış Yap</Text></TouchableOpacity>
-                  </View>
+                  this.state.UserLoggedAt === 'email/phone' ?
+                     <View>
+                        <Text style={{ color: 'white' }}>{this.state.user}</Text>
+                        <Text style={{ color: 'white' }}>Giriş Yöntemi : {this.state.UserLoggedAt}</Text>
+                        <TouchableOpacity onPress={this.signOutEmailPhone} style={{ marginTop: 50, alignSelf: 'center' }}><Text style={{ color: 'white' }}>Çıkış Yap</Text></TouchableOpacity>
+                     </View>
+                     :
+                     <View>
+                        <Text style={{ color: 'white' }}>{this.state.user}</Text>
+                        <Text style={{ color: 'white' }}>Giriş Yöntemi : {this.state.UserLoggedAt}</Text>
+                        <TouchableOpacity onPress={this.signOutFaceBook} style={{ marginTop: 50, alignSelf: 'center' }}><Text style={{ color: 'white' }}>Çıkış Yap</Text></TouchableOpacity>
+                     </View>
 
                :
                <View style={styles.containerNotLogged}>
@@ -98,7 +110,7 @@ export default () => {
    const navigation = useNavigation()
    return (
       <SafeAreaView>
-         <ScrollView contentContainerStyle={{flexGrow:1, justifyContent:'center'}} style={{width:'100%',height:'100%', backgroundColor:'black'}}>
+         <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }} style={{ width: '100%', height: '100%', backgroundColor: 'black' }}>
             <ProfileView navigation={navigation}></ProfileView>
          </ScrollView>
       </SafeAreaView>
