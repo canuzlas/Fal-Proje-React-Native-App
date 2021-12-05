@@ -1,13 +1,10 @@
 import * as React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, RefreshControl, TextInput, Button, Alert } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, RefreshControl, TextInput, Button, Alert, ToastAndroid } from 'react-native';
 import { useNetInfo } from "@react-native-community/netinfo";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/core';
 import { GoogleSignin, GoogleSigninButton, statusCodes } from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LoginManager, Profile, Settings } from 'react-native-fbsdk-next';
-
-
 
 class LoginView extends React.Component {
    constructor(props) {
@@ -48,9 +45,11 @@ class LoginView extends React.Component {
    componentDidMount() {
       if (this.props.alertInfo == undefined) null
       if (this.props.alertInfo === 'thanLogin') {
-         Alert.alert('Bilgilendirme', 'Profil sayfasına girmek için giriş yap.!', [{ text: 'tamam' }])
+         //Alert.alert('Bilgilendirme', 'Profil sayfasına girmek için giriş yap.!', [{ text: 'tamam' }])
+         ToastAndroid.show("Profil sayfasına girmek için giriş yap.!", ToastAndroid.LONG)
       } else if (this.props.alertInfo === 'thanKahveFali') {
-         Alert.alert('Bilgilendirme', 'Kahve falı göndermek için giriş yap.!', [{ text: 'tamam' }])
+         //Alert.alert('Bilgilendirme', 'Kahve falı göndermek için giriş yap.!', [{ text: 'tamam' }])
+         ToastAndroid.show("Kahve falı göndermek için giriş yap.!", ToastAndroid.LONG)
       } else {
          return null
       }
@@ -103,11 +102,11 @@ class LoginView extends React.Component {
       } catch (error) {
          alert(error)
       }*/
-     
+
       await Settings.setAppID('4770259456354337');
       await Settings.initializeSDK()
       LoginManager.logInWithPermissions(["public_profile"]).then(
-        async (result) => {
+         async (result) => {
             if (result.isCancelled) {
                console.log("Login cancelled");
             } else {
@@ -116,7 +115,7 @@ class LoginView extends React.Component {
                await AsyncStorage.setItem("UserLoggedAt", "facebook")
                console.log(currentProfile)
                this.props.navigation.navigate('Tab')
-              
+
             }
          },
          function (error) {
@@ -186,14 +185,14 @@ export default LoginViewFnc = ({ route }) => {
    route.params ? alertInfo = route.params.alertInfo : alertInfo = null
 
    return (
-      <LoginView netInfo={netInfo} navigation={navigation} alertInfo={alertInfo} ></LoginView>
+      <LoginView netInfo={netInfo} navigation={navigation} alertInfo={alertInfo}></LoginView>
    )
 
 }
 
 const styles = StyleSheet.create({
    //line
-   line: { borderWidth: 0.2, borderColor: '#ffa31a',width:'100%',position:'absolute', bottom:50 },
+   line: { borderWidth: 0.2, borderColor: '#ffa31a', width: '100%', position: 'absolute', bottom: 50 },
 
    //login Page
    backgroundColorView: { backgroundColor: 'black', width: '100%', height: '100%' },
@@ -209,7 +208,7 @@ const styles = StyleSheet.create({
    },
    button: { width: 220, height: 50, backgroundColor: '#ffa31a', justifyContent: 'center', marginTop: 15, borderRadius: 30 },
    buttonText: { alignSelf: 'center', color: 'white', fontSize: 20, fontWeight: '600' },
-   footer: { justifyContent: 'center', position:'absolute', bottom:10, alignSelf:'center' },
+   footer: { justifyContent: 'center', position: 'absolute', bottom: 10, alignSelf: 'center' },
    footerText: { color: 'white', fontSize: 15, alignSelf: 'center' },
    resgisterFreeText: { color: '#ffa31a', fontSize: 20, marginLeft: 5 },
 

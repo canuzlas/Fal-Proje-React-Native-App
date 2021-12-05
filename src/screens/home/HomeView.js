@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SafeAreaView, View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, RefreshControl, TextInput, Button, ImageBackground } from 'react-native';
+import { SafeAreaView, View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, RefreshControl, TextInput, Button, ImageBackground,ToastAndroid } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import PushNotification from 'react-native-push-notification';
@@ -21,6 +21,7 @@ class HomeView extends React.Component {
       }
    }
    componentDidMount = async () => {
+      ToastAndroid.show("hoşgeldin",ToastAndroid.LONG)
       PushNotification.configure({
          // (optional) Called when Token is generated (iOS and Android)
          onRegister: function (token) {
@@ -35,7 +36,7 @@ class HomeView extends React.Component {
             });
             try { 
                const res = await AsyncStorage.getItem('loginSession')
-               if (res == null) { 
+               if (res == null) {  
                   PushNotification.localNotification({
                      channelId: "1", 
                      //color: "red", // (optional) default: system default

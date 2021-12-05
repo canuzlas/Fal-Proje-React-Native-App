@@ -40,7 +40,7 @@ class ProfileView extends React.Component {
    }
 
    goToLoginPage() {
-      this.props.navigation.navigate('Login', { alertInfo: null })
+      this.props.navigation.navigate('Login', { alertInfo: "thanLogin" })
    }
    signOutGoogle = async () => {
       await GoogleSignin.configure({
