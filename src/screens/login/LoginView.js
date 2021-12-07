@@ -49,7 +49,10 @@ class LoginView extends React.Component {
          ToastAndroid.show("Profil sayfasına girmek için giriş yap.!", ToastAndroid.LONG)
       } else if (this.props.alertInfo === 'thanKahveFali') {
          //Alert.alert('Bilgilendirme', 'Kahve falı göndermek için giriş yap.!', [{ text: 'tamam' }])
-         ToastAndroid.show("Kahve falı göndermek için giriş yap.!", ToastAndroid.LONG)
+         ToastAndroid.show("Kahve falı için giriş yap.!", ToastAndroid.LONG)
+      } else if (this.props.alertInfo === 'thanTarotFali') {
+         //Alert.alert('Bilgilendirme', 'Kahve falı göndermek için giriş yap.!', [{ text: 'tamam' }])
+         ToastAndroid.show("Tarot falı için giriş yap.!", ToastAndroid.LONG)
       } else {
          return null
       }

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { View, StyleSheet, Image } from 'react-native'
 
-export default ()=>{
+export default () => {
    return (
       <View style={styles.container}>
          <View style={styles.header}>
@@ -13,7 +13,7 @@ export default ()=>{
 
 const styles = StyleSheet.create({
    container: { backgroundColor: 'black', width: '100%', height: '100%' },
-   header: { justifyContent: 'center' },
-   headerLogo: { alignSelf: 'center' }
+   header: { justifyContent: 'center',flexDirection:'row'},
+   headerLogo: {alignSelf: 'center' }
 })
 

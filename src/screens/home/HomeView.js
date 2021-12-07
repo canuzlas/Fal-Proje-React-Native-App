@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { SafeAreaView, View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, RefreshControl, TextInput, Button, ImageBackground,ToastAndroid } from 'react-native';
+import { SafeAreaView, View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, RefreshControl, TextInput, Button, ImageBackground, ToastAndroid } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import PushNotification from 'react-native-push-notification';
+import Star from 'react-native-vector-icons/AntDesign'
+import Moon from 'react-native-vector-icons/FontAwesome'
 
 class HomeView extends React.Component {
    constructor(props) {
@@ -10,18 +12,29 @@ class HomeView extends React.Component {
       this.state = {
       }
    }
-   checkLoginForKahveFali = async () => {
-      try {
-         const res = await AsyncStorage.getItem('loginSession')
-         if (res == null) {
-            this.props.navigation.navigate('Login', { alertInfo: 'thanKahveFali' })
-         }
-      } catch (error) {
+   checkLoginForKahveFali = async (route) => {
+      let res;
+      switch (route) {
+         case "kahve":
+            res = await AsyncStorage.getItem('loginSession')
+            if (res == null) {
+               this.props.navigation.navigate('Login', { alertInfo: 'thanKahveFali' })
+            }
+            break;
 
+         case "tarot":
+            res = await AsyncStorage.getItem('loginSession')
+            if (res == null) {
+               this.props.navigation.navigate('Login', { alertInfo: 'thanTarotFali' })
+            }
+            break;
       }
    }
    componentDidMount = async () => {
-      ToastAndroid.show("hoşgeldin",ToastAndroid.LONG)
+
+      const User = JSON.parse(await AsyncStorage.getItem('User'))
+      User ? ToastAndroid.show("Hoşgeldin " + User.name, ToastAndroid.LONG) : ToastAndroid.show("Hoşgeldin", ToastAndroid.LONG)
+
       PushNotification.configure({
          // (optional) Called when Token is generated (iOS and Android)
          onRegister: function (token) {
@@ -34,11 +47,11 @@ class HomeView extends React.Component {
                channelId: "1", // (required)
                channelName: "Falhub", // (required)
             });
-            try { 
+            try {
                const res = await AsyncStorage.getItem('loginSession')
-               if (res == null) {  
+               if (res == null) {
                   PushNotification.localNotification({
-                     channelId: "1", 
+                     channelId: "1",
                      //color: "red", // (optional) default: system default
                      vibrate: true, // (optional) default: true
                      title: notification.title,
@@ -46,7 +59,7 @@ class HomeView extends React.Component {
                   });
                }
             } catch (error) {
-               console.log(error) 
+               console.log(error)
             }
 
             // process the notification here
@@ -81,18 +94,40 @@ class HomeView extends React.Component {
    render() {
       return (
          <View style={styles.container}>
-            <View style={styles.content}>
-               <ImageBackground source={require('../../assets/homeview/homeviewfalbg.png')} resizeMode='contain' style={styles.contentImageBg} imageStyle={{ opacity: 0.2 }}>
-                  <Text style={styles.contentTitle}>Kahve Falına Baktır</Text>
-                  <Text style={styles.contentTitleUnder}>Geleceğe dair ufakta olsa bilgiler öğrenmek istiyorsan, ücretsiz şekilde falına baktır.</Text>
-                  <TouchableOpacity onPress={this.checkLoginForKahveFali} style={styles.contentButton}><Text style={styles.contentButtonText}>Falını gönder</Text></TouchableOpacity>
-               </ImageBackground>
+
+            <Text style={styles.titleFirst}>Falına Baktır</Text>
+            <View style={styles.kahveFaliView}>
+               <View style={{ width: '45%', height: 180, marginRight: 20 }}>
+                  <TouchableOpacity onPress={() => this.checkLoginForKahveFali("kahve")}>
+                     <ImageBackground style={styles.kahveFaliViewBgImage} imageStyle={{ opacity: 0.6 }} resizeMode={'stretch'} resizeMethod={'auto'} source={require('../../assets/homeview/fal.jpg')}>
+                        <Text style={styles.kahveFaliTitle}>Kahve Falı</Text>
+                     </ImageBackground>
+                  </TouchableOpacity>
+               </View>
+
+               <View style={{ width: '45%', height: 180 }}>
+                  <TouchableOpacity onPress={() => this.checkLoginForKahveFali("tarot")}>
+                     <ImageBackground style={styles.kahveFaliViewBgImage} imageStyle={{ opacity: 0.6 }} resizeMode={'stretch'} resizeMethod={'auto'} source={require('../../assets/homeview/tarot.jpeg')}>
+                        <Text style={styles.kahveFaliTitle}>Tarot Falı</Text>
+                     </ImageBackground>
+                  </TouchableOpacity>
+               </View>
             </View>
-            <View style={styles.content2}>
-               <ImageBackground source={require('../../assets/homeview/burclar.png')} resizeMode='stretch' style={styles.content2ImageBg} imageStyle={{ opacity: 0.5 }}>
-                  <TouchableOpacity onPress={() => this.props.navigation.navigate('Astroloji')}><Text style={styles.content2Title}>Günlük Burç Yorumu İçin Tıkla</Text></TouchableOpacity>
-               </ImageBackground>
+
+            <Text style={styles.titleSecond}>Günlük Burç Yorumu</Text>
+            <View style={styles.astrologyView}>
+               <TouchableOpacity onPress={() => this.props.navigation.navigate('Astroloji')}>
+                  <ImageBackground style={styles.astrologyViewBgImage} imageStyle={{ opacity: 0.3 }} resizeMode={'stretch'} resizeMethod={'auto'} source={require('../../assets/homeview/astrology.jpg')}>
+                     <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'center' }}>
+                        <Moon style={styles.astrologyIcon} name={'moon-o'} size={50} color={'white'} />
+                        <Star style={styles.astrologyIcon} name={'staro'} size={50} color={'white'} />
+                     </View>
+                     <Text style={styles.astrologyDesc}>"Günlük burç yorumun hergün burada"</Text>
+                     <Text style={styles.astrologyTitle}>Astroloji</Text>
+                  </ImageBackground>
+               </TouchableOpacity>
             </View>
+
          </View>
       )
    }
@@ -103,7 +138,7 @@ export default HomeViewFnc = () => {
    return (
       <SafeAreaView>
          <ScrollView style={styles.container}>
-            <HomeView navigation={navigation} ></HomeView>
+            <HomeView navigation={navigation}></HomeView>
          </ScrollView>
       </SafeAreaView>
    )
@@ -112,13 +147,20 @@ export default HomeViewFnc = () => {
 
 const styles = StyleSheet.create({
    container: { backgroundColor: 'black', width: '100%', height: '100%' },
-   content: { justifyContent: 'center', width: '100%', height: 200, marginTop: 30 },
-   contentImageBg: { width: '100%', height: '100%' },
-   contentTitle: { fontSize: 25, color: '#ffa31a', marginTop: 20, marginLeft: 20, fontWeight: '700' },
-   contentTitleUnder: { fontSize: 17, color: 'white', marginTop: 20, marginLeft: 20, fontWeight: '700' },
-   contentButton: { borderRadius: 2, width: '50%', padding: 10, backgroundColor: '#ffa31a', justifyContent: 'center', marginTop: 20, alignSelf: 'center' },
-   contentButtonText: {color:'black', fontSize: 15, fontWeight: '700', textAlign: 'center' },
-   content2: { justifyContent: 'center', width: '100%', height: 200, marginTop: 40 },
-   content2ImageBg: { width: '100%', height: '100%', justifyContent: 'center' },
-   content2Title: { fontSize: 25, color: 'white', alignSelf: 'center', marginTop: 20, marginLeft: 20, fontWeight: '700', }
+
+   //titles
+   titleFirst: { fontSize: 20, fontWeight: '700', color: '#ffa31a', marginLeft: 20, marginTop: 15 },
+   titleSecond: { fontSize: 20, fontWeight: '700', color: '#ffa31a', marginLeft: 20, marginTop: 15 },
+
+   //coffe
+   kahveFaliView: { width: '90%', height: 180, alignSelf: 'center', justifyContent: 'center', marginTop: 20, backgroundColor: 'black', borderRadius: 20, flexDirection: 'row' },
+   kahveFaliViewBgImage: { width: '100%', height: '100%' },
+   kahveFaliTitle: { color: 'white', alignSelf: 'center', position: 'absolute', bottom: 0, fontSize: 20, fontWeight: '900' },
+
+   //astrology
+   astrologyView: { width: '90%', height: 200, alignSelf: 'center', marginTop: 20, backgroundColor: 'black', borderRadius: 20 },
+   astrologyViewBgImage: { width: '100%', height: '100%' },
+   astrologyIcon: { alignSelf: 'center', top: 5 },
+   astrologyTitle: { color: 'white', alignSelf: 'center', position: 'absolute', bottom: 0, fontSize: 30, fontWeight: '900' },
+   astrologyDesc: { color: 'white', alignSelf: 'center', marginTop: 30, fontSize: 20 }
 })
