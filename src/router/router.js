@@ -13,6 +13,7 @@ import AppAraScreen from '../components/AppAraScreen';
 import ProfileView from '../screens/profil/ProfileView';
 import RegisterView from '../screens/register/RegisterView';
 import AstrologyView from '../screens/astrology/AstrologyView'
+import CoffeeFal from '../screens/coffeeFal/CoffeeFal';
 
 /* components imports */
 import HomeHeader from '../components/HomeHeader';
@@ -53,12 +54,13 @@ class Router extends React.Component {
   render() {
     return (
       <NavigationContainer >
-        <Stack.Navigator initialRouteName='Tab' screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName='AppStartScreen' screenOptions={{ headerShown: false }}>
           <Stack.Screen component={TabNavigator} name={'Tab'} />
           <Stack.Screen component={AppStartScreen} name={'AppStartScreen'} />
           <Stack.Screen component={AppAraScreen} name={'AppAraScreen'} />
           <Stack.Screen component={LoginView} name={'Login'} />
           <Stack.Screen component={RegisterView} name={'Register'}/>
+          <Stack.Screen component={CoffeeFal} name={'CoffeFal'}/>
         </Stack.Navigator>
       </NavigationContainer>
     )

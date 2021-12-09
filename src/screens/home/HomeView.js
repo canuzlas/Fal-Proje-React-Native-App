@@ -16,14 +16,16 @@ class HomeView extends React.Component {
       let res;
       switch (route) {
          case "kahve":
-            res = await AsyncStorage.getItem('loginSession')
+            res = await AsyncStorage.getItem('User')
             if (res == null) {
                this.props.navigation.navigate('Login', { alertInfo: 'thanKahveFali' })
+            }else{
+               this.props.navigation.navigate('CoffeFal')
             }
             break;
 
          case "tarot":
-            res = await AsyncStorage.getItem('loginSession')
+            res = await AsyncStorage.getItem('User')
             if (res == null) {
                this.props.navigation.navigate('Login', { alertInfo: 'thanTarotFali' })
             }
@@ -31,7 +33,7 @@ class HomeView extends React.Component {
       }
    }
    componentDidMount = async () => {
-
+      await AsyncStorage.setItem('User',JSON.stringify({name:'Can'}))
       const User = JSON.parse(await AsyncStorage.getItem('User'))
       User ? ToastAndroid.show("Hoşgeldin " + User.name, ToastAndroid.LONG) : ToastAndroid.show("Hoşgeldin", ToastAndroid.LONG)
 
