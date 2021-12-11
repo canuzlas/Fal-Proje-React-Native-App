@@ -70,18 +70,19 @@ export default ({ navigation }) => {
                   const result = await ImagePicker.launchImageLibrary();
                   if (result.didCancel) {
                      ToastAndroid.show("Fotoğraf seçilmedi", ToastAndroid.SHORT)
+                     setModal(false)
+                  } else {
+                     setModal(false)
+                     setPhoto(oldArray => [...oldArray, String(result.assets[0].uri)])
+                     setFormVisible(true)
                   }
-                  setModal(false)
-                  setPhoto(oldArray => [...oldArray, String(result.assets[0].uri)])
-                  setFormVisible(true)
-
                } else {
                   setModal(false)
                   ToastAndroid.show("Galeriye İzin Verilmedi", ToastAndroid.LONG)
                }
             } catch (error) {
                setModal(false)
-               ToastAndroid.show("Galeriye İzin Verilmedi", ToastAndroid.LONG)
+               ToastAndroid.show("Galeride Hata.!", ToastAndroid.LONG)
             }
             break;
          case "camera":
@@ -93,17 +94,19 @@ export default ({ navigation }) => {
                   const result = await ImagePicker.launchCamera();
                   if (result.didCancel) {
                      ToastAndroid.show("Kamera Kapatıldı", ToastAndroid.SHORT)
+                     setModal(false)
+                  } else {
+                     setModal(false)
+                     setPhoto(oldArray => [...oldArray, String(result.assets[0].uri)])
+                     setFormVisible(true)
                   }
-                  setModal(false)
-                  setPhoto(oldArray => [...oldArray, String(result.assets[0].uri)])
-                  setFormVisible(true)
                } else {
                   setModal(false)
                   ToastAndroid.show("Kameraya İzin Verilmedi", ToastAndroid.LONG)
                }
             } catch (err) {
                setModal(false)
-               ToastAndroid.show("Hata.!", ToastAndroid.SHORT)
+               ToastAndroid.show("Kamerada Hata.!", ToastAndroid.SHORT)
             }
             break;
       }
