@@ -5,6 +5,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/core';
 import { GoogleSignin, GoogleSigninButton, statusCodes } from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Axios from 'axios'
+import DeviceInfo from 'react-native-device-info'
 
 class LoginView extends React.Component {
    constructor(props) {
@@ -23,13 +25,31 @@ class LoginView extends React.Component {
       this.setState({ refresh: true })
       this.props.netInfo.isConnected ? this.setState({ userIsConnected: true, refresh: false }) : this.setState({ userIsConnected: false, refresh: false })
    }
-   login = () => {
+   login = async () => {
       if (this.props.netInfo.isConnected) {
          if (this.state.email == null) {
             this.setState({ userNameIsEmpty: true })
          }
          if (this.state.password == null) {
             this.setState({ passwordIsEmpty: true })
+         }
+         const result = await Axios.default.post('http://10.0.2.2:3000/api/login?method=email', { mail: this.state.email, password: this.state.password, token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId() })
+         console.log(result.data)
+         if (result.data.success == "error") {
+            return (
+               ToastAndroid.show("Hata.!", ToastAndroid.LONG)
+            )
+         } else {
+            if (result.data.success) {
+               ToastAndroid.show("Giriş Başarılı", ToastAndroid.LONG)
+               await AsyncStorage.setItem('User', JSON.stringify(result.data.data[0]))
+               await AsyncStorage.setItem('UserLoggedAt', 'email/phone')
+               this.setState({ sending: false })
+               this.props.navigation.navigate('Tab')
+            } else {
+               ToastAndroid.show("Kullanıcı Adı veya Şifre Yanlış", ToastAndroid.LONG)
+               this.setState({ sending: false })
+            }
          }
          this.setState({ userIsConnected: true, refresh: false })
       } else {
@@ -84,49 +104,6 @@ class LoginView extends React.Component {
       }
    }
 
-   // signOut = async () => {
-   //    await GoogleSignin.signOut();
-   // }
-   facebookLogin = async () => {
-      /*  try {
-
-
-         const result = await LoginManager.logInWithPermissions(["public_profile"])
-         alert(result)
-         if (!result.isCancelled) {
-
-            const currentProfile = await Profile.getCurrentProfile()
-            alert(currentProfile)
-            await AsyncStorage.setItem("User", JSON.stringify(currentProfile))
-            await AsyncStorage.setItem("UserLoggedAt", "facebook")
-            this.props.navigation.navigate('Tab')
-         }
-
-      } catch (error) {
-         alert(error)
-      }*/
-
-      await Settings.setAppID('4770259456354337');
-      await Settings.initializeSDK()
-      LoginManager.logInWithPermissions(["public_profile"]).then(
-         async (result) => {
-            if (result.isCancelled) {
-               console.log("Login cancelled");
-            } else {
-               const currentProfile = await Profile.getCurrentProfile()
-               await AsyncStorage.setItem("User", JSON.stringify(currentProfile))
-               await AsyncStorage.setItem("UserLoggedAt", "facebook")
-               console.log(currentProfile)
-               this.props.navigation.navigate('Tab')
-
-            }
-         },
-         function (error) {
-            console.log("Login fail with error: " + error);
-         }
-      );
-
-   }
    render() {
       return (
          (this.state.userIsConnected) ?
@@ -140,10 +117,10 @@ class LoginView extends React.Component {
                </View>
                {/* Form */}
                <View style={styles.loginForm}>
-                  <TextInput onChangeText={(text) => this.setState({ email: text })} placeholderTextColor={this.state.userNameIsEmpty ? 'red' : 'black'} style={styles.textInput} placeholder={this.state.userNameIsEmpty ? '* Bu Alan Boş Bırakılamaz' : 'Email yada Kullanıcı Adı'}></TextInput>
+                  <TextInput onChangeText={(text) => this.setState({ email: text })} placeholderTextColor={this.state.userNameIsEmpty ? 'red' : 'white'} style={styles.textInput} placeholder={this.state.userNameIsEmpty ? '* Bu Alan Boş Bırakılamaz' : 'Email yada Kullanıcı Adı'}></TextInput>
                   <View>
-                     <TextInput onChangeText={(text) => this.setState({ password: text })} placeholderTextColor={this.state.userNameIsEmpty ? 'red' : 'black'} secureTextEntry={this.state.securityText} style={styles.textInput} placeholder={this.state.passwordIsEmpty ? '* Bu Alan Boş Bırakılamaz' : 'Şifre'}></TextInput>
-                     <TouchableOpacity onPress={() => this.setState({ securityText: !this.state.securityText })} style={{ position: 'absolute', right: 8, marginTop: 17 }}><Icon name={this.state.securityText ? 'eye-off-outline' : 'eye-outline'} size={30} color={'black'} /></TouchableOpacity>
+                     <TextInput onChangeText={(text) => this.setState({ password: text })} placeholderTextColor={this.state.userNameIsEmpty ? 'red' : 'white'} secureTextEntry={this.state.securityText} style={styles.textInput} placeholder={this.state.passwordIsEmpty ? '* Bu Alan Boş Bırakılamaz' : 'Şifre'}></TextInput>
+                     <TouchableOpacity onPress={() => this.setState({ securityText: !this.state.securityText })} style={{ position: 'absolute', right: 8, marginTop: 17 }}><Icon name={this.state.securityText ? 'eye-off-outline' : 'eye-outline'} size={30} color={'white'} /></TouchableOpacity>
                   </View>
                   <TouchableOpacity onPress={this.login} style={styles.button}><Text style={styles.buttonText}>Giriş Yap</Text></TouchableOpacity>
                </View>
@@ -155,10 +132,6 @@ class LoginView extends React.Component {
                   onPress={this._signIn}
                   disabled={this.state.isSigninInProgress}
                />
-               {/* FACEBOOK BELASI */}
-               <TouchableOpacity style={{ alignSelf: 'center', justifyContent: 'center', marginTop: 20 }} onPress={this.facebookLogin}><Text style={{ color: 'white' }}>FaceBook Giriş</Text></TouchableOpacity>
-
-
                {/* footer */}
                <View style={styles.line}></View>
                <View style={styles.footer}>
@@ -207,7 +180,7 @@ const styles = StyleSheet.create({
    loginForm: { alignItems: 'center', marginTop: 15 },
    textInput:
    {
-      width: 300, height: 50, color: 'black', backgroundColor: 'white', fontWeight: '600', marginTop: 10, fontSize: 20, borderRadius: 5, paddingLeft: 20
+      width: 300, height: 50, color: 'white', backgroundColor: 'black', fontWeight: '600', marginTop: 10, fontSize: 20, borderRadius: 5, paddingLeft: 20, borderColor: 'white', borderWidth: 1
    },
    button: { width: 220, height: 50, backgroundColor: '#ffa31a', justifyContent: 'center', marginTop: 15, borderRadius: 30 },
    buttonText: { alignSelf: 'center', color: 'white', fontSize: 20, fontWeight: '600' },

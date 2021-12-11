@@ -17,7 +17,6 @@ class ProfileView extends React.Component {
       }
    }
    componentDidMount = async () => {
-      console.log('did')
       this.setState({ loop: this.state.loop++ })
    }
    componentDidUpdate = async (prevProps, prevState) => {
@@ -51,15 +50,6 @@ class ProfileView extends React.Component {
       this.props.navigation.navigate('Tab')
       this.setState({ user: null, loop: this.state.loop++ })
    }
-   signOutFaceBook = async () => {
-      await Settings.setAppID('4770259456354337');
-      await Settings.initializeSDK()
-      await LoginManager.logOut()
-      await AsyncStorage.setItem("User", "")
-      await AsyncStorage.setItem("UserLoggedAt", "")
-      this.props.navigation.navigate('Tab')
-      this.setState({ user: null, loop: this.state.loop++ })
-   }
    signOutEmailPhone = async () => {
       await AsyncStorage.setItem("User", "")
       await AsyncStorage.setItem("UserLoggedAt", "")
@@ -82,19 +72,11 @@ class ProfileView extends React.Component {
                      <TouchableOpacity onPress={this.signOutGoogle} style={{ marginTop: 50, alignSelf: 'center' }}><Text style={{ color: 'white' }}>Çıkış Yap</Text></TouchableOpacity>
                   </View>
                   :
-                  this.state.UserLoggedAt === 'email/phone' ?
-                     <View>
-                        <Text style={{ color: 'white' }}>{this.state.user}</Text>
-                        <Text style={{ color: 'white' }}>Giriş Yöntemi : {this.state.UserLoggedAt}</Text>
-                        <TouchableOpacity onPress={this.signOutEmailPhone} style={{ marginTop: 50, alignSelf: 'center' }}><Text style={{ color: 'white' }}>Çıkış Yap</Text></TouchableOpacity>
-                     </View>
-                     :
-                     <View>
-                        <Text style={{ color: 'white' }}>{this.state.user}</Text>
-                        <Text style={{ color: 'white' }}>Giriş Yöntemi : {this.state.UserLoggedAt}</Text>
-                        <TouchableOpacity onPress={this.signOutFaceBook} style={{ marginTop: 50, alignSelf: 'center' }}><Text style={{ color: 'white' }}>Çıkış Yap</Text></TouchableOpacity>
-                     </View>
-
+                  <View>
+                     <Text style={{ color: 'white' }}>{this.state.user}</Text>
+                     <Text style={{ color: 'white' }}>Giriş Yöntemi : {this.state.UserLoggedAt}</Text>
+                     <TouchableOpacity onPress={this.signOutEmailPhone} style={{ marginTop: 50, alignSelf: 'center' }}><Text style={{ color: 'white' }}>Çıkış Yap</Text></TouchableOpacity>
+                  </View>
                :
                <View style={styles.containerNotLogged}>
                   <Text style={styles.notLoggedText}>Kullanıcı Giriş Yapmadı.!</Text>

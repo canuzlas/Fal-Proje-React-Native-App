@@ -1,14 +1,19 @@
 import * as React from 'react';
-import { View, Image, StyleSheet,Text } from 'react-native';
+import { View, Image, StyleSheet, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as axios from 'axios';
+import DeviceInfo from 'react-native-device-info';
 
 export default class AppStartScreen extends React.Component {
    constructor(props) {
       super(props)
    }
-   componentDidMount = async()=> {
-      const koc = await axios.default.get("https://burc-yorumlari.herokuapp.com/get/koc")
+   componentDidMount = async () => {
+      const result = await axios.default.post("http://10.0.2.2:3000/api", { device: await DeviceInfo.getAndroidId() })
+      await AsyncStorage.setItem("token", String(result.data.token))
+      setTimeout(() => { this.props.navigation.navigate('Login') }, 1) 
+      /* 
+      const koc = await axios.default.get("https://burc-yorumlari.herokuapp.com/get/koc") 
       const akrep = await axios.default.get("https://burc-yorumlari.herokuapp.com/get/akrep")
       const aslan = await axios.default.get("https://burc-yorumlari.herokuapp.com/get/aslan")
       const balik = await axios.default.get("https://burc-yorumlari.herokuapp.com/get/balik")
@@ -32,8 +37,7 @@ export default class AppStartScreen extends React.Component {
       AsyncStorage.setItem("terazi", JSON.stringify(terazi.data[0]))
       AsyncStorage.setItem("yay", JSON.stringify(yay.data[0]))
       AsyncStorage.setItem("yengec", JSON.stringify(yengec.data[0]))
-
-      setTimeout(() => { this.props.navigation.navigate('AppAraScreen') }, 1)
+      */
    }
    render() {
       return (
@@ -46,7 +50,7 @@ export default class AppStartScreen extends React.Component {
             </View>
          </View>
       )
-   } 
+   }
 }
 const styles = StyleSheet.create({
    background: { justifyContent: 'center', backgroundColor: 'black', width: '100%', height: '100%' },

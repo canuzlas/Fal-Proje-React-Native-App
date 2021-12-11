@@ -1,6 +1,8 @@
 import * as React from 'react'
 import { View, StyleSheet, Image, Text, TouchableOpacity, TextInput, ToastAndroid, ScrollView, Modal } from 'react-native'
 import { useNavigation } from '@react-navigation/core'
+import * as Axios from 'axios'
+import DeviceInfo from 'react-native-device-info';
 import Icon from 'react-native-vector-icons/Ionicons';
 import validator from 'validator'
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -8,6 +10,7 @@ import CodeInput from 'react-native-confirmation-code-input';
 import NextIcon from 'react-native-vector-icons/MaterialIcons'
 import EyeIcon from 'react-native-vector-icons/Feather'
 import Sözlesme from '../../components/Sözlesme';
+import { farsiLocales } from 'validator/lib/alpha';
 
 class RegisterView extends React.Component {
    constructor(props) {
@@ -24,7 +27,7 @@ class RegisterView extends React.Component {
          name: null,
          mail: null,
          pass: null
-      } 
+      }
    }
    /* 
     componentDidMount = async () => {
@@ -72,14 +75,19 @@ class RegisterView extends React.Component {
          }
       }
    }
-   checkSecondStep = () => {
+   checkSecondStep = async () => {
       if (this.state.mail == null) {
          ToastAndroid.show("Mail boş bırakılamaz", ToastAndroid.LONG)
       } else {
          if (!validator.isEmail(this.state.mail)) {
             ToastAndroid.show("Lütfen doğru bir mail adresi girin", ToastAndroid.LONG)
          } else {
-            this.setState({ secondStep: false, thirdStep: true })
+            const result = await Axios.default.post('http://10.0.2.2:3000/api/checkEmail', { mail: this.state.mail })
+            if (result.data.success) {
+               this.setState({ secondStep: false, thirdStep: true })
+            } else {
+               ToastAndroid.show("Bu mail adresi kullanımda", ToastAndroid.LONG)
+            }
          }
       }
    }
@@ -100,11 +108,19 @@ class RegisterView extends React.Component {
       this.setState({ sözlesmeModal: false })
    }
 
-   signUp = () => {
+   signUp = async () => {
       this.setState({ sending: true })
-      setTimeout(() => {
+      const result = await Axios.default.post('http://10.0.2.2:3000/api/register', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), name: this.state.name, mail: this.state.mail, password: this.state.pass })
+      if (result.data.success) {
+         ToastAndroid.show("Kayıt Olma Başarılı", ToastAndroid.LONG)
+         await AsyncStorage.setItem('User', JSON.stringify(result.data.data))
+         await AsyncStorage.setItem('UserLoggedAt', 'email/phone')
          this.setState({ sending: false })
-      }, 2000)
+         this.props.navigation.navigate('Tab')
+      } else {
+         ToastAndroid.show("Hata", ToastAndroid.LONG)
+         this.setState({ sending: false })
+      }
    }
 
    render() {

@@ -19,7 +19,7 @@ class HomeView extends React.Component {
             res = await AsyncStorage.getItem('User')
             if (res == null) {
                this.props.navigation.navigate('Login', { alertInfo: 'thanKahveFali' })
-            }else{
+            } else {
                this.props.navigation.navigate('CoffeFal')
             }
             break;
@@ -33,14 +33,14 @@ class HomeView extends React.Component {
       }
    }
    componentDidMount = async () => {
-      await AsyncStorage.setItem('User',JSON.stringify({name:'Can'}))
       const User = JSON.parse(await AsyncStorage.getItem('User'))
+      console.log(User)
       User ? ToastAndroid.show("Hoşgeldin " + User.name, ToastAndroid.LONG) : ToastAndroid.show("Hoşgeldin", ToastAndroid.LONG)
 
       PushNotification.configure({
          // (optional) Called when Token is generated (iOS and Android)
          onRegister: function (token) {
-            console.log('TOKEN:', token)
+            return null
          },
          // (required) Called when a remote or local notification is opened or received
          onNotification: async function (notification) {

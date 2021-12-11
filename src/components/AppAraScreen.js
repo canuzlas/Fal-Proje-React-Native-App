@@ -3,7 +3,6 @@ import * as React from 'react'
 
 export default AppAraScreen = ({ navigation }) => {
    return (
-
       <View style={style.container}>
          <ImageBackground source={require('../assets/arascreengif/gif.gif')} resizeMode="stretch" style={style.bgimage} imageStyle={{ opacity: 0.3 }}>
             <Text style={style.textHeader}>Geleceğini görmeye hazır mısın?</Text>
