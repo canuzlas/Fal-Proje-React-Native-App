@@ -31,6 +31,7 @@
     "react-native-image-picker": "^4.4.2",
     "react-native-make": "^1.0.1",
     "react-native-push-notification": "^8.1.1",
+    "react-native-really-awesome-button": "^1.6.0",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-scl-alert": "^1.2.1",
     "react-native-screens": "^3.6.0",

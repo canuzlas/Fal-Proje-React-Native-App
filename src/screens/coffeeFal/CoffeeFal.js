@@ -203,7 +203,6 @@ export default ({ navigation }) => {
                   <View style={styles.burclarView}>
                      <TouchableOpacity onPress={() => setOpen(true)} style={{ borderColor: 'white', borderWidth: 1, height: 40, width: 150, justifyContent: 'center', paddingHorizontal: 4 }}><Text style={{ color: 'white', alignSelf: 'center' }}>{String(date.getDate() + '/' + parseInt(date.getMonth() + 1) + '/' + date.getFullYear())}</Text></TouchableOpacity>
                      <DatePicker
-
                         title='Doğum tarihinizi seçin'
                         confirmText='onayla'
                         cancelText='iptal'

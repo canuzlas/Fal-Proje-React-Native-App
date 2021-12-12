@@ -33,11 +33,11 @@ class LoginView extends React.Component {
          if (this.state.password == null) {
             this.setState({ passwordIsEmpty: true })
          }
+         
          const result = await Axios.default.post('http://10.0.2.2:3000/api/login?method=email', { mail: this.state.email, password: this.state.password, token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId() })
+         console.log(result.data)
          if (result.data.success == "error") {
-            return (
-               ToastAndroid.show("Hata.!", ToastAndroid.LONG)
-            )
+               return ToastAndroid.show("Hata.!", ToastAndroid.LONG)
          } else {
             if (result.data.success) {
                ToastAndroid.show("Giriş Başarılı", ToastAndroid.LONG)

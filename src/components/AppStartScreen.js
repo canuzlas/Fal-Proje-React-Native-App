@@ -11,7 +11,14 @@ export default class AppStartScreen extends React.Component {
    componentDidMount = async () => {
       const result = await axios.default.post("http://10.0.2.2:3000/api", { device: await DeviceInfo.getAndroidId() })
       await AsyncStorage.setItem("token", String(result.data.token))
-      setTimeout(() => { this.props.navigation.navigate('Login') }, 1) 
+      const User = await AsyncStorage.getItem('User')
+
+      if (User === null) {
+         setTimeout(() => { this.props.navigation.navigate('AppAraScreen') }, 1)
+      } else {
+         setTimeout(() => { this.props.navigation.navigate('Tab') }, 1)
+      }
+
       /* 
       const koc = await axios.default.get("https://burc-yorumlari.herokuapp.com/get/koc") 
       const akrep = await axios.default.get("https://burc-yorumlari.herokuapp.com/get/akrep")

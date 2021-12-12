@@ -14,6 +14,8 @@ import ProfileView from '../screens/profil/ProfileView';
 import RegisterView from '../screens/register/RegisterView';
 import AstrologyView from '../screens/astrology/AstrologyView'
 import CoffeeFal from '../screens/coffeeFal/CoffeeFal';
+import EditProfile from '../screens/editProfile/EditProfile';
+import Settings from '../screens/settings/Settings';
 
 /* components imports */
 import HomeHeader from '../components/HomeHeader';
@@ -44,7 +46,7 @@ const TabNavigator = () => {
     }} initialRouteName='Home' >
       <Tab.Screen options={{ tabBarIcon: ({ color }) => <Icon name={'home'} color={color} size={30}></Icon>, tabBarLabel: 'Anasayfa', headerTitle: () => <HomeHeader></HomeHeader> }} component={HomeView} name='Home' />
       <Tab.Screen options={{ tabBarIcon: ({ color }) => <IconFontAwesome name={'moon-o'} color={color} size={30}></IconFontAwesome>, tabBarLabel: 'Astroloji' }} component={AstrologyView} name='Astroloji' />
-      <Tab.Screen options={{ tabBarIcon: ({ color }) => <IconFontAwesome name={'user-o'} color={color} size={30}></IconFontAwesome>, tabBarLabel: 'Profil' }} component={ProfileView} name='Profil' />
+      <Tab.Screen options={{ tabBarIcon: ({ color }) => <IconFontAwesome name={'user-o'} color={color} size={30}></IconFontAwesome>, tabBarLabel: 'Profil',headerShown:false }} component={ProfileView} name='Profil' />
     </Tab.Navigator>
   )
 
@@ -61,6 +63,8 @@ class Router extends React.Component {
           <Stack.Screen component={LoginView} name={'Login'} />
           <Stack.Screen component={RegisterView} name={'Register'}/>
           <Stack.Screen component={CoffeeFal} name={'CoffeFal'}/>
+          <Stack.Screen component={EditProfile} name={'EditProfile'}/>
+          <Stack.Screen component={Settings} name={'Settings'}/>
         </Stack.Navigator>
       </NavigationContainer>
     )
