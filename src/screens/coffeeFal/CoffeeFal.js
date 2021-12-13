@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { SafeAreaView, Text, TouchableOpacity, StyleSheet, View, ToastAndroid, PermissionsAndroid, Modal, Image } from 'react-native';
 import * as ImagePicker from 'react-native-image-picker';
 import { Picker } from '@react-native-picker/picker'
+import * as Axios from 'axios'
+import DeviceInfo from 'react-native-device-info'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import DatePicker from 'react-native-date-picker'
 import Icon from 'react-native-vector-icons/Ionicons';
 import Photo from 'react-native-vector-icons/MaterialIcons';
@@ -41,6 +44,7 @@ const styles = StyleSheet.create({
 })
 
 export default ({ navigation }) => {
+   const [user, setUser] = useState({})
    const [modal, setModal] = useState(false)
    const [photos, setPhoto] = useState([])
    const [formVisible, setFormVisible] = useState(false)
@@ -52,7 +56,8 @@ export default ({ navigation }) => {
    const [sendingFal, setSendingFal] = useState(false)
 
 
-   useEffect(() => {
+   useEffect(async () => {
+      setUser(JSON.parse(await AsyncStorage.getItem('User')))
       ToastAndroid.show("Galerinden seç veya fotoğraf çek.!", ToastAndroid.LONG)
       return () => {
          console.log('willunmout')
@@ -73,7 +78,11 @@ export default ({ navigation }) => {
                      setModal(false)
                   } else {
                      setModal(false)
-                     setPhoto(oldArray => [...oldArray, String(result.assets[0].uri)])
+                     setPhoto(oldArray => [...oldArray, {
+                        uri: result.assets[0].uri,
+                        type: result.assets[0].type,
+                        name: result.assets[0].fileName,
+                     }])
                      setFormVisible(true)
                   }
                } else {
@@ -111,7 +120,6 @@ export default ({ navigation }) => {
             break;
       }
    }
-
    const checkModalIsUsable = () => {
       if (photos.length >= 3) {
          return ToastAndroid.show("Zaten Fotoğraf Seçtin", ToastAndroid.LONG)
@@ -119,18 +127,38 @@ export default ({ navigation }) => {
          return setModal(true)
       }
    }
-
    const deletePhotoFromPhotos = (index) => {
       photos.splice(index, 1)
       setPhoto(old => [...old])
       photos.length == 0 ? setFormVisible(false) : null
    }
-
-   const sendFal = () => {
+   const sendFal = async () => {
       setSendingFal(true)
-      setTimeout(() => {
+      const verify = await Axios.default.post('http://10.0.2.2:3000/api/coffeeFal?verify=true', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), u_id: user._id })
+      if (verify.data.success) {
+         const data = new FormData()
+         photos.forEach(photo => data.append('files', photo))
+         const photoResult = await Axios.default.post('http://10.0.2.2:3000/api/coffeeFal?savePhoto=true', data, {
+            headers: {
+               'accept': 'application/json',
+               'Content-Type': 'multipart/form-data',
+               'Content-Type': `multipart/form-data; boundary=${data._boundary}`
+            }
+         })
+         if (photoResult.data.success) {
+            setSendingFal(false)
+            setPhoto([])
+            setFormVisible(false)
+            ToastAndroid.show("Falınız en kısa sürede yorumlanacaktır, teşekkürler.. :)", ToastAndroid.LONG)
+            navigation.navigate('Fal')
+         } else {
+            setSendingFal(false)
+            ToastAndroid.show("Tekrar deneyin, teşekkürler.. :)", ToastAndroid.LONG)
+         }
+      } else {
          setSendingFal(false)
-      }, 2000)
+         ToastAndroid.show("Tekrar giriş yapmayı deneyin, teşekkürler.. :)", ToastAndroid.LONG)
+      }
    }
    return (
       sendingFal ?
@@ -147,13 +175,13 @@ export default ({ navigation }) => {
             <Text style={styles.coffeeFalImagesTitle}>Fincan fotoğraflarını yükle</Text>
             <View style={styles.coffeeFalImagesView}>
                <TouchableOpacity onPress={() => checkModalIsUsable()} style={styles.coffeeFalImageFirst}>
-                  {photos[0] ? <View><Image resizeMode={'stretch'} resizeMethod={'auto'} source={{ uri: photos[0] }} style={styles.photos} /><TouchableOpacity style={{ position: 'absolute', top: 5, right: 5 }} onPress={() => deletePhotoFromPhotos(0)}><DeleteIcon name={'delete'} color={'red'} size={30} /></TouchableOpacity></View> : <Photo style={styles.coffeeFalImageIcon} name={'add-a-photo'} color={'white'} size={60} />}
+                  {photos[0] ? <View><Image resizeMode={'stretch'} resizeMethod={'auto'} source={{ uri: photos[0].uri }} style={styles.photos} /><TouchableOpacity style={{ position: 'absolute', top: 5, right: 5 }} onPress={() => deletePhotoFromPhotos(0)}><DeleteIcon name={'delete'} color={'red'} size={30} /></TouchableOpacity></View> : <Photo style={styles.coffeeFalImageIcon} name={'add-a-photo'} color={'white'} size={60} />}
                </TouchableOpacity>
                <TouchableOpacity onPress={() => checkModalIsUsable()} style={styles.coffeeFalImageSecond}>
-                  {photos[1] ? <View><Image resizeMode={'stretch'} resizeMethod={'auto'} source={{ uri: photos[1] }} style={styles.photos} /><TouchableOpacity style={{ position: 'absolute', top: 5, right: 5 }} onPress={() => deletePhotoFromPhotos(1)}><DeleteIcon name={'delete'} color={'red'} size={30} /></TouchableOpacity></View> : <Photo style={styles.coffeeFalImageIcon} name={'add-a-photo'} color={'white'} size={60} />}
+                  {photos[1] ? <View><Image resizeMode={'stretch'} resizeMethod={'auto'} source={{ uri: photos[1].uri }} style={styles.photos} /><TouchableOpacity style={{ position: 'absolute', top: 5, right: 5 }} onPress={() => deletePhotoFromPhotos(1)}><DeleteIcon name={'delete'} color={'red'} size={30} /></TouchableOpacity></View> : <Photo style={styles.coffeeFalImageIcon} name={'add-a-photo'} color={'white'} size={60} />}
                </TouchableOpacity>
                <TouchableOpacity onPress={() => checkModalIsUsable()} style={styles.coffeeFalImageThird}>
-                  {photos[2] ? <View><Image resizeMode={'stretch'} resizeMethod={'auto'} source={{ uri: photos[2] }} style={styles.photos} /><TouchableOpacity style={{ position: 'absolute', top: 5, right: 5 }} onPress={() => deletePhotoFromPhotos(2)}><DeleteIcon name={'delete'} color={'red'} size={30} /></TouchableOpacity></View> : <Photo style={styles.coffeeFalImageIcon} name={'add-a-photo'} color={'white'} size={60} />}
+                  {photos[2] ? <View><Image resizeMode={'stretch'} resizeMethod={'auto'} source={{ uri: photos[2].uri }} style={styles.photos} /><TouchableOpacity style={{ position: 'absolute', top: 5, right: 5 }} onPress={() => deletePhotoFromPhotos(2)}><DeleteIcon name={'delete'} color={'red'} size={30} /></TouchableOpacity></View> : <Photo style={styles.coffeeFalImageIcon} name={'add-a-photo'} color={'white'} size={60} />}
                </TouchableOpacity>
             </View>
             <Text style={styles.coffeeFalImagesSubTitle}>*Yorumlamamız için fincan fotoğraflarını yüklemelisin.</Text>

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { View, StyleSheet, Image, Text, TouchableOpacity, SafeAreaView, ScrollView, RefreshControl } from 'react-native'
+import { View, StyleSheet, Image, Text, TouchableOpacity, SafeAreaView, ScrollView, RefreshControl, Linking } from 'react-native'
 import { useNavigation } from '@react-navigation/core'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { GoogleSignin } from '@react-native-google-signin/google-signin'
@@ -100,11 +100,13 @@ class ProfileView extends React.Component {
                            <Text style={styles.profileName}>{this.state.user.name}</Text>
                            <TouchableOpacity onPress={() => this.props.navigation.navigate('EditProfile')} style={styles.profilePencilIcon}><PencilIcon name='pencil-alt' size={20} color={'#ffa31a'} /></TouchableOpacity>
                         </View>
-                        <View style={styles.supportToDeveloper}>
-                           <DiamondIcon style={styles.supportIcon} name='diamond' color={'#ffa31a'} size={30} />
-                           <Text style={styles.supporText}>Geliştiriciyi destekle</Text>
-                           <SettingsIcon style={styles.supportRightIcon} name='arrowright' color={'white'} size={20} />
-                        </View>
+                        <TouchableOpacity onPress={()=>Linking.openURL('https://www.bynogame.com/tr/destekle/mcanuzlas')}>
+                           <View style={styles.supportToDeveloper}>
+                              <DiamondIcon style={styles.supportIcon} name='diamond' color={'#ffa31a'} size={30} />
+                              <Text style={styles.supporText}>Geliştiriciyi destekle</Text>
+                              <SettingsIcon style={styles.supportRightIcon} name='arrowright' color={'white'} size={20} />
+                           </View>
+                        </TouchableOpacity>
                         <View style={styles.istatistik}>
                            <Text style={styles.istatistikTitle}>Neler yaptım?</Text>
                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 15 }}>
