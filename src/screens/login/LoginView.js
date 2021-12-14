@@ -34,7 +34,7 @@ class LoginView extends React.Component {
             this.setState({ passwordIsEmpty: true })
          }
          
-         const result = await Axios.default.post('http://10.0.2.2:3000/api/login?method=email', { mail: this.state.email, password: this.state.password, token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId() })
+         const result = await Axios.default.post('https://fal-hub.herokuapp.com/api/login?method=email', { mail: this.state.email, password: this.state.password, token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId() })
          console.log(result.data)
          if (result.data.success == "error") {
                return ToastAndroid.show("Hata.!", ToastAndroid.LONG)

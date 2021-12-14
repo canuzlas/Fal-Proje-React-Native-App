@@ -9,7 +9,7 @@ export default class AppStartScreen extends React.Component {
       super(props)
    }
    componentDidMount = async () => {
-      const result = await axios.default.post("http://10.0.2.2:3000/api", { device: await DeviceInfo.getAndroidId() })
+      const result = await axios.default.post("https://fal-hub.herokuapp.com/api", { device: await DeviceInfo.getAndroidId() })
       await AsyncStorage.setItem("token", String(result.data.token))
       const User = await AsyncStorage.getItem('User')
       if (User === null) {

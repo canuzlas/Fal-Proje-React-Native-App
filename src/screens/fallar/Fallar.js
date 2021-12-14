@@ -1,66 +1,171 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, ToastAndroid, StyleSheet, FlatList, RefreshControl, ScrollView } from 'react-native'
+import { View, Text, ToastAndroid, StyleSheet, RefreshControl, ScrollView, Image, Modal, TouchableOpacity } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Axios from 'axios'
 import DeviceInfo from 'react-native-device-info'
+import CloseIcon from 'react-native-vector-icons/AntDesign';
 
 const styles = StyleSheet.create({
+   //pageloading styles
+   pageLoadingContainer: { width: '100%', height: '100%', justifyContent: 'center', backgroundColor: 'black' },
+   pageLoadingImage: { width: 150, height: 150, alignSelf: 'center' },
+   pageLoadingText: { color: 'white', fontSize: 20, fontWeight: '600', alignSelf: 'center' },
+
    container: { width: '100%', height: '100%', backgroundColor: 'black', padding: 20 },
    pageTitle: { color: 'white', alignSelf: 'center' },
 
-   FlatList: { alignSelf: 'flex-start', padding: 10, marginHorizontal: 5, marginTop: 15, width: '100%' },
-   renderItemView: { alignSelf: 'center', borderBottomWidth: 1, borderBottomColor: 'white', padding: 20, width: '100%', marginVertical: 2 },
+   renderItemView: { alignSelf: 'center', borderLeftWidth: 1, borderLeftColor: '#212121', padding: 20, width: 300, marginVertical: 5 },
    renderItemTıtle: { alignSelf: 'flex-start', color: 'white' },
-   renderItemDate: { position: 'absolute', alignSelf: 'center', right: 15, color: 'white' }
+   renderItemDate: { position: 'absolute', alignSelf: 'center', right: 15, color: 'white' },
+
+   fallarınButton: { alignSelf: 'center', width: '45%', height: 50, backgroundColor: 'black', justifyContent: 'center' },
+   fallarınButtonText: { color: 'white', alignSelf: 'center' },
+   bildirimlerinButton: { alignSelf: 'center', width: '45%', height: 30, backgroundColor: 'black', justifyContent: 'center' },
+   bildirimlerinButtonText: { color: 'white', alignSelf: 'center' },
+   buttonActive: { alignSelf: 'center', width: '45%', height: 50, backgroundColor: 'black', justifyContent: 'center', borderBottomWidth: 1, borderBottomColor: 'white' },
+
+   body: { padding: 20, justifyContent: 'center', alignSelf: 'center' },
+
+   //modal
+   ModalView: { backgroundColor: 'black', alignSelf: 'center', borderWidth: 1, borderColor: '#212121', width: '85%', height: 500, marginTop: 60 },
+   closeIconStyle: { position: 'absolute', alignSelf: 'center', right: 15 },
+   modalTitle: { position: 'absolute', alignSelf: 'center', color: 'white', fontSize: 20, fontWeight: '600', left: 15 },
+   modalTime: { position: 'absolute', alignSelf: 'center', right: 15, top: 60, color: 'white', fontSize: 12, fontWeight: '600' },
+   modalScrollView: { padding: 15,marginTop:15 },
+   modalScrollViewText: { color: 'white', fontWeight: '600', fontSize: 18, justifyContent: 'center' }
 })
 
 export default () => {
+   const [buttonActive, setButtonActive] = useState(false)
    const [user, setUser] = useState({})
    const [refresh, setRefresh] = useState(false)
    const [fallar, setFal] = useState([])
+   const [viewPage, setViewPage] = useState(false)
+   const [modal, setModal] = useState(false)
+   const [willShowFal, setWillShowFal] = useState([])
 
    useEffect(async () => {
+      setViewPage(false)
       const _user = JSON.parse(await AsyncStorage.getItem('User'))
       setUser(_user)
-      const fals = await Axios.default.post('http://10.0.2.2:3000/api/getAllFall', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), u_id: _user._id })
-      if (fals.data.success) {
-         setRefresh(false)
-         setFal((oldArray) => [...oldArray, fals.data.data])
-         console.log(fals.data.data)
-      } else {
-         ToastAndroid.show("Bilgiler getirilemiyor", ToastAndroid.LONG)
+      if (_user !== null) {
+         const fals = await Axios.default.post('https://fal-hub.herokuapp.com/api/getAllFall', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), u_id: _user._id })
+         if (fals.data.success) {
+            setRefresh(false)
+            setViewPage(true)
+            setFal((oldArray) => [...oldArray, fals.data.data])
+         } else {
+            setRefresh(false)
+            setViewPage(true)
+            ToastAndroid.show("Bilgiler getirilemiyor", ToastAndroid.LONG)
+         }
+      }else{
+         setViewPage(true)
       }
-   }, [refresh])
-
-   const renderItem = ({ item }) => {
+   }, [])
+   const showModal = (fal) => {
+      setModal(true)
+      setWillShowFal(fal)
+   }
+   const renderItem = (item, i) => {
       return (
-         <View style={styles.renderItemView}>
+         <View key={i} style={styles.renderItemView}>
             {item.yorum === null ?
                <View style={{ flexDirection: 'row' }}>
                   <Text style={styles.renderItemTıtle}>Falınız yorumlanıyor..</Text>
                   <Text style={styles.renderItemDate}>{new Date(item.createdAt).getDate() + '.' + parseInt(new Date(item.createdAt).getMonth() + 1) + '.' + new Date(item.createdAt).getFullYear()}</Text>
                </View>
                :
-               <View style={{ flexDirection: 'row' }}>
-                  <Text style={styles.renderItemTıtle}>Falın hazır(tıkla).</Text>
-                  <Text style={styles.renderItemDate}>{new Date(item.createdAt).getDate() + '.' + parseInt(new Date(item.createdAt).getMonth() + 1) + '.' + new Date(item.createdAt).getFullYear()}</Text>
-               </View>}
+               <TouchableOpacity onPress={() => fallar[0].map((fal, index) => {
+                  index === i ? showModal(fal) : null
+               })}>
+                  <View style={{ flexDirection: 'row' }}>
+                     <Text style={styles.renderItemTıtle}>Falın hazır(tıkla).</Text>
+                     <Text style={styles.renderItemDate}>{new Date(item.createdAt).getDate() + '.' + parseInt(new Date(item.createdAt).getMonth() + 1) + '.' + new Date(item.createdAt).getFullYear()}</Text>
+                  </View>
+               </TouchableOpacity>}
          </View>
       )
    }
-
+   const refreshPage = async () => {
+      setRefresh(true)
+      setFal([])
+      const _user = JSON.parse(await AsyncStorage.getItem('User'))
+      setUser(_user)
+      if (_user !== null) {
+         const fals = await Axios.default.post('https://fal-hub.herokuapp.com/api/getAllFall', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), u_id: _user._id })
+         if (fals.data.success) {
+            setRefresh(false)
+            setFal((oldArray) => [...oldArray, fals.data.data])
+         } else {
+            setRefresh(false)
+            ToastAndroid.show("Bilgiler getirilemiyor", ToastAndroid.LONG)
+         }
+      } 
+   }
    return (
-      <View style={styles.container}>
-         <Text style={styles.pageTitle}>Tüm fallarına aşağıdan erişebilirsin.</Text>
-         <FlatList
-            refreshControl={<RefreshControl onRefresh={() => setRefresh(true)} refreshing={refresh}></RefreshControl>}
-            extraData={fallar[0]}
-            style={styles.FlatList}
-            data={fallar[0]}
-            renderItem={renderItem}
-            keyExtractor={(item, index) => index}
-         >
-         </FlatList>
-      </View>
+      viewPage ?
+         user !== null ?
+            <View style={styles.container}>
+               <Text style={styles.pageTitle}>Tüm fallarına aşağıdan erişebilirsin.</Text>
+               <View style={{ flexDirection: 'row', marginTop: 20, justifyContent: 'center' }}>
+                  <View style={!buttonActive ? styles.buttonActive : styles.fallarınButton}>
+                     <TouchableOpacity onPress={() => setButtonActive(false)}>
+                        <Text style={styles.fallarınButtonText}>
+                           Falların
+                        </Text>
+                     </TouchableOpacity>
+                  </View>
+                  <View style={buttonActive ? styles.buttonActive : styles.bildirimlerinButton}>
+                     <TouchableOpacity onPress={() => setButtonActive(true)}>
+                        <Text style={styles.bildirimlerinButtonText}>
+                           Bildirimler
+                        </Text>
+                     </TouchableOpacity>
+                  </View>
+               </View>
+               <View style={styles.body}>
+                  <ScrollView refreshControl={<RefreshControl refreshing={refresh} onRefresh={() => refreshPage()}></RefreshControl>}>
+                     {
+                        !buttonActive ?
+                           fallar[0] !== undefined ?
+                              fallar[0].map((item, i) => {
+                                 return (
+                                    renderItem(item, i)
+                                 )
+                              })
+                              :
+                              null
+                           :
+                           <Text style={{ color: 'white' }}>Bildirim Mevcut Değil</Text>
+                     }
+                  </ScrollView>
+               </View>
+               <Modal
+                  transparent={true}
+                  visible={modal}
+                  animationType='slide'
+               >
+                  <View style={styles.ModalView}>
+                     <View style={{ flexDirection: 'row', alignSelf: 'center', height: 70, width: '100%' }}>
+                        <Text style={styles.modalTitle}>Kahve Falınız</Text>
+                        <Text style={styles.modalTime}>{new Date(willShowFal.createdAt).getDate() + '.' + parseInt(new Date(willShowFal.createdAt).getMonth() + 1) + '.' + new Date(willShowFal.createdAt).getFullYear()}</Text>
+                        <TouchableOpacity onPress={()=>{setModal(false);setWillShowFal([])}} style={styles.closeIconStyle}><CloseIcon name='close' size={25} color={'#ffa31a'}></CloseIcon></TouchableOpacity>
+                     </View>
+                     <ScrollView style={styles.modalScrollView}>
+                        <Text style={styles.modalScrollViewText}>{willShowFal.yorum}</Text>
+                     </ScrollView>
+                  </View>
+               </Modal>
+            </View>
+            :
+            <ScrollView style={styles.container} refreshControl={<RefreshControl refreshing={refresh} onRefresh={() => refreshPage()}></RefreshControl>}>
+               <Text style={styles.pageTitle}>Fallarını görebilmek için giriş yapmalısın. Giriş yaptıysan sayfayı yenilemeyi dene :)</Text>
+            </ScrollView>
+         :
+         <View style={styles.pageLoadingContainer}>
+            <Image style={styles.pageLoadingImage} source={require('../../assets/loading/loading.gif')} />
+            <Text style={styles.pageLoadingText}>sayfa yükleniyor..</Text>
+         </View>
    )
 } 

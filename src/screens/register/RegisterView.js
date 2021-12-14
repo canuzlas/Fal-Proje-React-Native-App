@@ -10,7 +10,6 @@ import CodeInput from 'react-native-confirmation-code-input';
 import NextIcon from 'react-native-vector-icons/MaterialIcons'
 import EyeIcon from 'react-native-vector-icons/Feather'
 import Sözlesme from '../../components/Sözlesme';
-import { farsiLocales } from 'validator/lib/alpha';
 
 class RegisterView extends React.Component {
    constructor(props) {
@@ -47,7 +46,6 @@ class RegisterView extends React.Component {
                      this.setState({ verifyCodePage: true })
    */
 
-
    goBack = () => {
       this.props.navigation.goBack()
    }
@@ -82,7 +80,7 @@ class RegisterView extends React.Component {
          if (!validator.isEmail(this.state.mail)) {
             ToastAndroid.show("Lütfen doğru bir mail adresi girin", ToastAndroid.LONG)
          } else {
-            const result = await Axios.default.post('http://10.0.2.2:3000/api/checkEmail', { mail: this.state.mail })
+            const result = await Axios.default.post('https://fal-hub.herokuapp.com/api/checkEmail', { mail: this.state.mail })
             if (result.data.success) {
                this.setState({ secondStep: false, thirdStep: true })
             } else {
@@ -110,7 +108,7 @@ class RegisterView extends React.Component {
 
    signUp = async () => {
       this.setState({ sending: true })
-      const result = await Axios.default.post('http://10.0.2.2:3000/api/register', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), name: this.state.name, mail: this.state.mail, password: this.state.pass })
+      const result = await Axios.default.post('https://fal-hub.herokuapp.com/api/register', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), name: this.state.name, mail: this.state.mail, password: this.state.pass })
       if (result.data.success) {
          ToastAndroid.show("Kayıt Olma Başarılı", ToastAndroid.LONG)
          await AsyncStorage.setItem('User', JSON.stringify(result.data.data))
@@ -212,12 +210,7 @@ class RegisterView extends React.Component {
                         </Modal>
 
                      </View>
-
                      : null}
-
-
-
-
                </View>
       )
    }

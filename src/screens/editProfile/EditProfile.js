@@ -7,8 +7,6 @@ import * as Axios from 'axios';
 import BackIcon from 'react-native-vector-icons/Ionicons';
 import PencilIcon from 'react-native-vector-icons/FontAwesome5';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
-import UserIcon from 'react-native-vector-icons/EvilIcons';
-
 
 
 const styles = StyleSheet.create({
@@ -49,7 +47,7 @@ export default ({ navigation }) => {
       switch (route) {
          case 'name':
             if (newName !== null) {
-               const result = await Axios.default.post('http://10.0.2.2:3000/api/updateProfile?place=name', { name: newName, u_id: user._id, token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId() })
+               const result = await Axios.default.post('https://fal-hub.herokuapp.com/api/updateProfile?place=name', { name: newName, u_id: user._id, token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId() })
                if (result.data.success == true) {
                   await AsyncStorage.setItem('User', JSON.stringify(result.data.data))
                   setUser(result.data.data)
@@ -64,7 +62,7 @@ export default ({ navigation }) => {
             break;
          case 'mail':
             if (newMail !== null) {
-               const resultMail = await Axios.default.post('http://10.0.2.2:3000/api/updateProfile?place=mail', { mail: newMail, u_id: user._id, token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId() })
+               const resultMail = await Axios.default.post('https://fal-hub.herokuapp.com/api/updateProfile?place=mail', { mail: newMail, u_id: user._id, token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId() })
                if (resultMail.data.success == true) {
                   await AsyncStorage.setItem('User', JSON.stringify(resultMail.data.data))
                   setUser(resultMail.data.data)
@@ -89,7 +87,7 @@ export default ({ navigation }) => {
             if (result.didCancel) {
                ToastAndroid.show("Fotoğraf seçilmedi", ToastAndroid.SHORT)
             } else {
-               const verify = await Axios.default.post('http://10.0.2.2:3000/api/updatePhoto?verify=true', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), u_id: user._id })
+               const verify = await Axios.default.post('https://fal-hub.herokuapp.com/api/updatePhoto?verify=true', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), u_id: user._id })
                if (verify.data.success) {
                   const data = new FormData()
                   data.append('file', {
@@ -97,7 +95,7 @@ export default ({ navigation }) => {
                      type: result.assets[0].type,
                      name: result.assets[0].fileName,
                   });
-                  const photoResult = await Axios.default.post('http://10.0.2.2:3000/api/updatePhoto?savePhoto=true', data, {
+                  const photoResult = await Axios.default.post('https://fal-hub.herokuapp.com/api/updatePhoto?savePhoto=true', data, {
                      headers: {
                         'accept': 'application/json',
                         'Content-Type': 'multipart/form-data',
@@ -131,7 +129,7 @@ export default ({ navigation }) => {
          </View>
          <View style={styles.body}>
 
-            <Image resizeMode='stretch' style={styles.profilePhoto} source={user.photo != 'false' ? { uri: 'http://10.0.2.2:3000/' + user.photo } : require('../../assets/arascreengif/gif.gif')}></Image>
+            <Image resizeMode='stretch' style={styles.profilePhoto} source={user.photo != 'false' ? { uri: 'https://fal-hub.herokuapp.com/' + user.photo } : require('../../assets/arascreengif/gif.gif')}></Image>
 
             <TouchableOpacity onPress={() => editProfilePhoto()} style={styles.profilePhotoEdit}><PencilIcon name='pencil-alt' size={35} color={'#ffa31a'} /></TouchableOpacity>
             <View style={styles.form}>

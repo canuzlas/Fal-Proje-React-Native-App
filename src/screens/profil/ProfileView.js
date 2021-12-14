@@ -7,9 +7,6 @@ import BackIcon from 'react-native-vector-icons/Ionicons';
 import SettingsIcon from 'react-native-vector-icons/AntDesign';
 import PencilIcon from 'react-native-vector-icons/FontAwesome5';
 import DiamondIcon from 'react-native-vector-icons/FontAwesome';
-import UserIcon from 'react-native-vector-icons/EvilIcons';
-
-
 
 class ProfileView extends React.Component {
    constructor(props) {
@@ -45,7 +42,6 @@ class ProfileView extends React.Component {
          return;
       };
    }
-
    goToLoginPage() {
       this.props.navigation.navigate('Login', { alertInfo: "thanLogin" })
    }
@@ -64,7 +60,6 @@ class ProfileView extends React.Component {
       this.props.navigation.navigate('Tab')
       this.setState({ user: null, loop: this.state.loop++ })
    }
-
    refreshPage = async () => {
       this.setState({ refresh: true })
       const User = JSON.parse(await AsyncStorage.getItem('User'))
@@ -95,7 +90,7 @@ class ProfileView extends React.Component {
                      <View style={styles.body}>
                         <View style={styles.profile}>
                            <View style={styles.profilePhotoView}>
-                              <Image style={styles.profilePhoto} resizeMode='stretch' source={this.state.user.photo != 'false' ? { uri: 'http://10.0.2.2:3000/' + this.state.user.photo } : require('../../assets/arascreengif/gif.gif')} />
+                              <Image style={styles.profilePhoto} resizeMode='stretch' source={this.state.user.photo != 'false' ? { uri: 'https://fal-hub.herokuapp.com/' + this.state.user.photo } : require('../../assets/arascreengif/gif.gif')} />
                            </View>
                            <Text style={styles.profileName}>{this.state.user.name}</Text>
                            <TouchableOpacity onPress={() => this.props.navigation.navigate('EditProfile')} style={styles.profilePencilIcon}><PencilIcon name='pencil-alt' size={20} color={'#ffa31a'} /></TouchableOpacity>
@@ -135,7 +130,6 @@ class ProfileView extends React.Component {
                </View>
       )
    }
-
 }
 
 
