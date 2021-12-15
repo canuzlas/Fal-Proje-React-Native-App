@@ -33,21 +33,23 @@ class LoginView extends React.Component {
          if (this.state.password == null) {
             this.setState({ passwordIsEmpty: true })
          }
-         
-         const result = await Axios.default.post('https://fal-hub.herokuapp.com/api/login?method=email', { mail: this.state.email, password: this.state.password, token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId() })
-         console.log(result.data)
-         if (result.data.success == "error") {
+         if (this.state.email != null && this.state.password != null) {
+            const result = await Axios.default.post('https://fal-hub.herokuapp.com/api/login?method=email', { mail: this.state.email, password: this.state.password, token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId() })
+            console.log(result.data)
+            if (result.data.success == "error") {
                return ToastAndroid.show("Hata.!", ToastAndroid.LONG)
-         } else {
-            if (result.data.success) {
-               ToastAndroid.show("Giriş Başarılı", ToastAndroid.LONG)
-               await AsyncStorage.setItem('User', JSON.stringify(result.data.data[0]))
-               await AsyncStorage.setItem('UserLoggedAt', 'email/phone')
-               this.setState({ sending: false })
-               this.props.navigation.navigate('Tab')
             } else {
-               ToastAndroid.show("Kullanıcı Adı veya Şifre Yanlış", ToastAndroid.LONG)
-               this.setState({ sending: false })
+               if (result.data.success) {
+                  ToastAndroid.show("Giriş Başarılı", ToastAndroid.LONG)
+                  await AsyncStorage.setItem('User', JSON.stringify(result.data.data[0]))
+                  await AsyncStorage.setItem('coffeeCount', JSON.stringify(result.data.coffeeCount))
+                  await AsyncStorage.setItem('UserLoggedAt', 'email/phone')
+                  this.setState({ sending: false })
+                  this.props.navigation.navigate('Tab')
+               } else {
+                  ToastAndroid.show("Kullanıcı Adı veya Şifre Yanlış", ToastAndroid.LONG)
+                  this.setState({ sending: false })
+               }
             }
          }
          this.setState({ userIsConnected: true, refresh: false })
@@ -102,7 +104,6 @@ class LoginView extends React.Component {
          }
       }
    }
-
    render() {
       return (
          (this.state.userIsConnected) ?

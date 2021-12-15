@@ -45,20 +45,19 @@ const TabNavigator = () => {
       headerStyle: { backgroundColor: 'black', shadowColor: 'transparent', height: 70 },
       headerTitleStyle: { color: '#ffa31a' },
       headerTitleAlign: 'center'
-    }} initialRouteName='Home' >
+    }} initialRouteName='Home'>
       <Tab.Screen options={{ tabBarIcon: ({ color }) => <Icon name={'home'} color={color} size={30}></Icon>, tabBarLabel: 'Anasayfa', headerTitle: () => <HomeHeader></HomeHeader> }} component={HomeView} name='Home' />
       <Tab.Screen options={{ tabBarIcon: ({ color }) => <CoffeeIcon name={'coffee'} color={color} size={30}></CoffeeIcon>, tabBarLabel: 'Fallarım',headerTitle:'Fallarım' }} component={Fallar} name='Fal' />
       <Tab.Screen options={{ tabBarIcon: ({ color }) => <IconFontAwesome name={'moon-o'} color={color} size={30}></IconFontAwesome>, tabBarLabel: 'Astroloji' }} component={AstrologyView} name='Astroloji' />
       <Tab.Screen options={{ tabBarIcon: ({ color }) => <IconFontAwesome name={'user-o'} color={color} size={30}></IconFontAwesome>, tabBarLabel: 'Profil',headerShown:false }} component={ProfileView} name='Profil' />
     </Tab.Navigator>
   )
-
 }
 
 class Router extends React.Component {
   render() {
     return (
-      <NavigationContainer >
+      <NavigationContainer > 
         <Stack.Navigator initialRouteName='AppStartScreen' screenOptions={{ headerShown: false }}>
           <Stack.Screen component={TabNavigator} name={'Tab'} />
           <Stack.Screen component={AppStartScreen} name={'AppStartScreen'} />

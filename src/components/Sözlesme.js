@@ -80,7 +80,7 @@ export default (fnc) => {
             İşbu Sözleşme’nin uygulanmasından veya yorumlanmasından doğacak her türlü uyuşmazlığın çözümünde İstanbul (Merkez) Adliyesi Mahkemeleri ve İcra Daireleri yetkilidir.
          </Text>
 
-         <TouchableOpacity onPress={()=>fnc()} style={{ width: '50%', height: 40, justifyContent: 'center', alignSelf: 'center', backgroundColor: '#ffa31a', borderRadius: 5, marginBottom: 150 }}><Text style={{ alignSelf: 'center', justifyContent: 'center', color: 'white', fontWeight: '600', fontSize: 20 }}>Okudum, kapat</Text></TouchableOpacity>
+         <TouchableOpacity onPress={()=>fnc()} style={{height: 40,paddingHorizontal:10, justifyContent: 'center', alignSelf: 'center', backgroundColor: '#ffa31a', borderRadius: 5, marginBottom: 120 }}><Text style={{ alignSelf: 'center', justifyContent: 'center', color: 'white', fontWeight: '600', fontSize: 20 }}>Okudum, kapat</Text></TouchableOpacity>
 
       </View>
    )

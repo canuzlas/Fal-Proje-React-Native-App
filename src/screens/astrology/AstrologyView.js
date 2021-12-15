@@ -1,464 +1,160 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View, Button, Modal, SafeAreaView, ScrollView, TouchableOpacity, ImageBackground, Image } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import IonIcon from 'react-native-vector-icons/Ionicons';
+import { StyleSheet, Text, View, Modal, SafeAreaView, ScrollView, TouchableOpacity, ImageBackground, Image } from 'react-native';
+import CloseIcon from 'react-native-vector-icons/AntDesign';
 import trDate from 'tr-date'
+import * as axios from 'axios'
 const date = new trDate()
-
 class AstrologyView extends Component {
    constructor(props) {
       super(props)
       this.state = {
          date: null,
-         pageLoading: true,
-         koc: null,
-         akrep: null,
-         aslan: null,
-         balik: null,
-         basak: null,
-         boga: null,
-         ikizler: null,
-         kova: null,
-         oglak: null,
-         terazi: null,
-         yay: null,
-         yengec: null,
+         modalLoading: true,
+         burcData: null,
          isVisible: false,
-         isVisible1: false,
-         isVisible2: false,
-         isVisible3: false,
-         isVisible4: false,
-         isVisible5: false,
-         isVisible6: false,
-         isVisible7: false,
-         isVisible8: false,
-         isVisible9: false,
-         isVisible10: false,
-         isVisible11: false,
+         activeButton: 0
       }
    }
    componentDidMount = async () => {
       this.setState({ date: String(date.getTime()) })
-      const koc = await AsyncStorage.getItem('koc');
-      const akrep = await AsyncStorage.getItem('akrep');
-      const aslan = await AsyncStorage.getItem('aslan');
-      const balik = await AsyncStorage.getItem('balik');
-      const basak = await AsyncStorage.getItem('basak');
-      const boga = await AsyncStorage.getItem('boga');
-      const ikizler = await AsyncStorage.getItem('ikizler');
-      const kova = await AsyncStorage.getItem('kova');
-      const oglak = await AsyncStorage.getItem('oglak');
-      const terazi = await AsyncStorage.getItem('terazi');
-      const yay = await AsyncStorage.getItem('yay');
-      const yengec = await AsyncStorage.getItem('yengec');
-
-      if (koc != null && akrep != null && aslan != null && balik != null && basak != null && boga != null && ikizler != null && kova != null && oglak != null && terazi != null && yay != null && yengec != null) {
-         this.setState({ pageLoading: !this.state.pageLoading, koc: JSON.parse(koc), akrep: JSON.parse(akrep), aslan: JSON.parse(aslan), balik: JSON.parse(balik), basak: JSON.parse(basak), boga: JSON.parse(boga), ikizler: JSON.parse(ikizler), kova: JSON.parse(kova), oglak: JSON.parse(oglak), terazi: JSON.parse(terazi), yay: JSON.parse(yay), yengec: JSON.parse(yengec) })
-      }
    }
+   getBurcDataFromApi = async (route) => {
+      const data = new Object({
+         gunluk: '',
+         haftalik: '',
+         aylik: '',
+         yillik: '',
+         element: '',
+         gezegen: '',
+         motto: '',
 
+      })
+      this.setState({ isVisible: true })
+      const gunluk = await axios.default.get("https://burc-yorumlari.herokuapp.com/get/" + route)
+      const haftalik = await axios.default.get("https://burc-yorumlari.herokuapp.com/get/" + route + "/haftalik")
+      const aylik = await axios.default.get("https://burc-yorumlari.herokuapp.com/get/" + route + "/aylik")
+      const yillik = await axios.default.get("https://burc-yorumlari.herokuapp.com/get/" + route + "/yillik")
+      data.gunluk = gunluk.data[0]
+      data.haftalik = haftalik.data[0]
+      data.aylik = aylik.data[0]
+      data.yillik = yillik.data[0]
+      data.element = gunluk.data[0].Elementi
+      data.gezegen = gunluk.data[0].Gezegeni
+      data.motto = gunluk.data[0].Mottosu
+      console.log(data)
+      this.setState({ modalLoading: false, burcData: data })
+   }
    render() {
       return (
-         this.state.pageLoading ?
-            <View style={styles.pageLoadingContainer}>
-               <Image style={styles.pageLoadingImage} source={require('../../assets/loading/loading.gif')} />
-               <Text style={styles.pageLoadingText}>sayfa yükleniyor..</Text>
-            </View>
-            :
-            <View style={styles.container}>
+         <View style={styles.container}>
+            <TouchableOpacity onPress={() => this.getBurcDataFromApi('koc')} style={styles.button}>
+               <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg.jpg')}>
+                  <Text style={styles.buttonText}>Koç</Text>
+               </ImageBackground>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.getBurcDataFromApi('boga')} style={styles.button}>
+               <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg1.jpg')}>
+                  <Text style={styles.buttonText}>Boğa</Text>
+               </ImageBackground>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.getBurcDataFromApi('ikizler')} style={styles.button}>
+               <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg.jpg')}>
+                  <Text style={styles.buttonText}>İkizler</Text>
+               </ImageBackground>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.getBurcDataFromApi('yengec')} style={styles.button}>
+               <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg1.jpg')}>
+                  <Text style={styles.buttonText}>Yengeç</Text>
+               </ImageBackground>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.getBurcDataFromApi('aslan')} style={styles.button}>
+               <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg.jpg')}>
+                  <Text style={styles.buttonText}>Aslan</Text>
+               </ImageBackground>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.getBurcDataFromApi('basak')} style={styles.button}>
+               <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg1.jpg')}>
+                  <Text style={styles.buttonText}>Başak</Text>
+               </ImageBackground>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.getBurcDataFromApi('terazi')} style={styles.button}>
+               <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg.jpg')}>
+                  <Text style={styles.buttonText}>Terazi</Text>
+               </ImageBackground>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.getBurcDataFromApi('akrep')} style={styles.button}>
+               <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg1.jpg')}>
+                  <Text style={styles.buttonText}>Akrep</Text>
+               </ImageBackground>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.getBurcDataFromApi('yay')} style={styles.button}>
+               <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg.jpg')}>
+                  <Text style={styles.buttonText}>Yay</Text>
+               </ImageBackground>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.getBurcDataFromApi('oglak')} style={styles.button}>
+               <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg1.jpg')}>
+                  <Text style={styles.buttonText}>Oğlak</Text>
+               </ImageBackground>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.getBurcDataFromApi('kova')} style={styles.button}>
+               <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg.jpg')}>
+                  <Text style={styles.buttonText}>Kova</Text>
+               </ImageBackground>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.getBurcDataFromApi('balik')} style={styles.button}>
+               <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg1.jpg')}>
+                  <Text style={styles.buttonText}>Balık</Text>
+               </ImageBackground>
+            </TouchableOpacity>
+            <Modal
+               animationType={"slide"}
+               transparent={true}
+               visible={this.state.isVisible}
+            >
+               {/*All views of Modal*/}
 
-               {/* KOÇ */}
-               <Modal
-                  animationType={"slide"}
-                  transparent={true}
-                  visible={this.state.isVisible}
-               >
-                  {/*All views of Modal*/}
+               <ImageBackground style={styles.astrologyModalBgGif} source={require('../../assets/astrologyModalBgGif/modalBg.png')} imageStyle={{ opacity: 0.3, resizeMode: 'stretch' }}>
 
-                  <ImageBackground style={styles.astrologyModalBgGif} source={require('../../assets/astrologyModalBgGif/modalBg.gif')} imageStyle={{ opacity: 0.3, resizeMode: 'stretch' }}>
-
-                     <TouchableOpacity onPress={() => this.setState({ isVisible: !this.state.isVisible })} style={styles.modalBackButton}>
-                        <IonIcon name={'chevron-back'} size={50} color={'#ffa31a'}></IonIcon>
-                     </TouchableOpacity>
-                     <Text style={styles.burcNameText}>
-                        KOÇ
-                     </Text>
-                     <Text style={{ color: '#ffa31a' }}>{this.state.date}</Text>
-                     <View style={styles.modalHeaderLine}></View>
-
-                     <View style={{ paddingLeft: 10 }}>
-                        <Text style={{ color: 'white', fontSize: 18, }}>{String(this.state.koc.GunlukYorum)}</Text>
+                  {this.state.modalLoading ?
+                     <View style={styles.pageLoadingContainer}>
+                        <Image style={styles.pageLoadingImage} source={require('../../assets/loading/loading.gif')} />
+                        <Text style={styles.pageLoadingText}>yorumlar yükleniyor..</Text>
                      </View>
-                  </ImageBackground>
-
-               </Modal>
-               {/* KOÇ */}
-
-
-               {/* Boğa */}
-               <Modal
-                  animationType={"slide"}
-                  transparent={true}
-                  visible={this.state.isVisible1}
-               >
-                  {/*All views of Modal*/}
-
-                  <ImageBackground style={styles.astrologyModalBgGif} source={require('../../assets/astrologyModalBgGif/modalBg.gif')} imageStyle={{ opacity: 0.3, resizeMode: 'stretch' }}>
-
-                     <TouchableOpacity onPress={() => this.setState({ isVisible1: !this.state.isVisible1 })} style={styles.modalBackButton}>
-                        <IonIcon name={'chevron-back'} size={50} color={'#ffa31a'}></IonIcon>
-                     </TouchableOpacity>
-                     <Text style={styles.burcNameText}>
-                        BOĞA
-                     </Text>
-                     <Text style={{ color: '#ffa31a' }}>{this.state.date}</Text>
-                     <View style={styles.modalHeaderLine}></View>
-
-                     <View style={{ paddingLeft: 10 }}>
-                        <Text style={{ color: 'white', fontSize: 18, }}>{String(this.state.boga.GunlukYorum)}</Text>
+                     :
+                     <View>
+                        <View style={styles.modalHeader}>
+                           <Text style={styles.modalHeaderDate}>{this.state.date}</Text>
+                           <Text style={styles.modalHeaderTitle}>{this.state.burcData.gunluk.Burc}</Text>
+                           <TouchableOpacity onPress={() => this.setState({ burcData: null, isVisible: false, modalLoading: true })} style={styles.modalHeaderCloseIcon}><CloseIcon name='close' size={25} color={'#ffa31a'}></CloseIcon></TouchableOpacity>
+                        </View>
+                        <View style={styles.modalBurcFeatures}>
+                           <Text style={styles.modalBurcMotto}>Mottosu : <Text style={{ fontWeight: 'bold' }}>{this.state.burcData.motto}</Text></Text>
+                           <Text style={styles.modalBurcGezegen}>Yönetici Gezegeni : <Text style={{ fontWeight: 'bold' }}>{this.state.burcData.gezegen}</Text></Text>
+                           <Text style={styles.modalBurcElement}>Elementi : <Text style={{ fontWeight: 'bold' }}>{this.state.burcData.element}</Text></Text>
+                        </View>
+                        <View style={styles.modalYorum}>
+                           <View style={styles.modalYorumTabs}>
+                              <TouchableOpacity onPress={() => this.setState({ activeButton: 0 })} style={this.state.activeButton === 0 ? styles.modalYorumTabsActiveButton : styles.modalYorumTabsButton}><Text style={styles.modalYorumTabsTitle}>Bugün</Text></TouchableOpacity>
+                              <TouchableOpacity onPress={() => this.setState({ activeButton: 1 })} style={this.state.activeButton === 1 ? styles.modalYorumTabsActiveButton : styles.modalYorumTabsButton}><Text style={styles.modalYorumTabsTitle}>Haftalık</Text></TouchableOpacity>
+                              <TouchableOpacity onPress={() => this.setState({ activeButton: 2 })} style={this.state.activeButton === 2 ? styles.modalYorumTabsActiveButton : styles.modalYorumTabsButton}><Text style={styles.modalYorumTabsTitle}>Aylık</Text></TouchableOpacity>
+                              <TouchableOpacity onPress={() => this.setState({ activeButton: 3 })} style={this.state.activeButton === 3 ? styles.modalYorumTabsActiveButton : styles.modalYorumTabsButton}><Text style={styles.modalYorumTabsTitle}>Yıllık</Text></TouchableOpacity>
+                           </View>
+                           <ScrollView style={styles.modalYorumScrollView}>
+                              {this.state.activeButton === 0 ? <Text style={styles.modalYorumText}>{this.state.burcData.gunluk.GunlukYorum}</Text> : null}
+                              {this.state.activeButton === 1 ? <Text style={styles.modalYorumText}>{this.state.burcData.haftalik.Yorum}</Text> : null}
+                              {this.state.activeButton === 2 ? <Text style={styles.modalYorumText}>{this.state.burcData.aylik.Yorum}</Text> : null}
+                              {this.state.activeButton === 3 ? <Text style={styles.modalYorumText}>{this.state.burcData.yillik.Yorum}</Text> : null}
+                           </ScrollView>
+                        </View>
                      </View>
-                  </ImageBackground>
-               </Modal>
-               {/* Boğa */}
-
-
-
-               {/* İkizler */}
-               <Modal
-                  animationType={"slide"}
-                  transparent={true}
-                  visible={this.state.isVisible2}
-               >
-                  {/*All views of Modal*/}
-
-                  <ImageBackground style={styles.astrologyModalBgGif} source={require('../../assets/astrologyModalBgGif/modalBg.gif')} imageStyle={{ opacity: 0.3, resizeMode: 'stretch' }}>
-
-                     <TouchableOpacity onPress={() => this.setState({ isVisible2: !this.state.isVisible2 })} style={styles.modalBackButton}>
-                        <IonIcon name={'chevron-back'} size={50} color={'#ffa31a'}></IonIcon>
-                     </TouchableOpacity>
-                     <Text style={styles.burcNameText}>
-                        İKİZLER
-                     </Text>
-                     <Text style={{ color: '#ffa31a' }}>{this.state.date}</Text>
-                     <View style={styles.modalHeaderLine}></View>
-
-                     <View style={{ paddingLeft: 10 }}>
-                        <Text style={{ color: 'white', fontSize: 18, }}>{String(this.state.ikizler.GunlukYorum)}</Text>
-                     </View>
-                  </ImageBackground>
-               </Modal>
-               {/* İkizler */}
-
-
-               {/* Yengeç */}
-               <Modal
-                  animationType={"slide"}
-                  transparent={true}
-                  visible={this.state.isVisible3}
-               >
-                  {/*All views of Modal*/}
-
-                  <ImageBackground style={styles.astrologyModalBgGif} source={require('../../assets/astrologyModalBgGif/modalBg.gif')} imageStyle={{ opacity: 0.3, resizeMode: 'stretch' }}>
-
-                     <TouchableOpacity onPress={() => this.setState({ isVisible3: !this.state.isVisible3 })} style={styles.modalBackButton}>
-                        <IonIcon name={'chevron-back'} size={50} color={'#ffa31a'}></IonIcon>
-                     </TouchableOpacity>
-                     <Text style={styles.burcNameText}>
-                        YENGEÇ
-                     </Text>
-                     <Text style={{ color: '#ffa31a' }}>{this.state.date}</Text>
-                     <View style={styles.modalHeaderLine}></View>
-
-                     <View style={{ paddingLeft: 10 }}>
-                        <Text style={{ color: 'white', fontSize: 18, }}>{String(this.state.yengec.GunlukYorum)}</Text>
-                     </View>
-                  </ImageBackground>
-               </Modal>
-               {/* Yengeç */}
-
-
-               {/* Aslan */}
-               <Modal
-                  animationType={"slide"}
-                  transparent={true}
-                  visible={this.state.isVisible4}
-               >
-                  {/*All views of Modal*/}
-
-                  <ImageBackground style={styles.astrologyModalBgGif} source={require('../../assets/astrologyModalBgGif/modalBg.gif')} imageStyle={{ opacity: 0.3, resizeMode: 'stretch' }}>
-
-                     <TouchableOpacity onPress={() => this.setState({ isVisible4: !this.state.isVisible4 })} style={styles.modalBackButton}>
-                        <IonIcon name={'chevron-back'} size={50} color={'#ffa31a'}></IonIcon>
-                     </TouchableOpacity>
-                     <Text style={styles.burcNameText}>
-                        ASLAN
-                     </Text>
-                     <Text style={{ color: '#ffa31a' }}>{this.state.date}</Text>
-                     <View style={styles.modalHeaderLine}></View>
-
-                     <View style={{ paddingLeft: 10 }}>
-                        <Text style={{ color: 'white', fontSize: 18, }}>{String(this.state.aslan.GunlukYorum)}</Text>
-                     </View>
-                  </ImageBackground>
-               </Modal>
-               {/* Aslan */}
-
-
-               {/* Başak */}
-               <Modal
-                  animationType={"slide"}
-                  transparent={true}
-                  visible={this.state.isVisible5}
-               >
-                  {/*All views of Modal*/}
-
-                  <ImageBackground style={styles.astrologyModalBgGif} source={require('../../assets/astrologyModalBgGif/modalBg.gif')} imageStyle={{ opacity: 0.3, resizeMode: 'stretch' }}>
-
-                     <TouchableOpacity onPress={() => this.setState({ isVisible5: !this.state.isVisible5 })} style={styles.modalBackButton}>
-                        <IonIcon name={'chevron-back'} size={50} color={'#ffa31a'}></IonIcon>
-                     </TouchableOpacity>
-                     <Text style={styles.burcNameText}>
-                        BAŞAK
-                     </Text>
-                     <Text style={{ color: '#ffa31a' }}>{this.state.date}</Text>
-                     <View style={styles.modalHeaderLine}></View>
-
-                     <View style={{ paddingLeft: 10 }}>
-                        <Text style={{ color: 'white', fontSize: 18, }}>{String(this.state.basak.GunlukYorum)}</Text>
-                     </View>
-                  </ImageBackground>
-               </Modal>
-               {/* Başak */}
-
-
-               {/* Terazi */}
-               <Modal
-                  animationType={"slide"}
-                  transparent={true}
-                  visible={this.state.isVisible6}
-               >
-                  {/*All views of Modal*/}
-
-                  <ImageBackground style={styles.astrologyModalBgGif} source={require('../../assets/astrologyModalBgGif/modalBg.gif')} imageStyle={{ opacity: 0.3, resizeMode: 'stretch' }}>
-
-                     <TouchableOpacity onPress={() => this.setState({ isVisible6: !this.state.isVisible6 })} style={styles.modalBackButton}>
-                        <IonIcon name={'chevron-back'} size={50} color={'#ffa31a'}></IonIcon>
-                     </TouchableOpacity>
-                     <Text style={styles.burcNameText}>
-                        TERAZİ
-                     </Text>
-                     <Text style={{ color: '#ffa31a' }}>{this.state.date}</Text>
-                     <View style={styles.modalHeaderLine}></View>
-
-                     <View style={{ paddingLeft: 10 }}>
-                        <Text style={{ color: 'white', fontSize: 18, }}>{String(this.state.terazi.GunlukYorum)}</Text>
-                     </View>
-                  </ImageBackground>
-               </Modal>
-               {/* Terazi */}
-
-
-               {/* Akrep */}
-               <Modal
-                  animationType={"slide"}
-                  transparent={true}
-                  visible={this.state.isVisible7}
-               >
-                  {/*All views of Modal*/}
-
-                  <ImageBackground style={styles.astrologyModalBgGif} source={require('../../assets/astrologyModalBgGif/modalBg.gif')} imageStyle={{ opacity: 0.3, resizeMode: 'stretch' }}>
-
-                     <TouchableOpacity onPress={() => this.setState({ isVisible7: !this.state.isVisible7 })} style={styles.modalBackButton}>
-                        <IonIcon name={'chevron-back'} size={50} color={'#ffa31a'}></IonIcon>
-                     </TouchableOpacity>
-                     <Text style={styles.burcNameText}>
-                        AKREP
-                     </Text>
-                     <Text style={{ color: '#ffa31a' }}>{this.state.date}</Text>
-                     <View style={styles.modalHeaderLine}></View>
-
-                     <View style={{ paddingLeft: 10 }}>
-                        <Text style={{ color: 'white', fontSize: 18, }}>{String(this.state.akrep.GunlukYorum)}</Text>
-                     </View>
-                  </ImageBackground>
-               </Modal>
-               {/* Akrep */}
-
-
-               {/* Yay */}
-               <Modal
-                  animationType={"slide"}
-                  transparent={true}
-                  visible={this.state.isVisible8}
-               >
-                  {/*All views of Modal*/}
-
-                  <ImageBackground style={styles.astrologyModalBgGif} source={require('../../assets/astrologyModalBgGif/modalBg.gif')} imageStyle={{ opacity: 0.3, resizeMode: 'stretch' }}>
-
-                     <TouchableOpacity onPress={() => this.setState({ isVisible8: !this.state.isVisible8 })} style={styles.modalBackButton}>
-                        <IonIcon name={'chevron-back'} size={50} color={'#ffa31a'}></IonIcon>
-                     </TouchableOpacity>
-                     <Text style={styles.burcNameText}>
-                        YAY
-                     </Text>
-                     <Text style={{ color: '#ffa31a' }}>{this.state.date}</Text>
-                     <View style={styles.modalHeaderLine}></View>
-
-                     <View style={{ paddingLeft: 10 }}>
-                        <Text style={{ color: 'white', fontSize: 18, }}>{String(this.state.yay.GunlukYorum)}</Text>
-                     </View>
-                  </ImageBackground>
-               </Modal>
-               {/* Yay */}
-
-
-               {/* Oğlak */}
-               <Modal
-                  animationType={"slide"}
-                  transparent={true}
-                  visible={this.state.isVisible9}
-               >
-                  {/*All views of Modal*/}
-
-                  <ImageBackground style={styles.astrologyModalBgGif} source={require('../../assets/astrologyModalBgGif/modalBg.gif')} imageStyle={{ opacity: 0.3, resizeMode: 'stretch' }}>
-
-                     <TouchableOpacity onPress={() => this.setState({ isVisible9: !this.state.isVisible9 })} style={styles.modalBackButton}>
-                        <IonIcon name={'chevron-back'} size={50} color={'#ffa31a'}></IonIcon>
-                     </TouchableOpacity>
-                     <Text style={styles.burcNameText}>
-                        OĞLAK
-                     </Text>
-                     <Text style={{ color: '#ffa31a' }}>{this.state.date}</Text>
-                     <View style={styles.modalHeaderLine}></View>
-
-                     <View style={{ paddingLeft: 10 }}>
-                        <Text style={{ color: 'white', fontSize: 18, }}>{String(this.state.oglak.GunlukYorum)}</Text>
-                     </View>
-                  </ImageBackground>
-               </Modal>
-               {/* Oğlak */}
-
-
-               {/* Kova */}
-               <Modal
-                  animationType={"slide"}
-                  transparent={true}
-                  visible={this.state.isVisible10}
-               >
-                  {/*All views of Modal*/}
-
-                  <ImageBackground style={styles.astrologyModalBgGif} source={require('../../assets/astrologyModalBgGif/modalBg.gif')} imageStyle={{ opacity: 0.3, resizeMode: 'stretch' }}>
-
-                     <TouchableOpacity onPress={() => this.setState({ isVisible10: !this.state.isVisible10 })} style={styles.modalBackButton}>
-                        <IonIcon name={'chevron-back'} size={50} color={'#ffa31a'}></IonIcon>
-                     </TouchableOpacity>
-                     <Text style={styles.burcNameText}>
-                        KOVA
-                     </Text>
-                     <Text style={{ color: '#ffa31a' }}>{this.state.date}</Text>
-                     <View style={styles.modalHeaderLine}></View>
-
-                     <View style={{ paddingLeft: 10 }}>
-                        <Text style={{ color: 'white', fontSize: 18, }}>{String(this.state.kova.GunlukYorum)}</Text>
-                     </View>
-                  </ImageBackground>
-               </Modal>
-               {/* Kova */}
-
-
-               {/* Balık */}
-               <Modal
-                  animationType={"slide"}
-                  transparent={true}
-                  visible={this.state.isVisible11}
-               >
-                  {/*All views of Modal*/}
-
-                  <ImageBackground style={styles.astrologyModalBgGif} source={require('../../assets/astrologyModalBgGif/modalBg.gif')} imageStyle={{ opacity: 0.3, resizeMode: 'stretch' }}>
-
-                     <TouchableOpacity onPress={() => this.setState({ isVisible11: !this.state.isVisible11 })} style={styles.modalBackButton}>
-                        <IonIcon name={'chevron-back'} size={50} color={'#ffa31a'}></IonIcon>
-                     </TouchableOpacity>
-                     <Text style={styles.burcNameText}>
-                        BALIK
-                     </Text>
-                     <Text style={{ color: '#ffa31a' }}>{this.state.date}</Text>
-                     <View style={styles.modalHeaderLine}></View>
-
-                     <View style={{ paddingLeft: 10 }}>
-                        <Text style={{ color: 'white', fontSize: 18, }}>{String(this.state.balik.GunlukYorum)}</Text>
-                     </View>
-                  </ImageBackground>
-               </Modal>
-               {/* Balık */}
-
-
-               <TouchableOpacity onPress={() => this.setState({ isVisible: true })} style={styles.button}>
-                  <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg.jpg')}>
-                     <Text style={styles.buttonText}>Koç</Text>
-                  </ImageBackground>
-               </TouchableOpacity>
-               <TouchableOpacity onPress={() => this.setState({ isVisible1: true })} style={styles.button}>
-                  <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg1.jpg')}>
-                     <Text style={styles.buttonText}>Boğa</Text>
-                  </ImageBackground>
-               </TouchableOpacity>
-               <TouchableOpacity onPress={() => this.setState({ isVisible2: true })} style={styles.button}>
-                  <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg.jpg')}>
-                     <Text style={styles.buttonText}>İkizler</Text>
-                  </ImageBackground>
-               </TouchableOpacity>
-               <TouchableOpacity onPress={() => this.setState({ isVisible3: true })} style={styles.button}>
-                  <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg1.jpg')}>
-                     <Text style={styles.buttonText}>Yengeç</Text>
-                  </ImageBackground>
-               </TouchableOpacity>
-               <TouchableOpacity onPress={() => this.setState({ isVisible4: true })} style={styles.button}>
-                  <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg.jpg')}>
-                     <Text style={styles.buttonText}>Aslan</Text>
-                  </ImageBackground>
-               </TouchableOpacity>
-               <TouchableOpacity onPress={() => this.setState({ isVisible5: true })} style={styles.button}>
-                  <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg1.jpg')}>
-                     <Text style={styles.buttonText}>Başak</Text>
-                  </ImageBackground>
-               </TouchableOpacity>
-               <TouchableOpacity onPress={() => this.setState({ isVisible6: true })} style={styles.button}>
-                  <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg.jpg')}>
-                     <Text style={styles.buttonText}>Terazi</Text>
-                  </ImageBackground>
-               </TouchableOpacity>
-               <TouchableOpacity onPress={() => this.setState({ isVisible7: true })} style={styles.button}>
-                  <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg1.jpg')}>
-                     <Text style={styles.buttonText}>Akrep</Text>
-                  </ImageBackground>
-               </TouchableOpacity>
-               <TouchableOpacity onPress={() => this.setState({ isVisible8: true })} style={styles.button}>
-                  <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg.jpg')}>
-                     <Text style={styles.buttonText}>Yay</Text>
-                  </ImageBackground>
-               </TouchableOpacity>
-               <TouchableOpacity onPress={() => this.setState({ isVisible9: true })} style={styles.button}>
-                  <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg1.jpg')}>
-                     <Text style={styles.buttonText}>Oğlak</Text>
-                  </ImageBackground>
-               </TouchableOpacity>
-               <TouchableOpacity onPress={() => this.setState({ isVisible10: true })} style={styles.button}>
-                  <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg.jpg')}>
-                     <Text style={styles.buttonText}>Kova</Text>
-                  </ImageBackground>
-               </TouchableOpacity>
-               <TouchableOpacity onPress={() => this.setState({ isVisible11: true })} style={styles.button}>
-                  <ImageBackground imageStyle={{ opacity: 0.3 }} style={styles.ImageBackground} source={require('../../assets/astrologyBg/bg1.jpg')}>
-                     <Text style={styles.buttonText}>Balık</Text>
-                  </ImageBackground>
-               </TouchableOpacity>
-            </View>
-
+                  }
+               </ImageBackground>
+            </Modal>
+         </View>
       );
    }
 }
-
 export default AstrologyViewFnc = () => {
    return (
       <SafeAreaView>
@@ -468,12 +164,10 @@ export default AstrologyViewFnc = () => {
       </SafeAreaView>
    )
 }
-
 const styles = StyleSheet.create({
-
-   //pageloading styles
-   pageLoadingContainer: { width: '100%', height: '100%', justifyContent: 'center', backgroundColor: 'black' },
-   pageLoadingImage: { width: 150, height: 150, alignSelf: 'center' },
+   //modal loading styles
+   pageLoadingContainer: { width: '100%', height: '100%', justifyContent: 'center' },
+   pageLoadingImage: { width: 200, height: 200, alignSelf: 'center' },
    pageLoadingText: { color: 'white', fontSize: 20, fontWeight: '600', alignSelf: 'center' },
 
    //page
@@ -481,37 +175,6 @@ const styles = StyleSheet.create({
       backgroundColor: 'black',
       width: '100%',
       height: '100%'
-   },
-   astrologyModalBgGif: {
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: "black",
-      height: '100%',
-      width: '100%',
-   },
-   modalBackButton: {
-      position: 'absolute',
-      top: 10,
-      left: 10,
-      justifyContent: 'center'
-   },
-   burcNameText: {
-      color: '#ffa31a',
-      fontSize: 30,
-      position: 'absolute',
-      top: 15
-   },
-   modalHeaderLine: {
-      width: "100%",
-      borderWidth: 0.5,
-      borderColor: '#ffa31a',
-      position: 'absolute',
-      top: 70
-   },
-
-   modalButtonText: {
-      color: 'white',
-      fontSize: 20
    },
    button: {
       width: '100%',
@@ -529,10 +192,27 @@ const styles = StyleSheet.create({
       alignSelf: 'center',
       fontSize: 20
    },
-   text: {
-      color: '#3f2949',
-      marginTop: 10
-   }
+   //modal
+   astrologyModalBgGif: {
+      backgroundColor: "black",
+      height: '100%',
+      width: '100%',
+   },
+   modalHeader: { flexDirection: 'row', padding: 20, justifyContent: 'center' },
+   modalHeaderTitle: { alignSelf: 'center', fontSize: 25, color: 'white' },
+   modalHeaderDate: { alignSelf: 'center', position: 'absolute', left: 15, color: 'white', fontSize: 12 },
+   modalHeaderCloseIcon: { alignSelf: 'center', position: 'absolute', right: 15 },
+   modalBurcFeatures: { padding: 15 },
+   modalBurcMotto: { color: 'white', fontSize: 18, marginTop: 5 },
+   modalBurcGezegen: { color: 'white', fontSize: 18, marginTop: 5 },
+   modalBurcElement: { color: 'white', fontSize: 18, marginTop: 5 },
+   modalYorum: { padding: 15, justifyContent: 'center',maxHeight:400 },
+   modalYorumTabs: { justifyContent: 'space-between', alignSelf: 'center', flexDirection: 'row', marginTop: 20 },
+   modalYorumTabsButton: { padding: 10, justifyContent: 'center' },
+   modalYorumTabsActiveButton: { padding: 10, justifyContent: 'center', borderBottomColor: '#ffa31a', borderBottomWidth: 1 },
+   modalYorumTabsTitle: { alignSelf: 'center', color: 'white', fontSize: 20 },
+   modalYorumScrollView: { padding: 15,marginTop:10},
+   modalYorumText: { color: 'white', fontSize: 17, alignSelf: 'center' }
 });
 
 

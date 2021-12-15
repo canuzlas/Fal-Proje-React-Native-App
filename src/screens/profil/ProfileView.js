@@ -17,7 +17,8 @@ class ProfileView extends React.Component {
          user: null,
          UserLoggedAt: null,
          loop: 0,
-         refresh: false
+         refresh: false,
+         coffeeCount:null
       }
    }
    componentDidMount = async () => {
@@ -29,11 +30,12 @@ class ProfileView extends React.Component {
 
          const User = JSON.parse(await AsyncStorage.getItem('User'))
          const UserLoggedAt = await AsyncStorage.getItem('UserLoggedAt')
+         const coffeeCount = await AsyncStorage.getItem('coffeeCount')
 
          if (User === null) {
             this.setState({ pageLoading: false, userLogged: false, loop: this.state.loop++, refresh: false })
          } else {
-            this.setState({ pageLoading: false, userLogged: true, user: User, UserLoggedAt: UserLoggedAt, loop: this.state.loop, refresh: false })
+            this.setState({coffeeCount:coffeeCount, pageLoading: false, userLogged: true, user: User, UserLoggedAt: UserLoggedAt, loop: this.state.loop, refresh: false })
          }
       }
    }
@@ -71,6 +73,22 @@ class ProfileView extends React.Component {
          this.setState({ pageLoading: false, userLogged: true, user: User, UserLoggedAt: UserLoggedAt, loop: this.state.loop, refresh: false })
       }
    }
+   logOut = async () => {
+      const UserLoggedAt = await AsyncStorage.getItem('UserLoggedAt')
+      if (UserLoggedAt === 'email/phone') {
+         await AsyncStorage.setItem('User', '')
+         await AsyncStorage.setItem('UserLoggedAt', '')
+         const User = JSON.parse(await AsyncStorage.getItem('User'))
+         const UserLoggedAt = await AsyncStorage.getItem('UserLoggedAt')
+
+         if (User === null) {
+            this.setState({ pageLoading: false, userLogged: false, loop: this.state.loop++, refresh: false })
+         } else {
+            this.setState({ pageLoading: false, userLogged: true, user: User, UserLoggedAt: UserLoggedAt, loop: this.state.loop, refresh: false })
+         }
+         this.props.navigation.navigate('AppAraScreen')
+      }
+   }
    render() {
       return (
          this.state.pageLoading ?
@@ -95,7 +113,7 @@ class ProfileView extends React.Component {
                            <Text style={styles.profileName}>{this.state.user.name}</Text>
                            <TouchableOpacity onPress={() => this.props.navigation.navigate('EditProfile')} style={styles.profilePencilIcon}><PencilIcon name='pencil-alt' size={20} color={'#ffa31a'} /></TouchableOpacity>
                         </View>
-                        <TouchableOpacity onPress={()=>Linking.openURL('https://www.bynogame.com/tr/destekle/mcanuzlas')}>
+                        <TouchableOpacity onPress={() => Linking.openURL('https://www.bynogame.com/tr/destekle/mcanuzlas')}>
                            <View style={styles.supportToDeveloper}>
                               <DiamondIcon style={styles.supportIcon} name='diamond' color={'#ffa31a'} size={30} />
                               <Text style={styles.supporText}>Geliştiriciyi destekle</Text>
@@ -107,11 +125,11 @@ class ProfileView extends React.Component {
                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 15 }}>
                               <View style={styles.istatistikCoffeeView}>
                                  <Text style={{ color: 'white', alignSelf: 'center' }}>Kahve Falı</Text>
-                                 <Text style={{ color: '#ffa31a', alignSelf: 'center' }}>3</Text>
+                                 <Text style={{ color: '#ffa31a', alignSelf: 'center' }}>{this.state.coffeeCount}</Text>
                               </View>
                               <View style={styles.istatistikTarotView}>
                                  <Text style={{ color: 'white', alignSelf: 'center' }}>Tarot Falı</Text>
-                                 <Text style={{ color: '#ffa31a', alignSelf: 'center' }}>4</Text>
+                                 <Text style={{ color: '#ffa31a', alignSelf: 'center' }}>çok yakında</Text>
                               </View>
                            </View>
                         </View>
@@ -121,6 +139,9 @@ class ProfileView extends React.Component {
                            <SettingsIcon style={styles.supportRightIcon} name='arrowright' color={'white'} size={20} />
                         </View>
                      </View>
+                  </View>
+                  <View style={styles.logoutView}>
+                     <TouchableOpacity style={styles.logOutButton} onPress={() => this.logOut()}><Text style={styles.logOutButtonText}>Çıkış Yap</Text></TouchableOpacity>
                   </View>
                </ScrollView >
                :
@@ -183,5 +204,10 @@ const styles = StyleSheet.create({
    containerNotLogged: { backgroundColor: 'black', width: '100%', height: '100%', justifyContent: 'center' },
    notLoggedText: { color: 'white', fontSize: 20, alignSelf: 'center' },
    notLoggedButton: { marginTop: 50, borderRadius: 5, backgroundColor: '#ffa31a', padding: 10, width: '80%', alignSelf: 'center', justifyContent: 'center' },
-   notLoggedButtonText: { fontSize: 18, alignSelf: 'center', color: 'black', fontWeight: '500' }
+   notLoggedButtonText: { fontSize: 18, alignSelf: 'center', color: 'black', fontWeight: '500' },
+
+   //logout 
+   logoutView: { position: 'absolute', bottom: 20, justifyContent: 'center', alignSelf: 'center' },
+   logOutButton: { marginTop: 50, borderRadius: 5, backgroundColor: '#CD1818', padding: 10, width: 140, alignSelf: 'center', justifyContent: 'center' },
+   logOutButtonText: { fontSize: 18, alignSelf: 'center', color: 'white', fontWeight: '500' },
 })

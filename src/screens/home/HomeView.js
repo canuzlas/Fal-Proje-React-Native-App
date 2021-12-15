@@ -25,10 +25,7 @@ class HomeView extends React.Component {
             break;
 
          case "tarot":
-            res = await AsyncStorage.getItem('User')
-            if (res == null) {
-               this.props.navigation.navigate('Login', { alertInfo: 'thanTarotFali' })
-            }
+            ToastAndroid.show("Tarot falı yakında aktif olacaktır, ilginiz için teşekkür ederim.", ToastAndroid.LONG)
             break;
       }
    }

@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
    container: { width: '100%', height: '100%', backgroundColor: 'black', padding: 20 },
    pageTitle: { color: 'white', alignSelf: 'center' },
 
-   renderItemView: { alignSelf: 'center', borderLeftWidth: 1, borderLeftColor: '#212121', padding: 20, width: 300, marginVertical: 5 },
+   renderItemView: { alignSelf: 'center', borderLeftWidth: 2, borderLeftColor: '#ffa31a', padding: 20, width: 300, marginVertical: 5 },
    renderItemTıtle: { alignSelf: 'flex-start', color: 'white' },
    renderItemDate: { position: 'absolute', alignSelf: 'center', right: 15, color: 'white' },
 
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
    closeIconStyle: { position: 'absolute', alignSelf: 'center', right: 15 },
    modalTitle: { position: 'absolute', alignSelf: 'center', color: 'white', fontSize: 20, fontWeight: '600', left: 15 },
    modalTime: { position: 'absolute', alignSelf: 'center', right: 15, top: 60, color: 'white', fontSize: 12, fontWeight: '600' },
-   modalScrollView: { padding: 15,marginTop:15 },
+   modalScrollView: { padding: 15, marginTop: 15 },
    modalScrollViewText: { color: 'white', fontWeight: '600', fontSize: 18, justifyContent: 'center' }
 })
 
@@ -59,7 +59,7 @@ export default () => {
             setViewPage(true)
             ToastAndroid.show("Bilgiler getirilemiyor", ToastAndroid.LONG)
          }
-      }else{
+      } else {
          setViewPage(true)
       }
    }, [])
@@ -101,7 +101,9 @@ export default () => {
             setRefresh(false)
             ToastAndroid.show("Bilgiler getirilemiyor", ToastAndroid.LONG)
          }
-      } 
+      }else{
+         setRefresh(false)
+      }
    }
    return (
       viewPage ?
@@ -129,11 +131,14 @@ export default () => {
                      {
                         !buttonActive ?
                            fallar[0] !== undefined ?
-                              fallar[0].map((item, i) => {
-                                 return (
-                                    renderItem(item, i)
-                                 )
-                              })
+                              fallar[0].length == 0 ?
+                                 <Text style={{ color: 'white' }}>Mevcut falınız yok sayfayı yenileyin</Text>
+                                 :
+                                 fallar[0].map((item, i) => {
+                                    return (
+                                       renderItem(item, i)
+                                    )
+                                 })
                               :
                               null
                            :
@@ -150,7 +155,7 @@ export default () => {
                      <View style={{ flexDirection: 'row', alignSelf: 'center', height: 70, width: '100%' }}>
                         <Text style={styles.modalTitle}>Kahve Falınız</Text>
                         <Text style={styles.modalTime}>{new Date(willShowFal.createdAt).getDate() + '.' + parseInt(new Date(willShowFal.createdAt).getMonth() + 1) + '.' + new Date(willShowFal.createdAt).getFullYear()}</Text>
-                        <TouchableOpacity onPress={()=>{setModal(false);setWillShowFal([])}} style={styles.closeIconStyle}><CloseIcon name='close' size={25} color={'#ffa31a'}></CloseIcon></TouchableOpacity>
+                        <TouchableOpacity onPress={() => { setModal(false); setWillShowFal([]) }} style={styles.closeIconStyle}><CloseIcon name='close' size={25} color={'#ffa31a'}></CloseIcon></TouchableOpacity>
                      </View>
                      <ScrollView style={styles.modalScrollView}>
                         <Text style={styles.modalScrollViewText}>{willShowFal.yorum}</Text>
