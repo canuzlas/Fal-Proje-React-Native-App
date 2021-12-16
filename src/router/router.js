@@ -58,7 +58,7 @@ class Router extends React.Component {
   render() {
     return (
       <NavigationContainer > 
-        <Stack.Navigator initialRouteName='AppStartScreen' screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName='Login' screenOptions={{ headerShown: false }}>
           <Stack.Screen component={TabNavigator} name={'Tab'} />
           <Stack.Screen component={AppStartScreen} name={'AppStartScreen'} />
           <Stack.Screen component={AppAraScreen} name={'AppAraScreen'} />
@@ -68,7 +68,7 @@ class Router extends React.Component {
           <Stack.Screen component={EditProfile} name={'EditProfile'}/>
           <Stack.Screen component={Settings} name={'Settings'}/>
         </Stack.Navigator>
-      </NavigationContainer>
+      </NavigationContainer> 
     )
   }
 }

@@ -113,6 +113,7 @@ class RegisterView extends React.Component {
          ToastAndroid.show("Kayıt Olma Başarılı", ToastAndroid.LONG)
          await AsyncStorage.setItem('User', JSON.stringify(result.data.data))
          await AsyncStorage.setItem('UserLoggedAt', 'email/phone')
+         await AsyncStorage.setItem('coffeeCount', JSON.stringify(result.data.coffeeCount))
          this.setState({ sending: false })
          this.props.navigation.navigate('Tab')
       } else {

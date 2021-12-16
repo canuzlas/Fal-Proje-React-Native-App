@@ -31,7 +31,7 @@ class HomeView extends React.Component {
    }
    componentDidMount = async () => {
       const User = JSON.parse(await AsyncStorage.getItem('User'))
-      console.log(User)
+      console.log(await AsyncStorage.getItem('token'))
       User ? ToastAndroid.show("Hoşgeldin " + User.name, ToastAndroid.LONG) : ToastAndroid.show("Hoşgeldin", ToastAndroid.LONG)
 
       PushNotification.configure({

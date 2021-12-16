@@ -18,7 +18,7 @@ class ProfileView extends React.Component {
          UserLoggedAt: null,
          loop: 0,
          refresh: false,
-         coffeeCount:null
+         coffeeCount: null
       }
    }
    componentDidMount = async () => {
@@ -35,7 +35,7 @@ class ProfileView extends React.Component {
          if (User === null) {
             this.setState({ pageLoading: false, userLogged: false, loop: this.state.loop++, refresh: false })
          } else {
-            this.setState({coffeeCount:coffeeCount, pageLoading: false, userLogged: true, user: User, UserLoggedAt: UserLoggedAt, loop: this.state.loop, refresh: false })
+            this.setState({ coffeeCount: coffeeCount, pageLoading: false, userLogged: true, user: User, UserLoggedAt: UserLoggedAt, loop: this.state.loop, refresh: false })
          }
       }
    }
@@ -46,21 +46,6 @@ class ProfileView extends React.Component {
    }
    goToLoginPage() {
       this.props.navigation.navigate('Login', { alertInfo: "thanLogin" })
-   }
-   signOutGoogle = async () => {
-      await GoogleSignin.configure({
-         webClientId: '232744567398-fclqsccnqab64tr6m727l69mpr7cmio8.apps.googleusercontent.com'
-      });
-      await GoogleSignin.signOut();
-      await AsyncStorage.clear();
-      this.props.navigation.navigate('Tab')
-      this.setState({ user: null, loop: this.state.loop++ })
-   }
-   signOutEmailPhone = async () => {
-      await AsyncStorage.setItem("User", "")
-      await AsyncStorage.setItem("UserLoggedAt", "")
-      this.props.navigation.navigate('Tab')
-      this.setState({ user: null, loop: this.state.loop++ })
    }
    refreshPage = async () => {
       this.setState({ refresh: true })
@@ -74,20 +59,22 @@ class ProfileView extends React.Component {
       }
    }
    logOut = async () => {
+      await GoogleSignin.configure({
+         webClientId: '232744567398-fclqsccnqab64tr6m727l69mpr7cmio8.apps.googleusercontent.com'
+      });
+      await GoogleSignin.signOut();
+   
+      await AsyncStorage.setItem('User', '')
+      await AsyncStorage.setItem('UserLoggedAt', '')
+      const User = JSON.parse(await AsyncStorage.getItem('User'))
       const UserLoggedAt = await AsyncStorage.getItem('UserLoggedAt')
-      if (UserLoggedAt === 'email/phone') {
-         await AsyncStorage.setItem('User', '')
-         await AsyncStorage.setItem('UserLoggedAt', '')
-         const User = JSON.parse(await AsyncStorage.getItem('User'))
-         const UserLoggedAt = await AsyncStorage.getItem('UserLoggedAt')
 
-         if (User === null) {
-            this.setState({ pageLoading: false, userLogged: false, loop: this.state.loop++, refresh: false })
-         } else {
-            this.setState({ pageLoading: false, userLogged: true, user: User, UserLoggedAt: UserLoggedAt, loop: this.state.loop, refresh: false })
-         }
-         this.props.navigation.navigate('AppAraScreen')
+      if (User === null) {
+         this.setState({ pageLoading: false, userLogged: false, loop: this.state.loop++, refresh: false })
+      } else {
+         this.setState({ pageLoading: false, userLogged: true, user: User, UserLoggedAt: UserLoggedAt, loop: this.state.loop, refresh: false })
       }
+      this.props.navigation.navigate('AppAraScreen')
    }
    render() {
       return (

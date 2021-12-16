@@ -41,7 +41,7 @@ class AstrologyView extends Component {
       data.element = gunluk.data[0].Elementi
       data.gezegen = gunluk.data[0].Gezegeni
       data.motto = gunluk.data[0].Mottosu
-      console.log(data)
+      //console.log(data)
       this.setState({ modalLoading: false, burcData: data })
    }
    render() {
@@ -206,13 +206,13 @@ const styles = StyleSheet.create({
    modalBurcMotto: { color: 'white', fontSize: 18, marginTop: 5 },
    modalBurcGezegen: { color: 'white', fontSize: 18, marginTop: 5 },
    modalBurcElement: { color: 'white', fontSize: 18, marginTop: 5 },
-   modalYorum: { padding: 15, justifyContent: 'center',maxHeight:400 },
+   modalYorum: { padding: 15, justifyContent: 'center', maxHeight: 450 },
    modalYorumTabs: { justifyContent: 'space-between', alignSelf: 'center', flexDirection: 'row', marginTop: 20 },
    modalYorumTabsButton: { padding: 10, justifyContent: 'center' },
    modalYorumTabsActiveButton: { padding: 10, justifyContent: 'center', borderBottomColor: '#ffa31a', borderBottomWidth: 1 },
    modalYorumTabsTitle: { alignSelf: 'center', color: 'white', fontSize: 20 },
-   modalYorumScrollView: { padding: 15,marginTop:10},
-   modalYorumText: { color: 'white', fontSize: 17, alignSelf: 'center' }
+   modalYorumScrollView: { padding: 15, marginTop: 10},
+   modalYorumText: { color: 'white', fontSize: 17, alignSelf: 'center',paddingBottom:25 }
 });
 
 

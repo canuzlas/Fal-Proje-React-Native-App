@@ -57,6 +57,7 @@ export default () => {
          } else {
             setRefresh(false)
             setViewPage(true)
+            setFal((oldArray) => [...oldArray, []])
             ToastAndroid.show("Bilgiler getirilemiyor", ToastAndroid.LONG)
          }
       } else {
