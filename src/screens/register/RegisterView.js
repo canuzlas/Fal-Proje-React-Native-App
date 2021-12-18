@@ -16,10 +16,10 @@ class RegisterView extends React.Component {
       super(props)
       this.state = {
          verifyCodePage: false,
-         firstStep: false,
+         firstStep: true,
          secondStep: false,
          thirdStep: false,
-         checkForUserStep: true,
+         checkForUserStep: false,
          showPass: false,
          sözlesmeModal: false,
          sending: false,

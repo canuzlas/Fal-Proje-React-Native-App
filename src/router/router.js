@@ -50,7 +50,7 @@ const TabNavigator = () => {
       <Tab.Screen options={{ tabBarIcon: ({ color }) => <CoffeeIcon name={'coffee'} color={color} size={30}></CoffeeIcon>, tabBarLabel: 'Fallarım',headerTitle:'Fallarım' }} component={Fallar} name='Fal' />
       <Tab.Screen options={{ tabBarIcon: ({ color }) => <IconFontAwesome name={'moon-o'} color={color} size={30}></IconFontAwesome>, tabBarLabel: 'Astroloji' }} component={AstrologyView} name='Astroloji' />
       <Tab.Screen options={{ tabBarIcon: ({ color }) => <IconFontAwesome name={'user-o'} color={color} size={30}></IconFontAwesome>, tabBarLabel: 'Profil',headerShown:false }} component={ProfileView} name='Profil' />
-    </Tab.Navigator>
+    </Tab.Navigator> 
   )
 }
 
@@ -58,7 +58,7 @@ class Router extends React.Component {
   render() {
     return (
       <NavigationContainer > 
-        <Stack.Navigator initialRouteName='Login' screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName='AppStartScreen' screenOptions={{ headerShown: false }}>
           <Stack.Screen component={TabNavigator} name={'Tab'} />
           <Stack.Screen component={AppStartScreen} name={'AppStartScreen'} />
           <Stack.Screen component={AppAraScreen} name={'AppAraScreen'} />

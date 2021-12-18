@@ -106,7 +106,11 @@ export default ({ navigation }) => {
                      setModal(false)
                   } else {
                      setModal(false)
-                     setPhoto(oldArray => [...oldArray, String(result.assets[0].uri)])
+                     setPhoto(oldArray => [...oldArray, {
+                        uri: result.assets[0].uri,
+                        type: result.assets[0].type,
+                        name: result.assets[0].fileName,
+                     }])
                      setFormVisible(true)
                   }
                } else {

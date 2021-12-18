@@ -129,7 +129,7 @@ export default ({ navigation }) => {
          </View>
          <View style={styles.body}>
 
-            <Image resizeMode='stretch' style={styles.profilePhoto} source={user.photo != 'false' ? { uri: 'https://fal-hub.herokuapp.com/' + user.photo } : require('../../assets/arascreengif/gif.gif')}></Image>
+            <Image resizeMode='center' style={styles.profilePhoto} source={user.photo != 'false' ? { uri: 'https://fal-hub.herokuapp.com/' + user.photo } : require('../../assets/arascreengif/gif.gif')}></Image>
 
             <TouchableOpacity onPress={() => editProfilePhoto()} style={styles.profilePhotoEdit}><PencilIcon name='pencil-alt' size={35} color={'#ffa31a'} /></TouchableOpacity>
             <View style={styles.form}>

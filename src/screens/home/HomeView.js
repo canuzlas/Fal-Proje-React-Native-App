@@ -2,7 +2,6 @@ import * as React from 'react';
 import { SafeAreaView, View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, RefreshControl, TextInput, Button, ImageBackground, ToastAndroid } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import PushNotification from 'react-native-push-notification';
 import Star from 'react-native-vector-icons/AntDesign'
 import Moon from 'react-native-vector-icons/FontAwesome'
 
@@ -31,65 +30,8 @@ class HomeView extends React.Component {
    }
    componentDidMount = async () => {
       const User = JSON.parse(await AsyncStorage.getItem('User'))
-      console.log(await AsyncStorage.getItem('token'))
       User ? ToastAndroid.show("Hoşgeldin " + User.name, ToastAndroid.LONG) : ToastAndroid.show("Hoşgeldin", ToastAndroid.LONG)
-
-      PushNotification.configure({
-         // (optional) Called when Token is generated (iOS and Android)
-         onRegister: function (token) {
-            return null
-         },
-         // (required) Called when a remote or local notification is opened or received
-         onNotification: async function (notification) {
-            console.log('REMOTE NOTIFICATION ==>', notification)
-            PushNotification.createChannel({
-               channelId: "1", // (required)
-               channelName: "Falhub", // (required)
-            });
-            try {
-               const res = await AsyncStorage.getItem('loginSession')
-               if (res == null) {
-                  PushNotification.localNotification({
-                     channelId: "1",
-                     //color: "red", // (optional) default: system default
-                     vibrate: true, // (optional) default: true
-                     title: notification.title,
-                     message: notification.message
-                  });
-               }
-            } catch (error) {
-               console.log(error)
-            }
-
-            // process the notification here
-         },
-         // Android only: GCM or FCM Sender ID
-         senderID: '232744567398',
-         popInitialNotification: true,
-         requestPermissions: true
-      })
-      /*
-      PushNotification.createChannel({
-         channelId: "1", // (required)
-         channelName: "Falhub", // (required)
-      });
-      try { 
-         const res = await AsyncStorage.getItem('loginSession')
-         if (res == null) { 
-            PushNotification.localNotification({
-               channelId: "1", 
-               smallIcon: "ic_launcher",
-               //color: "red", // (optional) default: system default
-               vibrate: true, // (optional) default: true
-               title: "Falhub'a Hoşgeldiniz",
-               message: "Falhub'da eşsiz bir deneyim için lütfen kayıt olup, giriş yapınız."
-            });
-         }
-      } catch (error) {
-         console.log(error) 
-      } */
    }
-
    render() {
       return (
          <View style={styles.container}>

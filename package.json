@@ -36,6 +36,7 @@
     "react-native-scl-alert": "^1.2.1",
     "react-native-screens": "^3.6.0",
     "react-native-select-dropdown": "^1.4.0",
+    "react-native-sound": "^0.11.1",
     "react-native-vector-icons": "^8.1.0",
     "tr-date": "^2.1.1",
     "validator": "^13.7.0"

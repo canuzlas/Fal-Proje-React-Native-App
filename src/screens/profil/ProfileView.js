@@ -95,7 +95,7 @@ class ProfileView extends React.Component {
                      <View style={styles.body}>
                         <View style={styles.profile}>
                            <View style={styles.profilePhotoView}>
-                              <Image style={styles.profilePhoto} resizeMode='stretch' source={this.state.user.photo != 'false' ? { uri: 'https://fal-hub.herokuapp.com/' + this.state.user.photo } : require('../../assets/arascreengif/gif.gif')} />
+                              <Image style={styles.profilePhoto} resizeMode='center' source={this.state.user.photo != 'false' ? { uri: 'https://fal-hub.herokuapp.com/' + this.state.user.photo } : require('../../assets/arascreengif/gif.gif')} />
                            </View>
                            <Text style={styles.profileName}>{this.state.user.name}</Text>
                            <TouchableOpacity onPress={() => this.props.navigation.navigate('EditProfile')} style={styles.profilePencilIcon}><PencilIcon name='pencil-alt' size={20} color={'#ffa31a'} /></TouchableOpacity>
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
    profile: { flexDirection: 'row', padding: 20, justifyContent: 'center', alignItems: 'center' },
    profilePhotoView: { justifyContent: 'center', position: 'absolute', top: 15, left: 15, width: 80, height: 80, backgroundColor: 'black', borderRadius: 50 },
    profilePhoto: { width: '100%', height: '100%', alignSelf: 'center', borderRadius: 100 },
-   profileName: { color: 'white', alignSelf: 'center', fontSize: 25, top: 15 },
+   profileName: { color: 'white', alignSelf: 'center', fontSize: 20, top: 15,maxWidth:'40%' },
    profilePencilIcon: { position: 'absolute', right: 25, top: 40, alignSelf: 'center' },
 
    //supportDeveloper
