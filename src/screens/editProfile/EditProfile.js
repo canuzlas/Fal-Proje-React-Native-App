@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 
    body: { justifyContent: 'center', marginTop: 20, padding: 20 },
 
-   profilePhoto: { width: 100, height: 100, alignSelf: 'center', width: 150, height: 150, borderRadius: 100 },
+   profilePhoto: { alignSelf: 'center', width: 150, height: 150, borderRadius: 75,overflow:'hidden' },
    profilePhotoEdit: { alignSelf: 'center' },
 
    form: { marginTop: 70 },
@@ -129,7 +129,7 @@ export default ({ navigation }) => {
          </View>
          <View style={styles.body}>
 
-            <Image resizeMode='center' style={styles.profilePhoto} source={user.photo != 'false' ? { uri: 'https://fal-hub.herokuapp.com/' + user.photo } : require('../../assets/arascreengif/gif.gif')}></Image>
+            <Image resizeMode='cover' style={styles.profilePhoto} source={user.photo != 'false' ? { uri: 'https://fal-hub.herokuapp.com/' + user.photo } : require('../../assets/arascreengif/gif.gif')}></Image>
 
             <TouchableOpacity onPress={() => editProfilePhoto()} style={styles.profilePhotoEdit}><PencilIcon name='pencil-alt' size={35} color={'#ffa31a'} /></TouchableOpacity>
             <View style={styles.form}>

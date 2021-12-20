@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
    container: { width: '100%', height: '100%', backgroundColor: 'black', padding: 20 },
    pageTitle: { color: 'white', alignSelf: 'center' },
 
-   renderItemView: { alignSelf: 'center', borderLeftWidth: 2, borderLeftColor: '#ffa31a', padding: 20, width: 300, marginVertical: 5 },
+   renderItemView: { alignSelf: 'center', borderLeftWidth: 2, borderLeftColor: '#ffa31a', padding: 20, width: 300, marginVertical: 5},
    renderItemTıtle: { alignSelf: 'flex-start', color: 'white' },
    renderItemDate: { position: 'absolute', alignSelf: 'center', right: 15, color: 'white' },
 
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
    modalTitle: { position: 'absolute', alignSelf: 'center', color: 'white', fontSize: 20, fontWeight: '600', left: 15 },
    modalTime: { position: 'absolute', alignSelf: 'center', right: 15, top: 60, color: 'white', fontSize: 12, fontWeight: '600' },
    modalScrollView: { padding: 15, marginTop: 15 },
-   modalScrollViewText: { color: 'white', fontWeight: '600', fontSize: 18, justifyContent: 'center' }
+   modalScrollViewText: { color: 'white', fontWeight: '600', fontSize: 18, justifyContent: 'center',paddingBottom:20 }
 })
 
 export default () => {
@@ -128,9 +128,9 @@ export default () => {
                   </View>
                </View>
                <View style={styles.body}>
-                  <ScrollView refreshControl={<RefreshControl refreshing={refresh} onRefresh={() => refreshPage()}></RefreshControl>}>
+                  <ScrollView style={{marginBottom:120}} refreshControl={<RefreshControl refreshing={refresh} onRefresh={() => refreshPage()}></RefreshControl>}>
                      {
-                        !buttonActive ?
+                        !buttonActive ? 
                            fallar[0] !== undefined ?
                               fallar[0].length == 0 ?
                                  <Text style={{ color: 'white' }}>Mevcut falınız yok sayfayı yenileyin</Text>
