@@ -17,6 +17,7 @@ class LoginView extends React.Component {
          userNameIsEmpty: false,
          passwordIsEmpty: false,
          securityText: true,
+         googleVerifyId: null,
          email: null,
          password: null
       }
@@ -64,6 +65,10 @@ class LoginView extends React.Component {
       this.props.navigation.goBack()
    }
    componentDidMount = async () => {
+      await GoogleSignin.configure({
+         webClientId: '232744567398-fclqsccnqab64tr6m727l69mpr7cmio8.apps.googleusercontent.com'
+      });
+      await GoogleSignin.signOut();
       if (this.props.alertInfo == undefined) null
       if (this.props.alertInfo === 'thanLogin') {
          //Alert.alert('Bilgilendirme', 'Profil sayfasına girmek için giriş yap.!', [{ text: 'tamam' }])
@@ -87,40 +92,54 @@ class LoginView extends React.Component {
 
          await GoogleSignin.hasPlayServices();
          const userInfo = await GoogleSignin.signIn();
-         const resultVerifyEmail = await Axios.default.post('https://fal-hub.herokuapp.com/api/checkEmail', { mail: userInfo.user.email })
+         await this.setState({ googleVerifyId: userInfo.idToken })
+         const resultVerifyEmail = await Axios.default.post('https://fal-hub.herokuapp.com/api/checkEmail?forgoogle=true', { verifyCode: this.state.googleVerifyId, secretPass: 'AqWqRq34252234ASADafasd+^dfsdf', mail: userInfo.user.email })
          if (resultVerifyEmail.data.success) {
             // kayıt
-            const result = await Axios.default.post('https://fal-hub.herokuapp.com/api/register?method=google', { mail: userInfo.user.email, name: userInfo.user.name, password: 'googleSignUp', token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId() })
+            console.log(resultVerifyEmail.data)
+            if (this.state.googleVerifyId === resultVerifyEmail.data.verifyCode) {
+               const result = await Axios.default.post('https://fal-hub.herokuapp.com/api/register?method=google', { verifyCode: resultVerifyEmail.data.verifyCode, secretPass: 'AqWqRq34252234ASADafasd+^dfsdf', mail: userInfo.user.email, name: userInfo.user.name, password: 'googleSignUp', token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId() })
 
-            if (result.data.success) {
-               ToastAndroid.show("Kayıt Olma Başarılı", ToastAndroid.LONG)
-               await AsyncStorage.setItem('User', JSON.stringify(result.data.data))
-               await AsyncStorage.setItem('UserLoggedAt', 'google')
-               await AsyncStorage.setItem('coffeeCount', JSON.stringify(result.data.coffeeCount))
-               this.props.navigation.navigate('Tab')
-            } else {
-               ToastAndroid.show("Hata", ToastAndroid.LONG)
-            }
-
-         } else {
-            //login
-            const result = await Axios.default.post('https://fal-hub.herokuapp.com/api/login?method=google', { mail: userInfo.user.email, token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId() })
-            console.log(result.data)
-            if (result.data.success == 'error') {
-               ToastAndroid.show("Hata.!", ToastAndroid.LONG)
-            } else {
                if (result.data.success) {
-
-                  ToastAndroid.show("Giriş Başarılı", ToastAndroid.LONG)
-                  await AsyncStorage.setItem('User', JSON.stringify(result.data.data[0]))
-                  await AsyncStorage.setItem('coffeeCount', JSON.stringify(result.data.coffeeCount))
+                  this.setState({ googleVerifyId: null })
+                  ToastAndroid.show("Kayıt Olma Başarılı", ToastAndroid.LONG)
+                  await AsyncStorage.setItem('User', JSON.stringify(result.data.data))
                   await AsyncStorage.setItem('UserLoggedAt', 'google')
                   await AsyncStorage.setItem('coffeeCount', JSON.stringify(result.data.coffeeCount))
-
                   this.props.navigation.navigate('Tab')
                } else {
-                  ToastAndroid.show("Hata.!", ToastAndroid.LONG)
+                  this.setState({ googleVerifyId: null })
+                  ToastAndroid.show("Hata", ToastAndroid.LONG)
                }
+            } else {
+               this.setState({ googleVerifyId: null })
+               ToastAndroid.show("Hata", ToastAndroid.LONG)
+            }
+         } else {
+            //login
+            const result = await Axios.default.post('https://fal-hub.herokuapp.com/api/login?method=google', { verifyCode: this.state.googleVerifyId,secretPass: 'AqWqRq34252234ASADafasd+^dfsdf', mail: userInfo.user.email, token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId() })
+
+            if (this.state.googleVerifyId === resultVerifyEmail.data.verifyCode) {
+               if (result.data.success == 'error') {
+                  ToastAndroid.show("Hata.!", ToastAndroid.LONG)
+               } else {
+                  if (result.data.success) {
+                     this.setState({ googleVerifyId: null })
+                     ToastAndroid.show("Giriş Başarılı", ToastAndroid.LONG)
+                     await AsyncStorage.setItem('User', JSON.stringify(result.data.data[0]))
+                     await AsyncStorage.setItem('coffeeCount', JSON.stringify(result.data.coffeeCount))
+                     await AsyncStorage.setItem('UserLoggedAt', 'google')
+                     await AsyncStorage.setItem('coffeeCount', JSON.stringify(result.data.coffeeCount))
+
+                     this.props.navigation.navigate('Tab')
+                  } else {
+                     this.setState({ googleVerifyId: null })
+                     ToastAndroid.show("Hata.!", ToastAndroid.LONG)
+                  }
+               }
+            } else {
+               this.setState({ googleVerifyId: null })
+               ToastAndroid.show("Hata.!", ToastAndroid.LONG)
             }
          }
       } catch (error) {

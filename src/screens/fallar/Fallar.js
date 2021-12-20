@@ -4,6 +4,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Axios from 'axios'
 import DeviceInfo from 'react-native-device-info'
 import CloseIcon from 'react-native-vector-icons/AntDesign';
+import NormalNotiIcon from 'react-native-vector-icons/Ionicons';
+import WarningNotiIcon from 'react-native-vector-icons/AntDesign';
+
+
 
 const styles = StyleSheet.create({
    //pageloading styles
@@ -14,7 +18,8 @@ const styles = StyleSheet.create({
    container: { width: '100%', height: '100%', backgroundColor: 'black', padding: 20 },
    pageTitle: { color: 'white', alignSelf: 'center' },
 
-   renderItemView: { alignSelf: 'center', borderLeftWidth: 2, borderLeftColor: '#ffa31a', padding: 20, width: 300, marginVertical: 5},
+   renderItemView: { alignSelf: 'center', borderLeftWidth: 2, borderLeftColor: '#ffa31a', padding: 20, width: 300, marginVertical: 5 },
+   renderItemViewBorderRight: { alignSelf: 'center', borderRightWidth: 2, borderRightColor: '#ffa31a', padding: 20, width: 300, marginVertical: 5 },
    renderItemTıtle: { alignSelf: 'flex-start', color: 'white' },
    renderItemDate: { position: 'absolute', alignSelf: 'center', right: 15, color: 'white' },
 
@@ -32,7 +37,7 @@ const styles = StyleSheet.create({
    modalTitle: { position: 'absolute', alignSelf: 'center', color: 'white', fontSize: 20, fontWeight: '600', left: 15 },
    modalTime: { position: 'absolute', alignSelf: 'center', right: 15, top: 60, color: 'white', fontSize: 12, fontWeight: '600' },
    modalScrollView: { padding: 15, marginTop: 15 },
-   modalScrollViewText: { color: 'white', fontWeight: '600', fontSize: 18, justifyContent: 'center',paddingBottom:20 }
+   modalScrollViewText: { color: 'white', fontWeight: '600', fontSize: 18, justifyContent: 'center', paddingBottom: 20 }
 })
 
 export default () => {
@@ -40,6 +45,7 @@ export default () => {
    const [user, setUser] = useState({})
    const [refresh, setRefresh] = useState(false)
    const [fallar, setFal] = useState([])
+   const [bildirimler, setBildirim] = useState([])
    const [viewPage, setViewPage] = useState(false)
    const [modal, setModal] = useState(false)
    const [willShowFal, setWillShowFal] = useState([])
@@ -54,10 +60,12 @@ export default () => {
             setRefresh(false)
             setViewPage(true)
             setFal((oldArray) => [...oldArray, fals.data.data])
+            setBildirim((oldArray) => [...oldArray, fals.data.notifications])
          } else {
             setRefresh(false)
             setViewPage(true)
             setFal((oldArray) => [...oldArray, []])
+            setBildirim((oldArray) => [...oldArray, []])
             ToastAndroid.show("Bilgiler getirilemiyor", ToastAndroid.LONG)
          }
       } else {
@@ -91,6 +99,7 @@ export default () => {
    const refreshPage = async () => {
       setRefresh(true)
       setFal([])
+      setBildirim([])
       const _user = JSON.parse(await AsyncStorage.getItem('User'))
       setUser(_user)
       if (_user !== null) {
@@ -98,11 +107,14 @@ export default () => {
          if (fals.data.success) {
             setRefresh(false)
             setFal((oldArray) => [...oldArray, fals.data.data])
+            setBildirim((oldArray) => [...oldArray, fals.data.notifications])
          } else {
             setRefresh(false)
+            setFal((oldArray) => [...oldArray, []])
+            setBildirim((oldArray) => [...oldArray, []])
             ToastAndroid.show("Bilgiler getirilemiyor", ToastAndroid.LONG)
          }
-      }else{
+      } else {
          setRefresh(false)
       }
    }
@@ -128,9 +140,9 @@ export default () => {
                   </View>
                </View>
                <View style={styles.body}>
-                  <ScrollView style={{marginBottom:120}} refreshControl={<RefreshControl refreshing={refresh} onRefresh={() => refreshPage()}></RefreshControl>}>
+                  <ScrollView style={{ marginBottom: 120 }} refreshControl={<RefreshControl refreshing={refresh} onRefresh={() => refreshPage()}></RefreshControl>}>
                      {
-                        !buttonActive ? 
+                        !buttonActive ?
                            fallar[0] !== undefined ?
                               fallar[0].length == 0 ?
                                  <Text style={{ color: 'white' }}>Mevcut falınız yok sayfayı yenileyin</Text>
@@ -141,9 +153,27 @@ export default () => {
                                     )
                                  })
                               :
-                              null
+                              <Text style={{ color: 'white' }}>Yenileniyor..</Text>
                            :
-                           <Text style={{ color: 'white' }}>Bildirim Mevcut Değil</Text>
+                           bildirimler[0] !== undefined ?
+                              bildirimler[0].length == 0 ?
+                                 <Text style={{ color: 'white' }}>Bildirim Mevcut Değil</Text>
+                                 :
+                                 bildirimler[0].map((item, i) => {
+                                    return (
+                                       <View key={i} style={styles.renderItemViewBorderRight}>
+                                          <View style={{ flexDirection: 'row' }}>
+                                             {item.notificationType === 'normal' ? <NormalNotiIcon style={{ marginRight: 5, alignSelf: 'center' }} name='notifications-outline' color={'white'} size={25}></NormalNotiIcon>
+                                                : item.notificationType === 'warning' ?
+                                                   <WarningNotiIcon style={{ marginRight: 5, alignSelf: 'center' }} name='warning' color={'yellow'} size={25}></WarningNotiIcon>
+                                                   : <WarningNotiIcon style={{ marginRight: 5, alignSelf: 'center' }} name='warning' color={'red'} size={25}></WarningNotiIcon>}
+                                             <Text style={styles.renderItemTıtle}>{item.notificationText}</Text>
+                                          </View>
+                                       </View>
+                                    )
+                                 })
+                              :
+                              <Text style={{ color: 'white' }}>Yenileniyor..</Text>
                      }
                   </ScrollView>
                </View>
