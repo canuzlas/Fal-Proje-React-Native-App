@@ -140,13 +140,13 @@ class LoginView extends React.Component {
          }
       } catch (error) {
          if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-            ToastAndroid.show(error, ToastAndroid.LONG)
+            ToastAndroid.show('Giriş iptal edildi', ToastAndroid.LONG)
          } else if (error.code === statusCodes.IN_PROGRESS) {
-            ToastAndroid.show(error, ToastAndroid.LONG)
+            ToastAndroid.show(String(error), ToastAndroid.LONG)
          } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-            ToastAndroid.show(error, ToastAndroid.LONG)
+            ToastAndroid.show('Play Servis Bulunamadı', ToastAndroid.LONG)
          } else {
-            ToastAndroid.show(error, ToastAndroid.LONG)
+            ToastAndroid.show(String(error), ToastAndroid.LONG)
          }
       }
 
