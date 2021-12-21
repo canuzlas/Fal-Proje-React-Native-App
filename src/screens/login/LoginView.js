@@ -65,10 +65,6 @@ class LoginView extends React.Component {
       this.props.navigation.goBack()
    }
    componentDidMount = async () => {
-      await GoogleSignin.configure({
-         webClientId: '232744567398-fclqsccnqab64tr6m727l69mpr7cmio8.apps.googleusercontent.com'
-      });
-      await GoogleSignin.signOut();
       if (this.props.alertInfo == undefined) null
       if (this.props.alertInfo === 'thanLogin') {
          //Alert.alert('Bilgilendirme', 'Profil sayfasına girmek için giriş yap.!', [{ text: 'tamam' }])

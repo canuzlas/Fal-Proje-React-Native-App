@@ -33,12 +33,18 @@ const styles = StyleSheet.create({
 export default ({ navigation }) => {
    const [appversion, setVersion] = useState(null)
    const [userIsAdmin, setUserIsAdmin] = useState(false)
+   const [userIsVerifyToMail, setUserIsVerifyToMail] = useState(false)
 
    useEffect(async () => {
       setVersion(version)
       const user = JSON.parse(await AsyncStorage.getItem('User'))
       if (user.mail === 'canuzlass@gmail.com') {
          setUserIsAdmin(true)
+      }
+      if (user.verify == true) {
+         setUserIsVerifyToMail(false)
+      }else{
+         setUserIsVerifyToMail(true)
       }
    }, [])
 
@@ -55,6 +61,18 @@ export default ({ navigation }) => {
                <SettingsIcon style={styles.webPageRightIcon} name='arrowright' color={'white'} size={20} />
             </View>
          </TouchableOpacity>
+
+         {userIsVerifyToMail ? <TouchableOpacity style={{ justifyContent: 'center', padding: 20, width: '100%' }} onPress={() => navigation.navigate('VerifyToMail')}>
+            <View style={styles.adminPage}>
+               <AdminIcon style={styles.adminPageIcon} name='verified' color={'#ffa31a'} size={30} />
+               <Text style={styles.adminPageText}>Hesabını Onayla</Text>
+               <SettingsIcon style={styles.adminPageRightIcon} name='arrowright' color={'white'} size={20} />
+            </View>
+         </TouchableOpacity>
+            :
+            null}
+
+         {/* Admin */}
          {userIsAdmin ? <TouchableOpacity style={{ justifyContent: 'center', padding: 20, position: 'absolute', bottom: 50, width: '100%' }} onPress={() => navigation.navigate('AdminPanelWeb')}>
             <View style={styles.adminPage}>
                <AdminIcon style={styles.adminPageIcon} name='admin-panel-settings' color={'#ffa31a'} size={30} />
@@ -62,8 +80,9 @@ export default ({ navigation }) => {
                <SettingsIcon style={styles.adminPageRightIcon} name='arrowright' color={'white'} size={20} />
             </View>
          </TouchableOpacity>
-            : 
+            :
             null}
+         {/* Admin */}
          <View style={styles.version}>
             <Text style={styles.appVersion}>{appversion}</Text>
          </View>

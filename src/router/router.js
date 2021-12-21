@@ -21,6 +21,7 @@ import Fallar from '../screens/fallar/Fallar';
 import SupportToDeveloper from '../screens/supportToDev/SupportToDeveloper';
 import AdminPanelWeb from '../screens/adminPanelWeb/AdminPanelWeb';
 import FalhubCom from '../screens/falhubCom/FalhubCom';
+import VerifyToMail from '../screens/verifyToMail/VerifyToMail';
 
 /* components imports */
 import HomeHeader from '../components/HomeHeader';
@@ -48,7 +49,7 @@ const TabNavigator = () => {
   )
 }
 
-class Router extends React.Component {
+class Router extends React.Component { 
   render() {
     return (
       <NavigationContainer >
@@ -64,6 +65,7 @@ class Router extends React.Component {
           <Stack.Screen component={SupportToDeveloper} name={'SupportToDeveloper'} />
           <Stack.Screen component={AdminPanelWeb} name={'AdminPanelWeb'} />
           <Stack.Screen component={FalhubCom} name={'FalhubCom'} />
+          <Stack.Screen component={VerifyToMail} name={'VerifyToMail'} />
         </Stack.Navigator>
       </NavigationContainer>
     )

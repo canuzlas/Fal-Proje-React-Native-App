@@ -6,7 +6,6 @@ import DeviceInfo from 'react-native-device-info';
 import Icon from 'react-native-vector-icons/Ionicons';
 import validator from 'validator'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import CodeInput from 'react-native-confirmation-code-input';
 import NextIcon from 'react-native-vector-icons/MaterialIcons'
 import EyeIcon from 'react-native-vector-icons/Feather'
 import Sözlesme from '../../components/Sözlesme';
@@ -28,38 +27,9 @@ class RegisterView extends React.Component {
          pass: null
       }
    }
-   /* 
-    componentDidMount = async () => {
-      const randomCode = await Math.floor(100000 + Math.random() * 900000)
-      await AsyncStorage.setItem("verifyCode", String(randomCode))
-      alert(parseInt(await AsyncStorage.getItem("verifyCode")))
-   }
-   componentWillUnmount = async () => {
-      this.setState = (state, callback) => {
-         return;
-      };
-   }
-
-   const randomCode = await Math.floor(100000 + Math.random() * 900000)
-                     await AsyncStorage.setItem("verifyCode", String(randomCode))
-                     console.log(randomCode)
-                     this.setState({ verifyCodePage: true })
-   */
 
    goBack = () => {
       this.props.navigation.goBack()
-   }
-
-   _onFulfill = async (code) => {
-      const verifyCode = await AsyncStorage.getItem('verifyCode')
-      if (code == verifyCode) {
-         const user = { "ad soyad": "can uzlas", "phone number": "36473547354", "email": "canuzlas@askfkasnf" }
-         await AsyncStorage.setItem("User", JSON.stringify(user))
-         await AsyncStorage.setItem("UserLoggedAt", "email/phone")
-         this.props.navigation.navigate('Tab')
-      } else {
-         alert('Yanlış Şifre')
-      }
    }
 
    checkFristStep = () => {
@@ -131,88 +101,66 @@ class RegisterView extends React.Component {
                <Text style={styles.pageLoadingText}>Kayıt Olunuyor..</Text>
             </View>
             :
-            this.state.verifyCodePage ?
-               <View style={styles.container}>
-                  <View style={styles.header}>
-                     <Text style={styles.headerText}>Hesabını Onayla</Text>
-                  </View>
-                  <View style={styles.logoView}>
-                     <Image style={styles.loginLogo} source={require('../../assets/logo/FH_LOGO.png')}></Image>
-                  </View>
-                  <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center', marginTop: 10 }}>Lütfen Emailinize veya telefonunuza gelen şifreyi giriniz.</Text>
-                  <CodeInput
-                     containerStyle={{ alignSelf: 'center' }}
-                     activeColor={'#ffa31a'}
-                     className={'border-b'}
-                     keyboardType="numeric"
-                     space={6}
-                     size={50}
-                     codeLength={6}
-                     inputPosition='left'
-                     onFulfill={(code) => this._onFulfill(code)}
-                  />
+            <View style={styles.container}>
+               <View style={styles.header}>
+                  <TouchableOpacity style={styles.backButton} onPress={this.goBack}><Icon name='chevron-back-outline' size={30} color={'#ffa31a'} /></TouchableOpacity>
+                  <Text style={styles.headerText}>Ücretsiz Kaydol</Text>
                </View>
-               :
-               <View style={styles.container}>
-                  <View style={styles.header}>
-                     <TouchableOpacity style={styles.backButton} onPress={this.goBack}><Icon name='chevron-back-outline' size={30} color={'#ffa31a'} /></TouchableOpacity>
-                     <Text style={styles.headerText}>Ücretsiz Kaydol</Text>
-                  </View>
-                  <View style={styles.logoView}>
-                     <Image style={styles.loginLogo} source={require('../../assets/logo/FH_LOGO.png')}></Image>
-                  </View>
+               <View style={styles.logoView}>
+                  <Image style={styles.loginLogo} source={require('../../assets/logo/FH_LOGO.png')}></Image>
+               </View>
 
-                  {this.state.firstStep ? <View style={styles.firstStepView}>
-                     <Text style={styles.firstStepText}>FalHub'a hoşgeldin, kaydolmak için yapman gereken ilk adım ismini girmek. Lütfen bizi kandırma :(</Text>
-                     <TextInput value={this.state.name} onChangeText={(text) => this.setState({ name: String(text) })} placeholder='Adınız' placeholderTextColor={'white'} style={styles.firstStepTextInput}></TextInput>
-                     <TouchableOpacity onPress={this.checkFristStep} style={styles.firstStepNextButton} ><NextIcon name={'navigate-next'} color={'white'} size={70} ></NextIcon></TouchableOpacity>
-                  </View> : null}
+               {this.state.firstStep ? <View style={styles.firstStepView}>
+                  <Text style={styles.firstStepText}>FalHub'a hoşgeldin, kaydolmak için yapman gereken ilk adım ismini girmek. Lütfen bizi kandırma :(</Text>
+                  <TextInput value={this.state.name} onChangeText={(text) => this.setState({ name: String(text) })} placeholder='Adınız' placeholderTextColor={'white'} style={styles.firstStepTextInput}></TextInput>
+                  <TouchableOpacity onPress={this.checkFristStep} style={styles.firstStepNextButton} ><NextIcon name={'navigate-next'} color={'white'} size={70} ></NextIcon></TouchableOpacity>
+               </View> : null}
 
-                  {this.state.secondStep ? <View style={styles.secondStepView}>
-                     <Text style={styles.secondStepText}>Şimdi sıra mail adresinde, haydi bize şu havalı mail adresini göster :)</Text>
-                     <TouchableOpacity onPress={() => this.setState({ secondStep: false, firstStep: true })} style={styles.formBackText}><Text style={{ color: 'white' }}>Geri dön(isim)..</Text></TouchableOpacity>
-                     <TextInput value={this.state.mail} onChangeText={(text) => this.setState({ mail: text })} placeholder='Mail' placeholderTextColor={'white'} style={styles.secondStepTextInput}></TextInput>
-                     <TouchableOpacity onPress={this.checkSecondStep} style={styles.secondStepNextButton} ><NextIcon name={'navigate-next'} color={'white'} size={70} ></NextIcon></TouchableOpacity>
-                  </View> : null}
+               {this.state.secondStep ? <View style={styles.secondStepView}>
+                  <Text style={styles.secondStepText}>Şimdi sıra mail adresinde, haydi bize şu havalı mail adresini göster :)</Text>
+                  <TouchableOpacity onPress={() => this.setState({ secondStep: false, firstStep: true })} style={styles.formBackText}><Text style={{ color: 'white' }}>Geri dön(isim)..</Text></TouchableOpacity>
+                  <TextInput value={this.state.mail} onChangeText={(text) => this.setState({ mail: text })} placeholder='Mail' placeholderTextColor={'white'} style={styles.secondStepTextInput}></TextInput>
+                  <TouchableOpacity onPress={this.checkSecondStep} style={styles.secondStepNextButton} ><NextIcon name={'navigate-next'} color={'white'} size={70} ></NextIcon></TouchableOpacity>
+               </View> : null}
 
-                  {this.state.thirdStep ? <View style={styles.thirdStepView}>
-                     <Text style={styles.thirdStepText}>Şimdi en önemli kısıma geldik. Merak etme kafamı çevirdim. Bakmıyorum  :)</Text>
-                     <TouchableOpacity onPress={() => this.setState({ thirdStep: false, secondStep: true })} style={styles.formBackText}><Text style={{ color: 'white' }}>Geri dön(mail)..</Text></TouchableOpacity>
-                     <TextInput value={this.state.pass} onChangeText={(text) => this.setState({ pass: text })} placeholder='Şifreniz' secureTextEntry={true} placeholderTextColor={'white'} style={styles.thirdStepTextInput}></TextInput>
-                     <TouchableOpacity onPress={this.checkthirdStep} style={styles.thirdStepNextButton} ><NextIcon name={'navigate-next'} color={'white'} size={70} ></NextIcon></TouchableOpacity>
-                  </View> : null}
+               {this.state.thirdStep ? <View style={styles.thirdStepView}>
+                  <Text style={styles.thirdStepText}>Şimdi en önemli kısıma geldik. Merak etme kafamı çevirdim. Bakmıyorum  :)</Text>
+                  <TouchableOpacity onPress={() => this.setState({ thirdStep: false, secondStep: true })} style={styles.formBackText}><Text style={{ color: 'white' }}>Geri dön(mail)..</Text></TouchableOpacity>
+                  <TextInput value={this.state.pass} onChangeText={(text) => this.setState({ pass: text })} placeholder='Şifreniz' secureTextEntry={true} placeholderTextColor={'white'} style={styles.thirdStepTextInput}></TextInput>
+                  <TouchableOpacity onPress={this.checkthirdStep} style={styles.thirdStepNextButton} ><NextIcon name={'navigate-next'} color={'white'} size={70} ></NextIcon></TouchableOpacity>
+               </View> : null}
 
 
-                  {this.state.checkForUserStep ?
+               {this.state.checkForUserStep ?
 
 
-                     <View style={styles.checkForUserStepView}>
-                        <Text style={{ color: 'white', fontSize: 15 }}>Aşağıda girmiş olduğunuz bilgiler yer almaktadır lütfen kontrol edin.!</Text>
-                        <Text style={{ color: 'white', fontSize: 20, marginTop: 40 }}>Adınız : <Text style={{ color: '#ffa31a' }}>{this.state.name}</Text></Text>
-                        <Text style={{ color: 'white', fontSize: 20, marginTop: 5 }}>Mail Adresiniz : <Text style={{ color: '#ffa31a' }}>{this.state.mail}</Text></Text>
-                        <View style={{ flexDirection: 'row', marginTop: 5 }}>
-                           <Text style={{ color: 'white', fontSize: 20, }}>Şifreniz : {this.state.showPass ? <Text style={{ color: '#ffa31a' }}>{this.state.pass}</Text> : <Text style={{ color: '#ffa31a' }}>********</Text>}</Text>
-                           <TouchableOpacity onPress={() => this.setState({ showPass: !this.state.showPass })} style={{ justifyContent: 'center', marginLeft: 10 }}>{this.state.showPass ? <EyeIcon name='eye' color={'white'} size={30}></EyeIcon> : <EyeIcon name='eye-off' color={'white'} size={20}></EyeIcon>}</TouchableOpacity>
-                        </View>
-
-                        <TouchableOpacity onPress={() => this.setState({ thirdStep: true, checkForUserStep: false })} style={styles.formBackText}><Text style={{ color: 'white' }}>Geri dön(sifre)..</Text></TouchableOpacity>
-
-                        <TouchableOpacity onPress={() => this.signUp()} style={styles.formButton}><Text style={styles.formButtonText}>Kaydol</Text></TouchableOpacity>
-                        <Text style={{ color: 'white', fontSize: 12, marginTop: 10 }}><TouchableOpacity onPress={() => this.setState({ sözlesmeModal: true })}><Text style={{ color: '#ffa31a', fontSize: 13 }}>***Üyelik Sözleşmesi***</Text></TouchableOpacity>'ni okudum, kabul ediyorum.</Text>
-
-                        <Modal
-                           animationType={"slide"}
-                           transparent={true}
-                           visible={this.state.sözlesmeModal}
-                        >
-                           <ScrollView style={{ width: '75%', height: '60%', alignSelf: 'center', top: '10%', backgroundColor: 'black' }}>
-                              {this.props.Sözlesme(this.closeModal)}
-                           </ScrollView>
-                        </Modal>
-
+                  <View style={styles.checkForUserStepView}>
+                     <Text style={{ color: 'white', fontSize: 15 }}>Aşağıda girmiş olduğunuz bilgiler yer almaktadır lütfen kontrol edin.!</Text>
+                     <Text style={{ color: 'white', fontSize: 20, marginTop: 40 }}>Adınız : <Text style={{ color: '#ffa31a' }}>{this.state.name}</Text></Text>
+                     <Text style={{ color: 'white', fontSize: 20, marginTop: 5 }}>Mail Adresiniz : <Text style={{ color: '#ffa31a' }}>{this.state.mail}</Text></Text>
+                     <View style={{ flexDirection: 'row', marginTop: 5 }}>
+                        <Text style={{ color: 'white', fontSize: 20, }}>Şifreniz : {this.state.showPass ? <Text style={{ color: '#ffa31a' }}>{this.state.pass}</Text> : <Text style={{ color: '#ffa31a' }}>********</Text>}</Text>
+                        <TouchableOpacity onPress={() => this.setState({ showPass: !this.state.showPass })} style={{ justifyContent: 'center', marginLeft: 10 }}>{this.state.showPass ? <EyeIcon name='eye' color={'white'} size={30}></EyeIcon> : <EyeIcon name='eye-off' color={'white'} size={20}></EyeIcon>}</TouchableOpacity>
                      </View>
-                     : null}
-               </View>
+
+                     <TouchableOpacity onPress={() => this.setState({ thirdStep: true, checkForUserStep: false })} style={styles.formBackText}><Text style={{ color: 'white' }}>Geri dön(sifre)..</Text></TouchableOpacity>
+
+                     <TouchableOpacity onPress={() => this.signUp()} style={styles.formButton}><Text style={styles.formButtonText}>Kaydol</Text></TouchableOpacity>
+                     <Text style={{ color: 'white', fontSize: 12, marginTop: 10 }}><TouchableOpacity onPress={() => this.setState({ sözlesmeModal: true })}><Text style={{ color: '#ffa31a', fontSize: 13 }}>***Üyelik Sözleşmesi***</Text></TouchableOpacity>'ni okudum, kabul ediyorum.</Text>
+
+                     <Modal
+                        animationType={"slide"}
+                        transparent={true}
+                        visible={this.state.sözlesmeModal}
+                     >
+                        <ScrollView style={{ width: '75%', height: '60%', alignSelf: 'center', top: '10%', backgroundColor: 'black' }}>
+                           {this.props.Sözlesme(this.closeModal)}
+                        </ScrollView>
+                     </Modal>
+
+                  </View>
+                  : null}
+            </View>
       )
    }
 
