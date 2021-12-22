@@ -30,10 +30,10 @@ class AstrologyView extends Component {
 
       })
       this.setState({ isVisible: true })
-      const gunluk = await axios.default.get("https://burc-yorumlari.herokuapp.com/get/" + route)
-      const haftalik = await axios.default.get("https://burc-yorumlari.herokuapp.com/get/" + route + "/haftalik")
-      const aylik = await axios.default.get("https://burc-yorumlari.herokuapp.com/get/" + route + "/aylik")
-      const yillik = await axios.default.get("https://burc-yorumlari.herokuapp.com/get/" + route + "/yillik")
+      const gunluk = await axios.default.get("http://10.0.2.2:3000/burc/api/get/" + route)
+      const haftalik = await axios.default.get("http://10.0.2.2:3000/burc/api/get/" + route + "/haftalik")
+      const aylik = await axios.default.get("http://10.0.2.2:3000/burc/api/get/" + route + "/aylik")
+      const yillik = await axios.default.get("http://10.0.2.2:3000/burc/api/get/" + route + "/yillik")
       data.gunluk = gunluk.data[0]
       data.haftalik = haftalik.data[0]
       data.aylik = aylik.data[0]

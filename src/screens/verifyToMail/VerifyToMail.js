@@ -39,7 +39,7 @@ export default ({ navigation }) => {
     }, [])
 
     const verifyToMail = async () => {
-        const result = await Axios.default.post('https://fal-hub.herokuapp.com/api/verifytomail', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), id: user._id })
+        const result = await Axios.default.post('http://10.0.2.2:3000/api/verifytomail', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), id: user._id })
         if (result.data.success) {
             await AsyncStorage.setItem('VerifyCode', JSON.stringify(result.data.verifyCode))
             setStepOne(false)
@@ -52,7 +52,7 @@ export default ({ navigation }) => {
     const _onFulfill = async (code) => {
         const verifyCode = await AsyncStorage.getItem('VerifyCode')
         if (code == verifyCode) {
-            const result = await Axios.default.post('https://fal-hub.herokuapp.com/api/verifytomail?updateverify=true', { verifyCode: code, token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), id: user._id })
+            const result = await Axios.default.post('http://10.0.2.2:3000/api/verifytomail?updateverify=true', { verifyCode: code, token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), id: user._id })
             if (result.data.success) {
                 const User = JSON.parse(await AsyncStorage.getItem('User'))
                 User.verify = true
@@ -74,7 +74,7 @@ export default ({ navigation }) => {
             </View>
             {stepOne ?
                 <View style={styles.stepOneView}>
-                    <Image resizeMode='cover' style={styles.profilePhoto} source={user.photo != 'false' ? { uri: 'https://fal-hub.herokuapp.com/' + user.photo } : require('../../assets/arascreengif/gif.gif')}></Image>
+                    <Image resizeMode='cover' style={styles.profilePhoto} source={user.photo != 'false' ? { uri: 'http://10.0.2.2:3000/' + user.photo } : require('../../assets/arascreengif/gif.gif')}></Image>
 
                     <Text style={styles.stepOneText}>Mailiniz :<Text style={{ fontWeight: 'bold' }}>{user.mail}</Text></Text>
                     <TouchableOpacity onPress={() => verifyToMail()} style={styles.stepOneButton}>

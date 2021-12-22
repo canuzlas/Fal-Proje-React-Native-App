@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
    pageTitle: { color: 'white', alignSelf: 'center' },
 
    renderItemView: { alignSelf: 'center', borderLeftWidth: 2, borderLeftColor: '#ffa31a', padding: 20, width: 300, marginVertical: 5 },
-   renderItemViewBorderRight: { alignSelf: 'center', borderRightWidth: 2, borderRightColor: '#ffa31a', padding: 20, width: 300, marginVertical: 5 },
+   renderItemViewBorderRight: { alignSelf: 'center', padding: 20, width: 300, marginVertical: 5 },
    renderItemTıtle: { alignSelf: 'flex-start', color: 'white' },
    renderItemDate: { position: 'absolute', alignSelf: 'center', right: 15, color: 'white' },
 
@@ -55,7 +55,7 @@ export default () => {
       const _user = JSON.parse(await AsyncStorage.getItem('User'))
       setUser(_user)
       if (_user !== null) {
-         const fals = await Axios.default.post('https://fal-hub.herokuapp.com/api/getAllFall', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), u_id: _user._id })
+         const fals = await Axios.default.post('http://10.0.2.2:3000/api/getAllFall', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), u_id: _user._id })
          if (fals.data.success) {
             setRefresh(false)
             setViewPage(true)
@@ -103,7 +103,7 @@ export default () => {
       const _user = JSON.parse(await AsyncStorage.getItem('User'))
       setUser(_user)
       if (_user !== null) {
-         const fals = await Axios.default.post('https://fal-hub.herokuapp.com/api/getAllFall', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), u_id: _user._id })
+         const fals = await Axios.default.post('http://10.0.2.2:3000/api/getAllFall', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), u_id: _user._id })
          if (fals.data.success) {
             setRefresh(false)
             setFal((oldArray) => [...oldArray, fals.data.data])

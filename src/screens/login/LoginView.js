@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, RefreshControl, TextInput, Button, Alert, ToastAndroid } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, RefreshControl, TextInput, Keyboard, ToastAndroid } from 'react-native';
 import { useNetInfo } from "@react-native-community/netinfo";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/core';
@@ -19,9 +19,14 @@ class LoginView extends React.Component {
          securityText: true,
          googleVerifyId: null,
          email: null,
-         password: null
+         password: null,
+         mailFocus: false,
+         passFocus: false,
+         whichOneFocused: null
       }
    }
+   keyboardHide
+   keyboardShow
    onRefresh = () => {
       this.setState({ refresh: true })
       this.props.netInfo.isConnected ? this.setState({ userIsConnected: true, refresh: false }) : this.setState({ userIsConnected: false, refresh: false })
@@ -35,7 +40,7 @@ class LoginView extends React.Component {
             this.setState({ passwordIsEmpty: true })
          }
          if (this.state.email != null && this.state.password != null) {
-            const result = await Axios.default.post('https://fal-hub.herokuapp.com/api/login?method=email', { mail: this.state.email, password: this.state.password, token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId() })
+            const result = await Axios.default.post('http://10.0.2.2:3000/api/login?method=email', { mail: this.state.email, password: this.state.password, token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId() })
             console.log(result.data)
             if (result.data.success == "error") {
                return ToastAndroid.show("Hata.!", ToastAndroid.LONG)
@@ -65,6 +70,8 @@ class LoginView extends React.Component {
       this.props.navigation.goBack()
    }
    componentDidMount = async () => {
+      this.keyboardHide = Keyboard.addListener('keyboardDidHide', () => this.setState({ mailFocus: false, passFocus: false, whichOneFocused: this.state.mailFocus ? 'mailFocus' : 'passFocus' }))
+      this.keyboardShow = Keyboard.addListener('keyboardDidShow', () => !this.state.mailFocus && !this.state.passFocus ? this.state.whichOneFocused == 'mailFocus' ? this.setState({ mailFocus: true }) : this.setState({ passFocus: true }) : null)
       if (this.props.alertInfo == undefined) null
       if (this.props.alertInfo === 'thanLogin') {
          //Alert.alert('Bilgilendirme', 'Profil sayfasına girmek için giriş yap.!', [{ text: 'tamam' }])
@@ -79,6 +86,10 @@ class LoginView extends React.Component {
          return null
       }
    }
+   componentWillUnmount() {
+      this.keyboardHide.remove()
+      this.keyboardShow.remove()
+   }
    _signIn = async () => {
       try {
          await GoogleSignin.configure({
@@ -89,12 +100,12 @@ class LoginView extends React.Component {
          await GoogleSignin.hasPlayServices();
          const userInfo = await GoogleSignin.signIn();
          await this.setState({ googleVerifyId: userInfo.idToken })
-         const resultVerifyEmail = await Axios.default.post('https://fal-hub.herokuapp.com/api/checkEmail?forgoogle=true', { verifyCode: this.state.googleVerifyId, secretPass: 'AqWqRq34252234ASADafasd+^dfsdf', mail: userInfo.user.email })
+         const resultVerifyEmail = await Axios.default.post('http://10.0.2.2:3000/api/checkEmail?forgoogle=true', { verifyCode: this.state.googleVerifyId, secretPass: 'AqWqRq34252234ASADafasd+^dfsdf', mail: userInfo.user.email })
          if (resultVerifyEmail.data.success) {
             // kayıt
             console.log(resultVerifyEmail.data)
             if (this.state.googleVerifyId === resultVerifyEmail.data.verifyCode) {
-               const result = await Axios.default.post('https://fal-hub.herokuapp.com/api/register?method=google', { verifyCode: resultVerifyEmail.data.verifyCode, secretPass: 'AqWqRq34252234ASADafasd+^dfsdf', mail: userInfo.user.email, name: userInfo.user.name, password: 'googleSignUp', token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId() })
+               const result = await Axios.default.post('http://10.0.2.2:3000/api/register?method=google', { verifyCode: resultVerifyEmail.data.verifyCode, secretPass: 'AqWqRq34252234ASADafasd+^dfsdf', mail: userInfo.user.email, name: userInfo.user.name, password: 'googleSignUp', token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId() })
 
                if (result.data.success) {
                   this.setState({ googleVerifyId: null })
@@ -113,7 +124,7 @@ class LoginView extends React.Component {
             }
          } else {
             //login
-            const result = await Axios.default.post('https://fal-hub.herokuapp.com/api/login?method=google', { verifyCode: this.state.googleVerifyId,secretPass: 'AqWqRq34252234ASADafasd+^dfsdf', mail: userInfo.user.email, token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId() })
+            const result = await Axios.default.post('http://10.0.2.2:3000/api/login?method=google', { verifyCode: this.state.googleVerifyId, secretPass: 'AqWqRq34252234ASADafasd+^dfsdf', mail: userInfo.user.email, token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId() })
 
             if (this.state.googleVerifyId === resultVerifyEmail.data.verifyCode) {
                if (result.data.success == 'error') {
@@ -125,8 +136,6 @@ class LoginView extends React.Component {
                      await AsyncStorage.setItem('User', JSON.stringify(result.data.data[0]))
                      await AsyncStorage.setItem('coffeeCount', JSON.stringify(result.data.coffeeCount))
                      await AsyncStorage.setItem('UserLoggedAt', 'google')
-                     await AsyncStorage.setItem('coffeeCount', JSON.stringify(result.data.coffeeCount))
-
                      this.props.navigation.navigate('Tab')
                   } else {
                      this.setState({ googleVerifyId: null })
@@ -140,11 +149,11 @@ class LoginView extends React.Component {
          }
       } catch (error) {
          if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-            ToastAndroid.show('Giriş iptal edildi', ToastAndroid.LONG)
+            ToastAndroid.show(String(error), ToastAndroid.LONG)
          } else if (error.code === statusCodes.IN_PROGRESS) {
             ToastAndroid.show(String(error), ToastAndroid.LONG)
          } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-            ToastAndroid.show('Play Servis Bulunamadı', ToastAndroid.LONG)
+            ToastAndroid.show(String(error), ToastAndroid.LONG)
          } else {
             ToastAndroid.show(String(error), ToastAndroid.LONG)
          }
@@ -164,9 +173,9 @@ class LoginView extends React.Component {
                </View>
                {/* Form */}
                <View style={styles.loginForm}>
-                  <TextInput onChangeText={(text) => this.setState({ email: text })} placeholderTextColor={this.state.userNameIsEmpty ? 'red' : 'white'} style={styles.textInput} placeholder={this.state.userNameIsEmpty ? '* Bu Alan Boş Bırakılamaz' : 'Email yada Kullanıcı Adı'}></TextInput>
+                  <TextInput onFocus={() => this.setState({ mailFocus: true })} onBlur={() => this.setState({ mailFocus: false })} onChangeText={(text) => this.setState({ email: text })} placeholderTextColor={this.state.userNameIsEmpty ? 'red' : 'white'} style={this.state.mailFocus ? styles.textInputFocus : styles.textInput} placeholder={this.state.userNameIsEmpty ? '* Bu Alan Boş Bırakılamaz' : 'Email yada Kullanıcı Adı'}></TextInput>
                   <View>
-                     <TextInput onChangeText={(text) => this.setState({ password: text })} placeholderTextColor={this.state.userNameIsEmpty ? 'red' : 'white'} secureTextEntry={this.state.securityText} style={styles.textInput} placeholder={this.state.passwordIsEmpty ? '* Bu Alan Boş Bırakılamaz' : 'Şifre'}></TextInput>
+                     <TextInput onFocus={() => this.setState({ passFocus: true })} onBlur={() => this.setState({ passFocus: false })} onChangeText={(text) => this.setState({ password: text })} placeholderTextColor={this.state.userNameIsEmpty ? 'red' : 'white'} secureTextEntry={this.state.securityText} style={this.state.passFocus ? styles.textInputFocus : styles.textInput} placeholder={this.state.passwordIsEmpty ? '* Bu Alan Boş Bırakılamaz' : 'Şifre'}></TextInput>
                      <TouchableOpacity onPress={() => this.setState({ securityText: !this.state.securityText })} style={{ position: 'absolute', right: 8, marginTop: 17 }}><Icon name={this.state.securityText ? 'eye-off-outline' : 'eye-outline'} size={30} color={'white'} /></TouchableOpacity>
                   </View>
                   <TouchableOpacity onPress={this.login} style={styles.button}><Text style={styles.buttonText}>Giriş Yap</Text></TouchableOpacity>
@@ -228,6 +237,9 @@ const styles = StyleSheet.create({
    textInput:
    {
       width: 300, height: 50, color: 'white', backgroundColor: 'black', fontWeight: '600', marginTop: 10, fontSize: 20, borderRadius: 5, paddingLeft: 20, borderColor: 'white', borderWidth: 1
+   },
+   textInputFocus: {
+      width: 300, height: 50, color: 'white', backgroundColor: 'black', fontWeight: '600', marginTop: 10, fontSize: 20, borderRadius: 5, paddingLeft: 20, borderColor: '#ffa31a', borderWidth: 1
    },
    button: { width: 220, height: 50, backgroundColor: '#ffa31a', justifyContent: 'center', marginTop: 15, borderRadius: 30 },
    buttonText: { alignSelf: 'center', color: 'white', fontSize: 20, fontWeight: '600' },

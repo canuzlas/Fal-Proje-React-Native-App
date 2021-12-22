@@ -26,7 +26,7 @@ export default ({ navigation }) => {
             </View>
             <WebView
                 startInLoadingState={true}
-                source={{ uri: 'https://fal-hub.herokuapp.com/' }}
+                source={{ uri: 'http://10.0.2.2:3000/' }}
             >
             </WebView>
         </View>

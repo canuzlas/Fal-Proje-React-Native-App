@@ -138,11 +138,11 @@ export default ({ navigation }) => {
    }
    const sendFal = async () => {
       setSendingFal(true)
-      const verify = await Axios.default.post('https://fal-hub.herokuapp.com/api/coffeeFal?verify=true', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), u_id: user._id })
+      const verify = await Axios.default.post('http://10.0.2.2:3000/api/coffeeFal?verify=true', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), u_id: user._id })
       if (verify.data.success) {
          const data = new FormData()
          photos.forEach(photo => data.append('files', photo))
-         const photoResult = await Axios.default.post('https://fal-hub.herokuapp.com/api/coffeeFal?savePhoto=true', data, {
+         const photoResult = await Axios.default.post('http://10.0.2.2:3000/api/coffeeFal?savePhoto=true', data, {
             headers: {
                'accept': 'application/json',
                'Content-Type': 'multipart/form-data',
@@ -161,7 +161,7 @@ export default ({ navigation }) => {
          }
       } else {
          setSendingFal(false)
-         ToastAndroid.show("Tekrar giriş yapmayı deneyin, teşekkürler.. :)", ToastAndroid.LONG)
+         ToastAndroid.show("Hesabınızı onayladığınızdan emin olun. Ayarlara giderek hesabınızı onaylayın.", ToastAndroid.LONG)
       }
    }
    return (

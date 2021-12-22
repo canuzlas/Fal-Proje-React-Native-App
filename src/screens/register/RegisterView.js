@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { View, StyleSheet, Image, Text, TouchableOpacity, TextInput, ToastAndroid, ScrollView, Modal } from 'react-native'
+import { View, StyleSheet, Image, Text, TouchableOpacity, TextInput, ToastAndroid, ScrollView, Modal, Keyboard } from 'react-native'
 import { useNavigation } from '@react-navigation/core'
 import * as Axios from 'axios'
 import DeviceInfo from 'react-native-device-info';
@@ -14,7 +14,6 @@ class RegisterView extends React.Component {
    constructor(props) {
       super(props)
       this.state = {
-         verifyCodePage: false,
          firstStep: true,
          secondStep: false,
          thirdStep: false,
@@ -24,14 +23,23 @@ class RegisterView extends React.Component {
          sending: false,
          name: null,
          mail: null,
-         pass: null
+         pass: null,
+         focus: null,
       }
    }
-
+   keyboardHide
+   keyboardShow
+   componentDidMount() {
+      this.keyboardHide = Keyboard.addListener('keyboardDidHide', () => this.setState({ focus: false }))
+      this.keyboardShow = Keyboard.addListener('keyboardDidShow', () => this.setState({ focus: true }))
+   }
+   componentWillUnmount() {
+      this.keyboardHide.remove()
+      this.keyboardShow.remove()
+   }
    goBack = () => {
       this.props.navigation.goBack()
    }
-
    checkFristStep = () => {
       if (this.state.name == null) {
          ToastAndroid.show("İsim boş bırakılamaz", ToastAndroid.LONG)
@@ -39,7 +47,7 @@ class RegisterView extends React.Component {
          if (this.state.name.length <= 2) {
             ToastAndroid.show("İsim en az 3 karakter olmalı", ToastAndroid.LONG)
          } else {
-            this.setState({ secondStep: true, firstStep: false })
+            this.setState({ secondStep: true, firstStep: false, focus: false })
          }
       }
    }
@@ -50,16 +58,15 @@ class RegisterView extends React.Component {
          if (!validator.isEmail(this.state.mail)) {
             ToastAndroid.show("Lütfen doğru bir mail adresi girin", ToastAndroid.LONG)
          } else {
-            const result = await Axios.default.post('https://fal-hub.herokuapp.com/api/checkEmail', { mail: this.state.mail })
+            const result = await Axios.default.post('http://10.0.2.2:3000/api/checkEmail', { mail: this.state.mail })
             if (result.data.success) {
-               this.setState({ secondStep: false, thirdStep: true })
+               this.setState({ secondStep: false, thirdStep: true, focus: false })
             } else {
                ToastAndroid.show("Bu mail adresi kullanımda", ToastAndroid.LONG)
             }
          }
       }
    }
-
    checkthirdStep = () => {
       if (this.state.pass == null) {
          ToastAndroid.show("Şifre boş bırakılamaz", ToastAndroid.LONG)
@@ -71,20 +78,18 @@ class RegisterView extends React.Component {
          }
       }
    }
-
    closeModal = () => {
       this.setState({ sözlesmeModal: false })
    }
-
    signUp = async () => {
       this.setState({ sending: true })
-      const result = await Axios.default.post('https://fal-hub.herokuapp.com/api/register', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), name: this.state.name, mail: this.state.mail, password: this.state.pass })
+      const result = await Axios.default.post('http://10.0.2.2:3000/api/register', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), name: this.state.name, mail: this.state.mail, password: this.state.pass })
       if (result.data.success) {
          ToastAndroid.show("Kayıt Olma Başarılı", ToastAndroid.LONG)
          await AsyncStorage.setItem('User', JSON.stringify(result.data.data))
          await AsyncStorage.setItem('UserLoggedAt', 'email/phone')
          await AsyncStorage.setItem('coffeeCount', JSON.stringify(result.data.coffeeCount))
-         this.setState({ sending: false })
+         this.setState({ sending: false, firstStep: true, checkForUserStep: false })
          this.props.navigation.navigate('Tab')
       } else {
          ToastAndroid.show("Hata", ToastAndroid.LONG)
@@ -112,21 +117,21 @@ class RegisterView extends React.Component {
 
                {this.state.firstStep ? <View style={styles.firstStepView}>
                   <Text style={styles.firstStepText}>FalHub'a hoşgeldin, kaydolmak için yapman gereken ilk adım ismini girmek. Lütfen bizi kandırma :(</Text>
-                  <TextInput value={this.state.name} onChangeText={(text) => this.setState({ name: String(text) })} placeholder='Adınız' placeholderTextColor={'white'} style={styles.firstStepTextInput}></TextInput>
+                  <TextInput onFocus={() => this.setState({ focus: true })} onBlur={() => this.setState({ focus: false })} value={this.state.name} onChangeText={(text) => this.setState({ name: String(text) })} placeholder='Adınız' placeholderTextColor={'white'} style={this.state.focus ? styles.firstStepTextInputFocus : styles.firstStepTextInput}></TextInput>
                   <TouchableOpacity onPress={this.checkFristStep} style={styles.firstStepNextButton} ><NextIcon name={'navigate-next'} color={'white'} size={70} ></NextIcon></TouchableOpacity>
                </View> : null}
 
                {this.state.secondStep ? <View style={styles.secondStepView}>
                   <Text style={styles.secondStepText}>Şimdi sıra mail adresinde, haydi bize şu havalı mail adresini göster :)</Text>
                   <TouchableOpacity onPress={() => this.setState({ secondStep: false, firstStep: true })} style={styles.formBackText}><Text style={{ color: 'white' }}>Geri dön(isim)..</Text></TouchableOpacity>
-                  <TextInput value={this.state.mail} onChangeText={(text) => this.setState({ mail: text })} placeholder='Mail' placeholderTextColor={'white'} style={styles.secondStepTextInput}></TextInput>
+                  <TextInput onFocus={() => this.setState({ focus: true })} onBlur={() => this.setState({ focus: false })} value={this.state.mail} onChangeText={(text) => this.setState({ mail: text })} placeholder='Mail' placeholderTextColor={'white'} style={this.state.focus ? styles.secondStepTextInputFocus : styles.secondStepTextInput}></TextInput>
                   <TouchableOpacity onPress={this.checkSecondStep} style={styles.secondStepNextButton} ><NextIcon name={'navigate-next'} color={'white'} size={70} ></NextIcon></TouchableOpacity>
                </View> : null}
 
                {this.state.thirdStep ? <View style={styles.thirdStepView}>
                   <Text style={styles.thirdStepText}>Şimdi en önemli kısıma geldik. Merak etme kafamı çevirdim. Bakmıyorum  :)</Text>
                   <TouchableOpacity onPress={() => this.setState({ thirdStep: false, secondStep: true })} style={styles.formBackText}><Text style={{ color: 'white' }}>Geri dön(mail)..</Text></TouchableOpacity>
-                  <TextInput value={this.state.pass} onChangeText={(text) => this.setState({ pass: text })} placeholder='Şifreniz' secureTextEntry={true} placeholderTextColor={'white'} style={styles.thirdStepTextInput}></TextInput>
+                  <TextInput onFocus={() => this.setState({ focus: true })} onBlur={() => this.setState({ focus: false })} value={this.state.pass} onChangeText={(text) => this.setState({ pass: text })} placeholder='Şifreniz' secureTextEntry={true} placeholderTextColor={'white'} style={this.state.focus ? styles.thirdStepTextInputFocus : styles.thirdStepTextInput} ></TextInput>
                   <TouchableOpacity onPress={this.checkthirdStep} style={styles.thirdStepNextButton} ><NextIcon name={'navigate-next'} color={'white'} size={70} ></NextIcon></TouchableOpacity>
                </View> : null}
 
@@ -186,12 +191,14 @@ const styles = StyleSheet.create({
    firstStepView: { width: '90%', alignSelf: 'center' },
    firstStepText: { color: 'white', fontSize: 18, marginTop: 10 },
    firstStepTextInput: { alignSelf: 'center', marginTop: 30, width: '60%', height: 55, color: 'white', backgroundColor: 'black', borderRadius: 8, borderColor: 'white', borderWidth: 1, paddingHorizontal: 20 },
+   firstStepTextInputFocus: { alignSelf: 'center', marginTop: 30, width: '60%', height: 55, color: 'white', backgroundColor: 'black', borderRadius: 8, borderColor: '#ffa31a', borderWidth: 1, paddingHorizontal: 20 },
    firstStepNextButton: { justifyContent: 'center', alignSelf: 'center', marginTop: 20 },
 
    //SecondStepView
    secondStepView: { width: '90%', alignSelf: 'center' },
    secondStepText: { color: 'white', fontSize: 18, marginTop: 10 },
    secondStepTextInput: { alignSelf: 'center', marginTop: 10, width: '60%', height: 55, color: 'white', backgroundColor: 'black', borderRadius: 8, borderColor: 'white', borderWidth: 1, paddingHorizontal: 20 },
+   secondStepTextInputFocus: { alignSelf: 'center', marginTop: 10, width: '60%', height: 55, color: 'white', backgroundColor: 'black', borderRadius: 8, borderColor: '#ffa31a', borderWidth: 1, paddingHorizontal: 20 },
    secondStepNextButton: { justifyContent: 'center', alignSelf: 'center', marginTop: 20 },
    formBackText: { alignSelf: 'center', marginTop: 20 },
 
@@ -199,6 +206,7 @@ const styles = StyleSheet.create({
    thirdStepView: { width: '90%', alignSelf: 'center' },
    thirdStepText: { color: 'white', fontSize: 18, marginTop: 10 },
    thirdStepTextInput: { alignSelf: 'center', marginTop: 10, width: '60%', height: 55, color: 'white', backgroundColor: 'black', borderRadius: 8, borderColor: 'white', borderWidth: 1, paddingHorizontal: 20 },
+   thirdStepTextInputFocus: { alignSelf: 'center', marginTop: 10, width: '60%', height: 55, color: 'white', backgroundColor: 'black', borderRadius: 8, borderColor: '#ffa31a', borderWidth: 1, paddingHorizontal: 20 },
    thirdStepNextButton: { justifyContent: 'center', alignSelf: 'center', marginTop: 20 },
    formBackText: { alignSelf: 'center', marginTop: 20 },
 

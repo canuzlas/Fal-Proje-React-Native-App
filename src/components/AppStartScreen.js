@@ -11,7 +11,7 @@ export default class AppStartScreen extends React.Component {
       super(props)
    }
    componentDidMount = async () => {
-      const result = await axios.default.post("https://fal-hub.herokuapp.com/api", { device: await DeviceInfo.getAndroidId() })
+      const result = await axios.default.post("http://10.0.2.2:3000/api", { device: await DeviceInfo.getAndroidId() })
       await AsyncStorage.setItem("token", String(result.data.token))
       await PushNotification.configure({
          onNotification: async function (notification) {
@@ -22,7 +22,7 @@ export default class AppStartScreen extends React.Component {
 
             PushNotification.localNotification({
                channelId: "1",
-               smallIcon: "https://fal-hub.herokuapp.com/notification.png",
+               smallIcon: "http://10.0.2.2:3000/notification.png",
                vibrate: true,
                title: notification.title,
                message: notification.message
