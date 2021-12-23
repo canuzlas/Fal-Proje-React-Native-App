@@ -119,7 +119,6 @@ class AstrologyView extends Component {
                   {this.state.modalLoading ?
                      <View style={styles.pageLoadingContainer}>
                         <Image style={styles.pageLoadingImage} source={require('../../assets/loading/loading.gif')} />
-                        <Text style={styles.pageLoadingText}>yorumlar yükleniyor..</Text>
                      </View>
                      :
                      <View>

@@ -12,7 +12,7 @@ import WarningNotiIcon from 'react-native-vector-icons/AntDesign';
 const styles = StyleSheet.create({
    //pageloading styles
    pageLoadingContainer: { width: '100%', height: '100%', justifyContent: 'center', backgroundColor: 'black' },
-   pageLoadingImage: { width: 150, height: 150, alignSelf: 'center' },
+   pageLoadingImage: { width: 200, height: 200, alignSelf: 'center' },
    pageLoadingText: { color: 'white', fontSize: 20, fontWeight: '600', alignSelf: 'center' },
 
    container: { width: '100%', height: '100%', backgroundColor: 'black', padding: 20 },
@@ -195,13 +195,15 @@ export default () => {
                </Modal>
             </View>
             :
-            <ScrollView style={styles.container} refreshControl={<RefreshControl refreshing={refresh} onRefresh={() => refreshPage()}></RefreshControl>}>
-               <Text style={styles.pageTitle}>Fallarını görebilmek için giriş yapmalısın. Giriş yaptıysan sayfayı yenilemeyi dene :)</Text>
-            </ScrollView>
+            <ScrollView contentContainerStyle={{ justifyContent: 'center', flexGrow: 1 }} style={{ width: '100%', height: '100%', backgroundColor: 'black', padding: 20 }} refreshControl={<RefreshControl refreshing={refresh} onRefresh={() => refreshPage()}></RefreshControl>}>
+               <View style={styles.pageLoadingContainer}>
+                  <Text style={{ color: 'white', alignSelf: 'center', paddingBottom: 20, fontSize: 20 }}>Fallarını görebilmek için giriş yapmalısın. Giriş yaptıysan sayfayı yenilemeyi dene :)</Text>
+                  <Image style={{ width: 300, height: 200, alignSelf: 'center' }} source={require('../../assets/wait/eyes.gif')} />
+               </View>
+            </ScrollView> 
          :
          <View style={styles.pageLoadingContainer}>
             <Image style={styles.pageLoadingImage} source={require('../../assets/loading/loading.gif')} />
-            <Text style={styles.pageLoadingText}>sayfa yükleniyor..</Text>
          </View>
    )
 } 

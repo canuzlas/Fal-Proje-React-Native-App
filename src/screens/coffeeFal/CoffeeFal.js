@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
 
    //sending form 
    pageLoadingContainer: { width: '100%', height: '100%', justifyContent: 'center', backgroundColor: 'black' },
-   pageLoadingImage: { width: 150, height: 150, alignSelf: 'center' },
+   pageLoadingImage: { width: 200, height: 200, alignSelf: 'center' },
    pageLoadingText: { color: 'white', fontSize: 20, fontWeight: '600', alignSelf: 'center' },
 
 
@@ -168,7 +168,6 @@ export default ({ navigation }) => {
       sendingFal ?
          <View style={styles.pageLoadingContainer}>
             <Image style={styles.pageLoadingImage} source={require('../../assets/loading/loading.gif')} />
-            <Text style={styles.pageLoadingText}>Falınız gönderiliyor..</Text>
          </View>
          :
          <View style={styles.container}>

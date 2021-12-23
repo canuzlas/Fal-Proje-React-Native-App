@@ -22,6 +22,7 @@ class LoginView extends React.Component {
          password: null,
          mailFocus: false,
          passFocus: false,
+         signUpAbsolute: true,
          whichOneFocused: null
       }
    }
@@ -50,7 +51,7 @@ class LoginView extends React.Component {
                   await AsyncStorage.setItem('User', JSON.stringify(result.data.data[0]))
                   await AsyncStorage.setItem('coffeeCount', JSON.stringify(result.data.coffeeCount))
                   await AsyncStorage.setItem('UserLoggedAt', 'email/phone')
-                  this.setState({ sending: false })
+                  this.setState({ sending: false, email: null, password: null })
                   this.props.navigation.navigate('Tab')
                } else {
                   ToastAndroid.show("Kullanıcı Adı veya Şifre Yanlış", ToastAndroid.LONG)
@@ -70,8 +71,8 @@ class LoginView extends React.Component {
       this.props.navigation.goBack()
    }
    componentDidMount = async () => {
-      this.keyboardHide = Keyboard.addListener('keyboardDidHide', () => this.setState({ mailFocus: false, passFocus: false, whichOneFocused: this.state.mailFocus ? 'mailFocus' : 'passFocus' }))
-      this.keyboardShow = Keyboard.addListener('keyboardDidShow', () => !this.state.mailFocus && !this.state.passFocus ? this.state.whichOneFocused == 'mailFocus' ? this.setState({ mailFocus: true }) : this.setState({ passFocus: true }) : null)
+      this.keyboardHide = Keyboard.addListener('keyboardDidHide', () => this.setState({ signUpAbsolute: true, mailFocus: false, passFocus: false, whichOneFocused: this.state.mailFocus ? 'mailFocus' : 'passFocus' }))
+      this.keyboardShow = Keyboard.addListener('keyboardDidShow', () => !this.state.mailFocus && !this.state.passFocus ? this.state.whichOneFocused == 'mailFocus' ? this.setState({ mailFocus: true, signUpAbsolute: false }) : this.setState({ passFocus: true, signUpAbsolute: false }) : this.setState({ signUpAbsolute: false }))
       if (this.props.alertInfo == undefined) null
       if (this.props.alertInfo === 'thanLogin') {
          //Alert.alert('Bilgilendirme', 'Profil sayfasına girmek için giriş yap.!', [{ text: 'tamam' }])
@@ -189,9 +190,8 @@ class LoginView extends React.Component {
                   disabled={this.state.isSigninInProgress}
                />
                {/* footer */}
-               <View style={styles.line}></View>
-               <View style={styles.footer}>
-                  {/* <View style={styles.line}></View> */}
+
+               <View style={this.state.signUpAbsolute ? styles.footer : styles.footerRelative}>
                   <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 20 }}>
                      <Text style={styles.footerText}>Hesabın Yok Mu?</Text>
                      <TouchableOpacity onPress={this.goToRegisterPage}><Text style={styles.resgisterFreeText}>Ücretsiz Kaydol !</Text></TouchableOpacity>
@@ -223,8 +223,6 @@ export default LoginViewFnc = ({ route }) => {
 }
 
 const styles = StyleSheet.create({
-   //line
-   line: { borderWidth: 0.2, borderColor: '#ffa31a', width: '100%', position: 'absolute', bottom: 50 },
 
    //login Page
    backgroundColorView: { backgroundColor: 'black', width: '100%', height: '100%' },
@@ -243,7 +241,8 @@ const styles = StyleSheet.create({
    },
    button: { width: 220, height: 50, backgroundColor: '#ffa31a', justifyContent: 'center', marginTop: 15, borderRadius: 30 },
    buttonText: { alignSelf: 'center', color: 'white', fontSize: 20, fontWeight: '600' },
-   footer: { justifyContent: 'center', position: 'absolute', bottom: 10, alignSelf: 'center' },
+   footer: { justifyContent: 'center', position: 'absolute', bottom: 15, alignSelf: 'center' },
+   footerRelative: { justifyContent: 'center', position: 'relative', bottom: 15, alignSelf: 'center' },
    footerText: { color: 'white', fontSize: 15, alignSelf: 'center' },
    resgisterFreeText: { color: '#ffa31a', fontSize: 20, marginLeft: 5 },
 

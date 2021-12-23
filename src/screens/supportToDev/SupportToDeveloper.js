@@ -10,11 +10,6 @@ const styles = StyleSheet.create({
     header: { alignItems: 'center', justifyContent: 'center', padding: 20, flexDirection: 'row' },
     backButton: { position: 'absolute', left: 15, top: 15 },
     headerTitle: { alignSelf: 'center', color: 'white', fontSize: 25, fontWeight: '700' },
-
-    //pageloading styles
-    pageLoadingContainer: { width: '100%', height: '100%', justifyContent: 'center', backgroundColor: 'black' },
-    pageLoadingImage: { width: 150, height: 150, alignSelf: 'center' },
-    pageLoadingText: { color: 'white', fontSize: 20, fontWeight: '600', alignSelf: 'center' },
 })
 
 export default ({ navigation }) => {

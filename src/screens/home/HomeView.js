@@ -1,9 +1,7 @@
 import * as React from 'react';
-import { SafeAreaView, View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, RefreshControl, TextInput, Button, ImageBackground, ToastAndroid } from 'react-native';
+import { SafeAreaView, View, Text, StyleSheet, TouchableOpacity, ScrollView, ImageBackground, ToastAndroid } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Star from 'react-native-vector-icons/AntDesign'
-import Moon from 'react-native-vector-icons/FontAwesome'
 
 class HomeView extends React.Component {
    constructor(props) {
@@ -24,7 +22,12 @@ class HomeView extends React.Component {
             break;
 
          case "tarot":
-            ToastAndroid.show("Tarot falı yakında aktif olacaktır, ilginiz için teşekkür ederim.", ToastAndroid.LONG)
+            res = await AsyncStorage.getItem('User')
+            if (res == null) {
+               this.props.navigation.navigate('Login', { alertInfo: 'thanTarotFali' })
+            } else {
+               this.props.navigation.navigate('TarotFal')
+            }
             break;
       }
    }
@@ -58,12 +61,7 @@ class HomeView extends React.Component {
             <Text style={styles.titleSecond}>Günlük Burç Yorumu</Text>
             <View style={styles.astrologyView}>
                <TouchableOpacity onPress={() => this.props.navigation.navigate('Astroloji')}>
-                  <ImageBackground style={styles.astrologyViewBgImage} imageStyle={{ opacity: 0.3 }} resizeMode={'stretch'} resizeMethod={'auto'} source={require('../../assets/homeview/astrology.jpg')}>
-                     <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'center' }}>
-                        <Moon style={styles.astrologyIcon} name={'moon-o'} size={50} color={'white'} />
-                        <Star style={styles.astrologyIcon} name={'staro'} size={50} color={'white'} />
-                     </View>
-                     <Text style={styles.astrologyDesc}>"Günlük burç yorumun hergün burada"</Text>
+                  <ImageBackground style={styles.astrologyViewBgImage} imageStyle={{ opacity: 0.3 }} resizeMode={'stretch'} resizeMethod={'auto'} source={require('../../assets/astrologyBg/gif.gif')}>
                      <Text style={styles.astrologyTitle}>Astroloji</Text>
                   </ImageBackground>
                </TouchableOpacity>
