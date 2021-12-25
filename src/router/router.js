@@ -54,7 +54,7 @@ class Router extends React.Component {
   render() {
     return (
       <NavigationContainer >
-        <Stack.Navigator initialRouteName='TarotFal' screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName='AppStartScreen' screenOptions={{ headerShown: false }}>
           <Stack.Screen component={TabNavigator} name={'Tab'} />
           <Stack.Screen component={AppStartScreen} name={'AppStartScreen'} />
           <Stack.Screen component={AppAraScreen} name={'AppAraScreen'} />

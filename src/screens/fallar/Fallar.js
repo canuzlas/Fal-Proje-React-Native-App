@@ -32,12 +32,16 @@ const styles = StyleSheet.create({
    body: { padding: 20, justifyContent: 'center', alignSelf: 'center' },
 
    //modal
-   ModalView: { backgroundColor: 'black', alignSelf: 'center', borderWidth: 1, borderColor: '#212121', width: '85%', height: 500, marginTop: 60 },
+   ModalView: { backgroundColor: 'black', width: '100%', height: '100%' },
    closeIconStyle: { position: 'absolute', alignSelf: 'center', right: 15 },
-   modalTitle: { position: 'absolute', alignSelf: 'center', color: 'white', fontSize: 20, fontWeight: '600', left: 15 },
-   modalTime: { position: 'absolute', alignSelf: 'center', right: 15, top: 60, color: 'white', fontSize: 12, fontWeight: '600' },
-   modalScrollView: { padding: 15, marginTop: 15 },
-   modalScrollViewText: { color: 'white', fontWeight: '600', fontSize: 18, justifyContent: 'center', paddingBottom: 20 }
+   modalTitle: { alignSelf: 'center', color: 'white', fontSize: 20, fontWeight: '600' },
+   modalTime: { position: 'absolute', alignSelf: 'center', left: 15, color: 'white', fontSize: 12, fontWeight: '600' },
+   modalScrollView: { padding: 20 },
+   modalScrollViewText: { color: 'white', fontWeight: '600', fontSize: 18, justifyContent: 'center', paddingBottom: 40 },
+
+   //selectedCard
+   selectedCardView: { flexDirection: 'row', justifyContent: 'space-around', alignSelf: 'center', padding: 20, width: '100%' },
+   selectedCard: { backgroundColor: '#212121', height: 135, width: 82.3, justifyContent: 'center' },
 })
 
 export default () => {
@@ -49,6 +53,31 @@ export default () => {
    const [viewPage, setViewPage] = useState(false)
    const [modal, setModal] = useState(false)
    const [willShowFal, setWillShowFal] = useState([])
+   const [tarotCards, setTarotCard] = useState([])
+   const chooseTarotCard = {
+      0: require('../../assets/tarotCards/0.png'),
+      1: require('../../assets/tarotCards/1.png'),
+      2: require('../../assets/tarotCards/2.png'),
+      3: require('../../assets/tarotCards/3.png'),
+      4: require('../../assets/tarotCards/4.png'),
+      5: require('../../assets/tarotCards/5.png'),
+      6: require('../../assets/tarotCards/6.png'),
+      7: require('../../assets/tarotCards/7.png'),
+      8: require('../../assets/tarotCards/8.png'),
+      9: require('../../assets/tarotCards/9.png'),
+      10: require('../../assets/tarotCards/10.png'),
+      11: require('../../assets/tarotCards/11.png'),
+      12: require('../../assets/tarotCards/12.png'),
+      13: require('../../assets/tarotCards/13.png'),
+      14: require('../../assets/tarotCards/14.png'),
+      15: require('../../assets/tarotCards/15.png'),
+      16: require('../../assets/tarotCards/16.png'),
+      17: require('../../assets/tarotCards/17.png'),
+      18: require('../../assets/tarotCards/18.png'),
+      19: require('../../assets/tarotCards/19.png'),
+      20: require('../../assets/tarotCards/20.png'),
+      21: require('../../assets/tarotCards/21.png')
+   }
 
    useEffect(async () => {
       setViewPage(false)
@@ -57,6 +86,7 @@ export default () => {
       if (_user !== null) {
          const fals = await Axios.default.post('http://10.0.2.2:3000/api/getAllFall', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), u_id: _user._id })
          if (fals.data.success) {
+            // console.log(fals.data.data)
             setRefresh(false)
             setViewPage(true)
             setFal((oldArray) => [...oldArray, fals.data.data])
@@ -79,20 +109,37 @@ export default () => {
    const renderItem = (item, i) => {
       return (
          <View key={i} style={styles.renderItemView}>
-            {item.yorum === null ?
-               <View style={{ flexDirection: 'row' }}>
-                  <Text style={styles.renderItemTıtle}>Falınız yorumlanıyor..</Text>
-                  <Text style={styles.renderItemDate}>{new Date(item.createdAt).getDate() + '.' + parseInt(new Date(item.createdAt).getMonth() + 1) + '.' + new Date(item.createdAt).getFullYear()}</Text>
-               </View>
-               :
-               <TouchableOpacity onPress={() => fallar[0].map((fal, index) => {
-                  index === i ? showModal(fal) : null
-               })}>
+            {item.type == 'coffee' ?
+               item.yorum === null ?
                   <View style={{ flexDirection: 'row' }}>
-                     <Text style={styles.renderItemTıtle}>Falın hazır(tıkla).</Text>
+                     <Text style={styles.renderItemTıtle}>Kahve falın yorumlanıyor..</Text>
                      <Text style={styles.renderItemDate}>{new Date(item.createdAt).getDate() + '.' + parseInt(new Date(item.createdAt).getMonth() + 1) + '.' + new Date(item.createdAt).getFullYear()}</Text>
                   </View>
-               </TouchableOpacity>}
+                  :
+                  <TouchableOpacity onPress={() => fallar[0].map((fal, index) => {
+                     index === i ? showModal(fal) : null
+                  })}>
+                     <View style={{ flexDirection: 'row' }}>
+                        <Text style={styles.renderItemTıtle}>Kahve falın hazır(tıkla).</Text>
+                        <Text style={styles.renderItemDate}>{new Date(item.createdAt).getDate() + '.' + parseInt(new Date(item.createdAt).getMonth() + 1) + '.' + new Date(item.createdAt).getFullYear()}</Text>
+                     </View>
+                  </TouchableOpacity>
+
+               :
+               item.yorum === null ?
+                  <View style={{ flexDirection: 'row' }}>
+                     <Text style={styles.renderItemTıtle}>Tarot falın yorumlanıyor..</Text>
+                     <Text style={styles.renderItemDate}>{new Date(item.createdAt).getDate() + '.' + parseInt(new Date(item.createdAt).getMonth() + 1) + '.' + new Date(item.createdAt).getFullYear()}</Text>
+                  </View>
+                  :
+                  <TouchableOpacity onPress={() => fallar[0].map((fal, index) => {
+                     if (index === i) { showModal(fal); setTarotCard(fal.cards) } else { null }
+                  })}>
+                     <View style={{ flexDirection: 'row' }}>
+                        <Text style={styles.renderItemTıtle}>Tarot falın hazır(tıkla).</Text>
+                        <Text style={styles.renderItemDate}>{new Date(item.createdAt).getDate() + '.' + parseInt(new Date(item.createdAt).getMonth() + 1) + '.' + new Date(item.createdAt).getFullYear()}</Text>
+                     </View>
+                  </TouchableOpacity>}
          </View>
       )
    }
@@ -180,17 +227,40 @@ export default () => {
                <Modal
                   transparent={true}
                   visible={modal}
+                  onRequestClose={() => { setModal(false); setWillShowFal([]); setTarotCard([]) }}
                   animationType='slide'
                >
                   <View style={styles.ModalView}>
-                     <View style={{ flexDirection: 'row', alignSelf: 'center', height: 70, width: '100%' }}>
-                        <Text style={styles.modalTitle}>Kahve Falınız</Text>
+                     <View style={{ flexDirection: 'row', alignSelf: 'center', justifyContent: 'center', height: 70, width: '100%' }}>
+                        <Text style={styles.modalTitle}>{willShowFal.type == 'coffee' ? 'Kahve Falınız' : 'Tarot Falınız'}</Text>
                         <Text style={styles.modalTime}>{new Date(willShowFal.createdAt).getDate() + '.' + parseInt(new Date(willShowFal.createdAt).getMonth() + 1) + '.' + new Date(willShowFal.createdAt).getFullYear()}</Text>
                         <TouchableOpacity onPress={() => { setModal(false); setWillShowFal([]) }} style={styles.closeIconStyle}><CloseIcon name='close' size={25} color={'#ffa31a'}></CloseIcon></TouchableOpacity>
                      </View>
-                     <ScrollView style={styles.modalScrollView}>
-                        <Text style={styles.modalScrollViewText}>{willShowFal.yorum}</Text>
-                     </ScrollView>
+                     {willShowFal.type == 'coffee' ?
+                        <ScrollView style={styles.modalScrollView}>
+                           <Text style={styles.modalScrollViewText}>{willShowFal.yorum}</Text>
+                        </ScrollView>
+                        :
+                        <View style={{ padding: 20 }}>
+                           <Text style={styles.modalScrollViewText}>Seçtiğin Kartlar:</Text>
+                           <View style={styles.selectedCardView}>
+                              {tarotCards.map((card, key) => {
+                                 return (
+                                    <View key={key} style={{ justifyContent: 'center' }}>
+                                       <View style={styles.selectedCard}>
+                                          <Image style={{ width: '100%', height: '100%' }} source={chooseTarotCard[card]}></Image>
+                                       </View>
+                                       {key == 0 ? <Text style={{ color: '#212121', alignSelf: 'center', fontSize: 16 }}>Geçmiş</Text> : key == 1 ? <Text style={{ color: '#212121', alignSelf: 'center', fontSize: 16 }}>Şimdi</Text> : <Text style={{ color: '#212121', alignSelf: 'center', fontSize: 16 }}>Gelecek</Text>}
+                                    </View>
+                                 )
+                              })}
+                           </View>
+                           <ScrollView style={{ paddingBottom: 20, height: 300 }}>
+                              <Text style={styles.modalScrollViewText}>{willShowFal.yorum}</Text>
+                           </ScrollView>
+                        </View>
+                     }
+
                   </View>
                </Modal>
             </View>
@@ -200,7 +270,7 @@ export default () => {
                   <Text style={{ color: 'white', alignSelf: 'center', paddingBottom: 20, fontSize: 20 }}>Fallarını görebilmek için giriş yapmalısın. Giriş yaptıysan sayfayı yenilemeyi dene :)</Text>
                   <Image style={{ width: 300, height: 200, alignSelf: 'center' }} source={require('../../assets/wait/eyes.gif')} />
                </View>
-            </ScrollView> 
+            </ScrollView>
          :
          <View style={styles.pageLoadingContainer}>
             <Image style={styles.pageLoadingImage} source={require('../../assets/loading/loading.gif')} />

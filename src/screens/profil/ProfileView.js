@@ -20,7 +20,8 @@ class ProfileView extends React.Component {
          UserLoggedAt: null,
          loop: 0,
          refresh: false,
-         coffeeCount: null
+         coffeeCount: null,
+         tarotCount: null
       }
    }
    componentDidMount = async () => {
@@ -33,11 +34,12 @@ class ProfileView extends React.Component {
          const User = JSON.parse(await AsyncStorage.getItem('User'))
          const UserLoggedAt = await AsyncStorage.getItem('UserLoggedAt')
          const coffeeCount = await AsyncStorage.getItem('coffeeCount')
+         const tarotCount = await AsyncStorage.getItem('tarotCount')
 
          if (User === null) {
             this.setState({ pageLoading: false, userLogged: false, loop: this.state.loop++, refresh: false })
          } else {
-            this.setState({ coffeeCount: coffeeCount, pageLoading: false, userLogged: true, user: User, UserLoggedAt: UserLoggedAt, loop: this.state.loop, refresh: false })
+            this.setState({ coffeeCount: coffeeCount, tarotCount: tarotCount, pageLoading: false, userLogged: true, user: User, UserLoggedAt: UserLoggedAt, loop: this.state.loop, refresh: false })
          }
       }
    }
@@ -50,14 +52,16 @@ class ProfileView extends React.Component {
       this.props.navigation.navigate('Login', { alertInfo: "thanLogin" })
    }
    refreshPage = async () => {
-      this.setState({ refresh: true }) 
+      this.setState({ refresh: true })
       const User = JSON.parse(await AsyncStorage.getItem('User'))
       const UserLoggedAt = await AsyncStorage.getItem('UserLoggedAt')
-      console.log(User)
+      const coffeeCount = await AsyncStorage.getItem('coffeeCount')
+      const tarotCount = await AsyncStorage.getItem('tarotCount')
+      // console.log(User)
       if (User === null) {
          this.setState({ pageLoading: false, userLogged: false, loop: this.state.loop++, refresh: false })
       } else {
-         this.setState({ pageLoading: false, userLogged: true, user: User, UserLoggedAt: UserLoggedAt, loop: this.state.loop, refresh: false })
+         this.setState({ coffeeCount: coffeeCount, tarotCount: tarotCount, pageLoading: false, userLogged: true, user: User, UserLoggedAt: UserLoggedAt, loop: this.state.loop, refresh: false })
       }
    }
    logOut = async () => {
@@ -91,7 +95,7 @@ class ProfileView extends React.Component {
                   <View style={styles.profileContainer}>
                      <View style={styles.header}>
                         <TouchableOpacity style={styles.backButton} onPress={() => this.props.navigation.goBack()}><BackIcon name='chevron-back-outline' size={35} color={'#ffa31a'} /></TouchableOpacity>
-                        <Text style={{ color: 'white', fontSize: 20,maxWidth:'80%',maxHeight:50 }}>{parseInt(date.getHours()) <= 11 ? 'Günaydın ' + this.state.user.name : parseInt(date.getHours()) >= 11 && parseInt(date.getHours()) <= 17 ? 'Tünaydın ' + this.state.user.name : 'İyi Akşamlar ' + this.state.user.name}</Text>
+                        <Text style={{ color: 'white', fontSize: 20, maxWidth: '80%', maxHeight: 50 }}>{parseInt(date.getHours()) <= 11 ? 'Günaydın ' + this.state.user.name : parseInt(date.getHours()) >= 11 && parseInt(date.getHours()) <= 17 ? 'Tünaydın ' + this.state.user.name : 'İyi Akşamlar ' + this.state.user.name}</Text>
                         <TouchableOpacity style={styles.settingsButton} onPress={() => this.props.navigation.navigate("Settings")}><SettingsIcon name='setting' size={35} color={'#ffa31a'} /></TouchableOpacity>
                      </View>
                      <View style={styles.body}>
@@ -118,7 +122,7 @@ class ProfileView extends React.Component {
                               </View>
                               <View style={styles.istatistikTarotView}>
                                  <Text style={{ color: 'white', alignSelf: 'center' }}>Tarot Falı</Text>
-                                 <Text style={{ color: '#ffa31a', alignSelf: 'center' }}>çok yakında</Text>
+                                 <Text style={{ color: '#ffa31a', alignSelf: 'center' }}>{this.state.tarotCount}</Text>
                               </View>
                            </View>
                         </View>

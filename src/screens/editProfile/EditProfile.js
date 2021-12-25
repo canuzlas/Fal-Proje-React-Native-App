@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 
    body: { justifyContent: 'center', marginTop: 20, padding: 20 },
 
-   profilePhoto: { alignSelf: 'center', width: 150, height: 150, borderRadius: 75,overflow:'hidden' },
+   profilePhoto: { alignSelf: 'center', width: 150, height: 150, borderRadius: 75, overflow: 'hidden' },
    profilePhotoEdit: { alignSelf: 'center' },
 
    form: { marginTop: 70 },
@@ -150,6 +150,7 @@ export default ({ navigation }) => {
          <Modal
             animationType={"slide"}
             transparent={true}
+            onRequestClose={() => setNameModal(false)}
             visible={nameModal}
          >
 
@@ -178,6 +179,7 @@ export default ({ navigation }) => {
          <Modal
             animationType={"slide"}
             transparent={true}
+            onRequestClose={() => setMailModal(false)}
             visible={mailModal}
          >
 

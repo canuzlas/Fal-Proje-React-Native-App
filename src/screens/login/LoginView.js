@@ -26,8 +26,6 @@ class LoginView extends React.Component {
          whichOneFocused: null
       }
    }
-   keyboardHide
-   keyboardShow
    onRefresh = () => {
       this.setState({ refresh: true })
       this.props.netInfo.isConnected ? this.setState({ userIsConnected: true, refresh: false }) : this.setState({ userIsConnected: false, refresh: false })
@@ -50,6 +48,7 @@ class LoginView extends React.Component {
                   ToastAndroid.show("Giriş Başarılı", ToastAndroid.LONG)
                   await AsyncStorage.setItem('User', JSON.stringify(result.data.data[0]))
                   await AsyncStorage.setItem('coffeeCount', JSON.stringify(result.data.coffeeCount))
+                  await AsyncStorage.setItem('tarotCount', JSON.stringify(result.data.tarotCount))
                   await AsyncStorage.setItem('UserLoggedAt', 'email/phone')
                   this.setState({ sending: false, email: null, password: null })
                   this.props.navigation.navigate('Tab')
@@ -70,9 +69,11 @@ class LoginView extends React.Component {
    goBack = () => {
       this.props.navigation.goBack()
    }
+   keyboardDidHide
+   keyboardDidShow
    componentDidMount = async () => {
-      this.keyboardHide = Keyboard.addListener('keyboardDidHide', () => this.setState({ signUpAbsolute: true, mailFocus: false, passFocus: false, whichOneFocused: this.state.mailFocus ? 'mailFocus' : 'passFocus' }))
-      this.keyboardShow = Keyboard.addListener('keyboardDidShow', () => !this.state.mailFocus && !this.state.passFocus ? this.state.whichOneFocused == 'mailFocus' ? this.setState({ mailFocus: true, signUpAbsolute: false }) : this.setState({ passFocus: true, signUpAbsolute: false }) : this.setState({ signUpAbsolute: false }))
+      this.keyboardDidHide = Keyboard.addListener('keyboardDidHide', () => this.setState({ signUpAbsolute: true, mailFocus: false, passFocus: false, whichOneFocused: this.state.mailFocus ? 'mailFocus' : 'passFocus' }))
+      this.keyboardDidShow = Keyboard.addListener('keyboardDidShow', () => !this.state.mailFocus && !this.state.passFocus ? this.state.whichOneFocused == 'mailFocus' ? this.setState({ mailFocus: true, signUpAbsolute: false }) : this.setState({ passFocus: true, signUpAbsolute: false }) : this.setState({ signUpAbsolute: false }))
       if (this.props.alertInfo == undefined) null
       if (this.props.alertInfo === 'thanLogin') {
          //Alert.alert('Bilgilendirme', 'Profil sayfasına girmek için giriş yap.!', [{ text: 'tamam' }])
@@ -88,8 +89,8 @@ class LoginView extends React.Component {
       }
    }
    componentWillUnmount() {
-      this.keyboardHide.remove()
-      this.keyboardShow.remove()
+      this.keyboardDidHide.remove()
+      this.keyboardDidShow.remove()
    }
    _signIn = async () => {
       try {
@@ -114,6 +115,7 @@ class LoginView extends React.Component {
                   await AsyncStorage.setItem('User', JSON.stringify(result.data.data))
                   await AsyncStorage.setItem('UserLoggedAt', 'google')
                   await AsyncStorage.setItem('coffeeCount', JSON.stringify(result.data.coffeeCount))
+                  await AsyncStorage.setItem('tarotCount', JSON.stringify(result.data.tarotCount))
                   this.props.navigation.navigate('Tab')
                } else {
                   this.setState({ googleVerifyId: null })
@@ -136,6 +138,7 @@ class LoginView extends React.Component {
                      ToastAndroid.show("Giriş Başarılı", ToastAndroid.LONG)
                      await AsyncStorage.setItem('User', JSON.stringify(result.data.data[0]))
                      await AsyncStorage.setItem('coffeeCount', JSON.stringify(result.data.coffeeCount))
+                     await AsyncStorage.setItem('tarotCount', JSON.stringify(result.data.tarotCount))
                      await AsyncStorage.setItem('UserLoggedAt', 'google')
                      this.props.navigation.navigate('Tab')
                   } else {

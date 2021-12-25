@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Modal, SafeAreaView, ScrollView, TouchableOpacity, ImageBackground, Image } from 'react-native';
+import { StyleSheet, Text, View, Modal, SafeAreaView, ScrollView, TouchableOpacity, ImageBackground, Image, BackHandler } from 'react-native';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
 import trDate from 'tr-date'
 import * as axios from 'axios'
@@ -15,9 +15,11 @@ class AstrologyView extends Component {
          activeButton: 0
       }
    }
+
    componentDidMount = async () => {
       this.setState({ date: String(date.getTime()) })
    }
+
    getBurcDataFromApi = async (route) => {
       const data = new Object({
          gunluk: '',
@@ -111,6 +113,7 @@ class AstrologyView extends Component {
                animationType={"slide"}
                transparent={true}
                visible={this.state.isVisible}
+               onRequestClose={() => this.setState({ isVisible: false, burcData: null, modalLoading: true })}
             >
                {/*All views of Modal*/}
 
@@ -210,8 +213,8 @@ const styles = StyleSheet.create({
    modalYorumTabsButton: { padding: 10, justifyContent: 'center' },
    modalYorumTabsActiveButton: { padding: 10, justifyContent: 'center', borderBottomColor: '#ffa31a', borderBottomWidth: 1 },
    modalYorumTabsTitle: { alignSelf: 'center', color: 'white', fontSize: 20 },
-   modalYorumScrollView: { padding: 15, marginTop: 10},
-   modalYorumText: { color: 'white', fontSize: 17, alignSelf: 'center',paddingBottom:25 }
+   modalYorumScrollView: { padding: 15, marginTop: 10 },
+   modalYorumText: { color: 'white', fontSize: 17, alignSelf: 'center', paddingBottom: 25 }
 });
 
 

@@ -150,16 +150,21 @@ export default ({ navigation }) => {
             }
          })
          if (photoResult.data.success) {
+            await AsyncStorage.setItem('coffeeCount', JSON.stringify(parseInt(JSON.parse(await AsyncStorage.getItem('coffeeCount'))) + 1))
             setSendingFal(false)
             setPhoto([])
             setFormVisible(false)
             ToastAndroid.show("Falınız en kısa sürede yorumlanacaktır, teşekkürler.. :)", ToastAndroid.LONG)
             navigation.navigate('Fal')
          } else {
+            setPhoto([])
+            setFormVisible(false)
             setSendingFal(false)
             ToastAndroid.show("Tekrar deneyin, teşekkürler.. :)", ToastAndroid.LONG)
          }
       } else {
+         setPhoto([])
+         setFormVisible(false)
          setSendingFal(false)
          ToastAndroid.show("Hesabınızı onayladığınızdan emin olun. Ayarlara giderek hesabınızı onaylayın.", ToastAndroid.LONG)
       }
