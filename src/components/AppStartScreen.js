@@ -5,6 +5,8 @@ import * as axios from 'axios';
 import DeviceInfo from 'react-native-device-info';
 import PushNotification from 'react-native-push-notification';
 
+// import messaging from '@react-native-firebase/messaging'
+// messaging().onMessage(async remoteMsg => { console.log(remoteMsg) })
 
 export default class AppStartScreen extends React.Component {
    constructor(props) {
@@ -22,8 +24,8 @@ export default class AppStartScreen extends React.Component {
 
             PushNotification.localNotification({
                channelId: "1",
-               smallIcon: "http://10.0.2.2:3000/notification.png",
                vibrate: true,
+               smallIcon:"ic_notification",
                title: notification.title,
                message: notification.message
             });

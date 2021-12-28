@@ -8,9 +8,7 @@ import CoffeeIcon from 'react-native-vector-icons/Feather'
 
 /* pages imports */
 import LoginView from '../screens/login/LoginView'
-import AppStartScreen from '../components/AppStartScreen'
 import HomeView from '../screens/home/HomeView';
-import AppAraScreen from '../components/AppAraScreen';
 import ProfileView from '../screens/profil/ProfileView';
 import RegisterView from '../screens/register/RegisterView';
 import AstrologyView from '../screens/astrology/AstrologyView'
@@ -26,12 +24,13 @@ import VerifyToMail from '../screens/verifyToMail/VerifyToMail';
 
 /* components imports */
 import HomeHeader from '../components/HomeHeader';
+import AppAraScreen from '../components/AppAraScreen';
+import AppStartScreen from '../components/AppStartScreen'
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
-
   return (
     <Tab.Navigator screenOptions={{
       headerText: { color: '#ffa31a', fontSize: 20, fontWeight: '600' },

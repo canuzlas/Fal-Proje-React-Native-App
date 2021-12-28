@@ -28,13 +28,15 @@ class RegisterView extends React.Component {
       }
    }
 
-
+   keyboardDidHide
+   keyboardDidShow
    componentDidMount() {
-      Keyboard.addListener('keyboardDidHide', () => this.setState({ focus: false }))
-      Keyboard.addListener('keyboardDidShow', () => this.setState({ focus: true }))
+      this.keyboardDidHide = Keyboard.addListener('keyboardDidHide', () => this.setState({ focus: false }))
+      this.keyboardDidShow = Keyboard.addListener('keyboardDidShow', () => this.setState({ focus: true }))
    }
    componentWillUnmount() {
-      Keyboard.removeAllListeners()
+      this.keyboardDidHide.remove()
+      this.keyboardDidShow.remove()
    }
    goBack = () => {
       this.props.navigation.goBack()
