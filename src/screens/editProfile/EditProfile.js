@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, StyleSheet, Image, Text, TouchableOpacity, SafeAreaView, ScrollView, TextInput, Modal, ToastAndroid, PermissionsAndroid } from 'react-native'
+import { View, StyleSheet, Image, Text, TouchableOpacity, TextInput, Modal, ToastAndroid, PermissionsAndroid } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DeviceInfo from 'react-native-device-info';
 import * as ImagePicker from 'react-native-image-picker';
@@ -7,7 +7,6 @@ import * as Axios from 'axios';
 import BackIcon from 'react-native-vector-icons/Ionicons';
 import PencilIcon from 'react-native-vector-icons/FontAwesome5';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
-
 
 const styles = StyleSheet.create({
    profileEditContainer: { backgroundColor: 'black', width: '100%', height: '100%' },
@@ -28,7 +27,6 @@ const styles = StyleSheet.create({
    nameEdit: { alignSelf: 'center', marginLeft: 10 },
    mailEdit: { alignSelf: 'center', marginLeft: 10 },
 })
-
 export default ({ navigation }) => {
    const [user, setUser] = useState({})
    const [newName, setNewName] = useState(null)
@@ -41,8 +39,15 @@ export default ({ navigation }) => {
       const User = JSON.parse(await AsyncStorage.getItem('User'))
       User.photo ? setUserPhoto(true) : setUserPhoto(false)
       setUser(User)
+      return () => {
+         setUser({})
+         setNewName(null)
+         setNewMail(null)
+         setUserPhoto(false)
+         setNameModal(false)
+         setMailModal(false)
+      }
    }, [])
-
    const updateProfile = async (route) => {
       switch (route) {
          case 'name':

@@ -8,8 +8,6 @@ import BackIcon from 'react-native-vector-icons/Ionicons';
 import PlusIcon from 'react-native-vector-icons/AntDesign';
 import RestartIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-
-
 const styles = StyleSheet.create({
     //sending form 
     pageLoadingContainer: { width: '100%', height: '100%', justifyContent: 'center', backgroundColor: 'black' },
@@ -34,7 +32,6 @@ const styles = StyleSheet.create({
 
 
 })
-
 export default ({ navigation }) => {
     const [user, setUser] = useState({})
     const [cards, setCard] = useState([])
@@ -48,7 +45,10 @@ export default ({ navigation }) => {
         setUser(JSON.parse(await AsyncStorage.getItem('User')))
 
         return () => {
-
+            setCard([])
+            setCardsVisible(true)
+            setSendTarot(false)
+            setUser({})
         }
     }, [])
 
@@ -110,7 +110,7 @@ export default ({ navigation }) => {
             ToastAndroid.show("Hesabınızı onayladığınızdan emin olun. Ayarlara giderek hesabınızı onaylayın.", ToastAndroid.LONG)
         }
     }
-    let _carousel;
+    let _carousel
     return (
         sendTarot ?
             <View style={styles.pageLoadingContainer}>

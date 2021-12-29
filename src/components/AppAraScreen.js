@@ -14,7 +14,6 @@ export default AppAraScreen = ({ navigation }) => {
 
    )
 }
-
 const style = StyleSheet.create({
    container: { backgroundColor: 'black', width: '100%', height: '100%', justifyContent: 'center' },
    bgimage: {width: '100%', height: '100%', justifyContent: 'center'},

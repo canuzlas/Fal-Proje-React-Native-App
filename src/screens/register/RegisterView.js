@@ -27,7 +27,6 @@ class RegisterView extends React.Component {
          focus: null,
       }
    }
-
    keyboardDidHide
    keyboardDidShow
    componentDidMount() {
@@ -97,7 +96,6 @@ class RegisterView extends React.Component {
          this.setState({ sending: false })
       }
    }
-
    render() {
       return (
 
@@ -168,17 +166,13 @@ class RegisterView extends React.Component {
             </View>
       )
    }
-
 }
-
-
 export default () => {
    const navigation = useNavigation()
    return (
       <RegisterView Sözlesme={Sözlesme} navigation={navigation}></RegisterView>
    )
 }
-
 const styles = StyleSheet.create({
    container: { backgroundColor: 'black', width: '100%', height: '100%' },
    header: { alignItems: 'center', justifyContent: 'center', padding: 20, flexDirection: 'row' },

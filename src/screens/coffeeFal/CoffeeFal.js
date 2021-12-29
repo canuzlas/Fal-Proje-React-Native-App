@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, Text, TouchableOpacity, StyleSheet, View, ToastAndroid, PermissionsAndroid, Modal, Image } from 'react-native';
+import {Text, TouchableOpacity, StyleSheet, View, ToastAndroid, PermissionsAndroid, Modal, Image } from 'react-native';
 import * as ImagePicker from 'react-native-image-picker';
 import { Picker } from '@react-native-picker/picker'
 import * as Axios from 'axios'
@@ -11,8 +11,6 @@ import Photo from 'react-native-vector-icons/MaterialIcons';
 import FolderIcon from 'react-native-vector-icons/Entypo'
 import CameraIcon from 'react-native-vector-icons/FontAwesome5'
 import DeleteIcon from 'react-native-vector-icons/AntDesign'
-import trDate from 'tr-date'
-
 
 const styles = StyleSheet.create({
    container: { backgroundColor: 'black', width: '100%', height: '100%' },
@@ -42,7 +40,6 @@ const styles = StyleSheet.create({
 
 
 })
-
 export default ({ navigation }) => {
    const [user, setUser] = useState({})
    const [modal, setModal] = useState(false)
@@ -50,7 +47,6 @@ export default ({ navigation }) => {
    const [formVisible, setFormVisible] = useState(false)
    const [burcValue, setBurcValue] = useState(null)
    const [cinsiyetValue, setCinsiyetValue] = useState(null)
-   const datetr = new trDate()
    const [date, setDate] = useState(new Date())
    const [open, setOpen] = useState(false)
    const [sendingFal, setSendingFal] = useState(false)
@@ -60,7 +56,14 @@ export default ({ navigation }) => {
       setUser(JSON.parse(await AsyncStorage.getItem('User')))
       ToastAndroid.show("Galerinden seç veya fotoğraf çek.!", ToastAndroid.LONG)
       return () => {
-         console.log('willunmout')
+         setUser({})
+         setModal(false)
+         setPhoto([])
+         setFormVisible(false)
+         setBurcValue(null)
+         setCinsiyetValue(null)
+         setOpen(false)
+         setSendingFal(false)
       }
    }, [])
 

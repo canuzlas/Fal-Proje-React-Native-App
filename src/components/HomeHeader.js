@@ -10,7 +10,6 @@ export default () => {
       </View>
    )
 }
-
 const styles = StyleSheet.create({
    container: { backgroundColor: 'black', width: '100%', height: '100%' },
    header: { justifyContent: 'center',flexDirection:'row'},

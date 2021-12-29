@@ -28,7 +28,6 @@ const styles = StyleSheet.create({
    webPageText: { color: 'white', alignSelf: 'center', position: 'absolute', left: 70, fontSize: 18 },
    webPageRightIcon: { alignSelf: 'center', position: 'absolute', right: 20 },
 })
-
 export default ({ navigation }) => {
    const [appversion, setVersion] = useState(null)
    const [userIsAdmin, setUserIsAdmin] = useState(false)
@@ -44,6 +43,11 @@ export default ({ navigation }) => {
          setUserIsVerifyToMail(false)
       } else {
          setUserIsVerifyToMail(true)
+      }
+      return () => {
+         setVersion(null)
+         setUserIsAdmin(false)
+         setUserIsVerifyToMail(false)
       }
    }, [])
 

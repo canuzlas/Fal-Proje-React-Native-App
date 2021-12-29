@@ -212,7 +212,6 @@ class LoginView extends React.Component {
       )
    }
 }
-
 export default LoginViewFnc = ({ route }) => {
    const navigation = useNavigation();
    const netInfo = useNetInfo();
@@ -224,7 +223,6 @@ export default LoginViewFnc = ({ route }) => {
    )
 
 }
-
 const styles = StyleSheet.create({
 
    //login Page

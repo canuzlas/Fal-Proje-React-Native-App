@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Image, StyleSheet, Text } from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as axios from 'axios';
 import DeviceInfo from 'react-native-device-info';
@@ -7,7 +7,6 @@ import PushNotification from 'react-native-push-notification';
 
 // import messaging from '@react-native-firebase/messaging'
 // messaging().onMessage(async remoteMsg => { console.log(remoteMsg) })
-
 export default class AppStartScreen extends React.Component {
    constructor(props) {
       super(props)

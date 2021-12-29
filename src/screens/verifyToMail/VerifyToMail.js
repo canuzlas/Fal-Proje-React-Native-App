@@ -6,8 +6,6 @@ import * as Axios from 'axios'
 import DeviceInfo from 'react-native-device-info'
 import CodeInput from 'react-native-confirmation-code-input';
 
-
-
 const styles = StyleSheet.create({
     //verify
     container: { backgroundColor: 'black', width: '100%', height: '100%' },
@@ -28,7 +26,6 @@ const styles = StyleSheet.create({
     profilePhoto: { alignSelf: 'center', width: 150, height: 150, borderRadius: 75, overflow: 'hidden' },
     stepOneButton: { borderColor: 'white', borderWidth: 1, padding: 5, justifyContent: 'center', alignSelf: 'center', width: '60%', height: 80, backgroundColor: 'black', marginTop: 50 }
 })
-
 export default ({ navigation }) => {
     const [user, setUser] = useState({})
     const [stepOne, setStepOne] = useState(true)
@@ -36,6 +33,11 @@ export default ({ navigation }) => {
     useEffect(async () => {
         const User = JSON.parse(await AsyncStorage.getItem('User'))
         setUser(User)
+        return () => {
+            setUser({})
+            setStepOne(true)
+            setStepTwo(false)
+        }
     }, [])
 
     const verifyToMail = async () => {

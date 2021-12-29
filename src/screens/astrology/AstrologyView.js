@@ -4,6 +4,7 @@ import CloseIcon from 'react-native-vector-icons/AntDesign';
 import trDate from 'tr-date'
 import * as axios from 'axios'
 const date = new trDate()
+
 class AstrologyView extends Component {
    constructor(props) {
       super(props)
@@ -15,11 +16,9 @@ class AstrologyView extends Component {
          activeButton: 0
       }
    }
-
    componentDidMount = async () => {
       this.setState({ date: String(date.getTime()) })
    }
-
    getBurcDataFromApi = async (route) => {
       const data = new Object({
          gunluk: '',
@@ -113,7 +112,7 @@ class AstrologyView extends Component {
                animationType={"slide"}
                transparent={true}
                visible={this.state.isVisible}
-               onRequestClose={() => this.setState({ isVisible: false, burcData: null, modalLoading: true })}
+               onRequestClose={() => this.setState({ isVisible: false, burcData: null, modalLoading: true, activeButton: 0 })}
             >
                {/*All views of Modal*/}
 
@@ -128,7 +127,7 @@ class AstrologyView extends Component {
                         <View style={styles.modalHeader}>
                            <Text style={styles.modalHeaderDate}>{this.state.date}</Text>
                            <Text style={styles.modalHeaderTitle}>{this.state.burcData.gunluk.Burc}</Text>
-                           <TouchableOpacity onPress={() => this.setState({ burcData: null, isVisible: false, modalLoading: true })} style={styles.modalHeaderCloseIcon}><CloseIcon name='close' size={25} color={'#ffa31a'}></CloseIcon></TouchableOpacity>
+                           <TouchableOpacity onPress={() => this.setState({ burcData: null, isVisible: false, modalLoading: true, activeButton: 0 })} style={styles.modalHeaderCloseIcon}><CloseIcon name='close' size={25} color={'#ffa31a'}></CloseIcon></TouchableOpacity>
                         </View>
                         <View style={styles.modalBurcFeatures}>
                            <Text style={styles.modalBurcMotto}>Mottosu : <Text style={{ fontWeight: 'bold' }}>{this.state.burcData.motto}</Text></Text>

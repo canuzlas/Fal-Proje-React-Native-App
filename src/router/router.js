@@ -48,7 +48,6 @@ const TabNavigator = () => {
     </Tab.Navigator>
   )
 }
-
 class Router extends React.Component { 
   render() {
     return (

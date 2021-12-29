@@ -71,7 +71,6 @@ class HomeView extends React.Component {
       )
    }
 }
-
 export default HomeViewFnc = () => {
    const navigation = useNavigation();
    return (
@@ -83,7 +82,6 @@ export default HomeViewFnc = () => {
    )
 
 }
-
 const styles = StyleSheet.create({
    container: { backgroundColor: 'black', width: '100%', height: '100%' },
 

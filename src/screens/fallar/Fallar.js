@@ -7,8 +7,6 @@ import CloseIcon from 'react-native-vector-icons/AntDesign';
 import NormalNotiIcon from 'react-native-vector-icons/Ionicons';
 import WarningNotiIcon from 'react-native-vector-icons/AntDesign';
 
-
-
 const styles = StyleSheet.create({
    //pageloading styles
    pageLoadingContainer: { width: '100%', height: '100%', justifyContent: 'center', backgroundColor: 'black' },
@@ -43,7 +41,6 @@ const styles = StyleSheet.create({
    selectedCardView: { flexDirection: 'row', justifyContent: 'space-around', alignSelf: 'center', padding: 20, width: '100%' },
    selectedCard: { backgroundColor: '#212121', height: 135, width: 82.3, justifyContent: 'center' },
 })
-
 export default () => {
    const [buttonActive, setButtonActive] = useState(false)
    const [user, setUser] = useState({})
@@ -100,6 +97,17 @@ export default () => {
          }
       } else {
          setViewPage(true)
+      }
+      return () => {
+         setButtonActive(false)
+         setUser({})
+         setRefresh(false)
+         setFal([])
+         setBildirim([])
+         setViewPage(false)
+         setModal(false)
+         setWillShowFal([])
+         setTarotCard([])
       }
    }, [])
    const showModal = (fal) => {

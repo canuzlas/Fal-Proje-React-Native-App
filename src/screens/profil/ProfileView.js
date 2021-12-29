@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { View, StyleSheet, Image, Text, TouchableOpacity, SafeAreaView, ScrollView, RefreshControl, Linking } from 'react-native'
+import { View, StyleSheet, Image, Text, TouchableOpacity, SafeAreaView, ScrollView, RefreshControl} from 'react-native'
 import { useNavigation } from '@react-navigation/core'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { GoogleSignin } from '@react-native-google-signin/google-signin'
@@ -145,8 +145,6 @@ class ProfileView extends React.Component {
       )
    }
 }
-
-
 export default () => {
    const navigation = useNavigation()
 
@@ -156,7 +154,6 @@ export default () => {
       </SafeAreaView>
    )
 }
-
 const styles = StyleSheet.create({
    //pageloading styles
    pageLoadingContainer: { width: '100%', height: '100%', justifyContent: 'center', backgroundColor: 'black' },
