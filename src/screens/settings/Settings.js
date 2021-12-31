@@ -6,6 +6,8 @@ import { version } from '../../../package.json'
 import AdminIcon from 'react-native-vector-icons/MaterialIcons'
 import SettingsIcon from 'react-native-vector-icons/AntDesign';
 import WebIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import ChatIcon from 'react-native-vector-icons/Entypo';
+
 
 const styles = StyleSheet.create({
    profileEditContainer: { backgroundColor: 'black', width: '100%', height: '100%' },
@@ -105,6 +107,13 @@ export default ({ navigation }) => {
             :
             null}
          {/* Admin */}
+         <TouchableOpacity style={{ justifyContent: 'center', paddingHorizontal: 20, marginTop: 10 }} onPress={() => navigation.navigate('LiveSupport')}>
+            <View style={styles.webPage}>
+               <ChatIcon style={styles.webPageIcon} name='chat' color={'#ffa31a'} size={30} />
+               <Text style={styles.webPageText}>Canlı Destek</Text>
+               <SettingsIcon style={styles.webPageRightIcon} name='arrowright' color={'white'} size={20} />
+            </View>
+         </TouchableOpacity>
          <View style={styles.version}>
             <Text style={styles.appVersion}>{appversion}</Text>
          </View>

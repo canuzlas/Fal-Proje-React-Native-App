@@ -21,6 +21,7 @@ import SupportToDeveloper from '../screens/supportToDev/SupportToDeveloper';
 import AdminPanelWeb from '../screens/adminPanelWeb/AdminPanelWeb';
 import FalhubCom from '../screens/falhubCom/FalhubCom';
 import VerifyToMail from '../screens/verifyToMail/VerifyToMail';
+import LiveSupport from '../screens/liveSupport/LiveSupport';
 
 /* components imports */
 import HomeHeader from '../components/HomeHeader';
@@ -52,7 +53,7 @@ class Router extends React.Component {
   render() {
     return (
       <NavigationContainer >
-        <Stack.Navigator initialRouteName='AppStartScreen' screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName='LiveSupport' screenOptions={{ headerShown: false }}>
           <Stack.Screen component={TabNavigator} name={'Tab'} />
           <Stack.Screen component={AppStartScreen} name={'AppStartScreen'} />
           <Stack.Screen component={AppAraScreen} name={'AppAraScreen'} />
@@ -65,6 +66,7 @@ class Router extends React.Component {
           <Stack.Screen component={SupportToDeveloper} name={'SupportToDeveloper'} />
           <Stack.Screen component={AdminPanelWeb} name={'AdminPanelWeb'} />
           <Stack.Screen component={FalhubCom} name={'FalhubCom'} />
+          <Stack.Screen component={LiveSupport} name={'LiveSupport'} />
           <Stack.Screen component={VerifyToMail} name={'VerifyToMail'} />
         </Stack.Navigator>
       </NavigationContainer>
