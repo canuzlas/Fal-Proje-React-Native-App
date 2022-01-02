@@ -85,7 +85,7 @@ export default ({ navigation }) => {
 
     const sendTarotFal = async () => {
         setSendTarot(true)
-        const verify = await Axios.default.post('http://10.0.2.2:3000/api/coffeeFal?verify=true', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), u_id: user._id })
+        const verify = await Axios.default.post('http://10.0.2.2:3000/api/coffeeFal?verify=true', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), u_id: user._id, mail: user.mail })
         if (verify.data.success) {
 
             const photoResult = await Axios.default.post('http://10.0.2.2:3000/api/coffeeFal?tarot=true', { cards })

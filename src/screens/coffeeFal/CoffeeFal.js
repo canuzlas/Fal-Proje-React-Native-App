@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {Text, TouchableOpacity, StyleSheet, View, ToastAndroid, PermissionsAndroid, Modal, Image } from 'react-native';
+import { Text, TouchableOpacity, StyleSheet, View, ToastAndroid, PermissionsAndroid, Modal, Image } from 'react-native';
 import * as ImagePicker from 'react-native-image-picker';
 import { Picker } from '@react-native-picker/picker'
 import * as Axios from 'axios'
@@ -141,7 +141,7 @@ export default ({ navigation }) => {
    }
    const sendFal = async () => {
       setSendingFal(true)
-      const verify = await Axios.default.post('http://10.0.2.2:3000/api/coffeeFal?verify=true', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), u_id: user._id })
+      const verify = await Axios.default.post('http://10.0.2.2:3000/api/coffeeFal?verify=true', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), u_id: user._id, mail: user.mail })
       if (verify.data.success) {
          const data = new FormData()
          photos.forEach(photo => data.append('files', photo))

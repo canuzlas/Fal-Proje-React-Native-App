@@ -38,7 +38,6 @@ class HomeView extends React.Component {
    render() {
       return (
          <View style={styles.container}>
-
             <Text style={styles.titleFirst}>Falına Baktır</Text>
             <View style={styles.kahveFaliView}>
                <View style={{ width: '45%', height: 180, marginRight: 20 }}>

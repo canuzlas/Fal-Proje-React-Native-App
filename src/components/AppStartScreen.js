@@ -4,14 +4,38 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as axios from 'axios';
 import DeviceInfo from 'react-native-device-info';
 import PushNotification from 'react-native-push-notification';
+import { firebase } from '@react-native-firebase/database';
 
-// import messaging from '@react-native-firebase/messaging'
-// messaging().onMessage(async remoteMsg => { console.log(remoteMsg) })
 export default class AppStartScreen extends React.Component {
    constructor(props) {
       super(props)
    }
    componentDidMount = async () => {
+      const reference = await firebase
+         .app()
+         .database('https://falhub-6c7a2-default-rtdb.europe-west1.firebasedatabase.app/')
+      reference
+         .ref('/notification')
+         .on('value', async (snapshot) => {
+
+            if (JSON.parse(await AsyncStorage.getItem('notification')) == snapshot.val().body) {
+               return null
+            } else {
+               await AsyncStorage.setItem('notification', JSON.stringify(snapshot.val().body))
+               PushNotification.createChannel({
+                  channelId: "1",
+                  channelName: "Falhub",
+               });
+
+               PushNotification.localNotification({
+                  channelId: "1",
+                  vibrate: true,
+                  largeIconUrl: 'http://10.0.2.2:3000/notification.png',
+                  title: snapshot.val().title,
+                  message: snapshot.val().body
+               });
+            }
+         })
       const result = await axios.default.post("http://10.0.2.2:3000/api", { device: await DeviceInfo.getAndroidId() })
       await AsyncStorage.setItem("token", String(result.data.token))
       await PushNotification.configure({
@@ -24,7 +48,7 @@ export default class AppStartScreen extends React.Component {
             PushNotification.localNotification({
                channelId: "1",
                vibrate: true,
-               smallIcon:"ic_notification",
+               smallIcon: "ic_notification",
                title: notification.title,
                message: notification.message
             });
