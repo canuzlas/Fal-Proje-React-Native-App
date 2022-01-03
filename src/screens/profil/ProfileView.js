@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { View, StyleSheet, Image, Text, TouchableOpacity, SafeAreaView, ScrollView, RefreshControl} from 'react-native'
+import { View, StyleSheet, Image, Text, TouchableOpacity, SafeAreaView, ScrollView, RefreshControl } from 'react-native'
 import { useNavigation } from '@react-navigation/core'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { GoogleSignin } from '@react-native-google-signin/google-signin'
@@ -14,6 +14,7 @@ class ProfileView extends React.Component {
    constructor(props) {
       super(props)
       this.state = {
+         title: null,
          userLogged: true,
          pageLoading: true,
          user: null,
@@ -28,9 +29,7 @@ class ProfileView extends React.Component {
       this.setState({ loop: this.state.loop++ })
    }
    componentDidUpdate = async (prevProps, prevState) => {
-
       if (prevState.loop != this.state.loop) {
-
          const User = JSON.parse(await AsyncStorage.getItem('User'))
          const UserLoggedAt = await AsyncStorage.getItem('UserLoggedAt')
          const coffeeCount = await AsyncStorage.getItem('coffeeCount')
@@ -40,6 +39,15 @@ class ProfileView extends React.Component {
             this.setState({ pageLoading: false, userLogged: false, loop: this.state.loop++, refresh: false })
          } else {
             this.setState({ coffeeCount: coffeeCount, tarotCount: tarotCount, pageLoading: false, userLogged: true, user: User, UserLoggedAt: UserLoggedAt, loop: this.state.loop, refresh: false })
+            if ((date.getHours() == '05' || date.getHours() == '06' || date.getHours() == '07' || date.getHours() == '08' || date.getHours() == '09' || date.getHours() == '10') && date.getHours() <= 11) {
+               this.setState({ title: 'Günaydın ' + User.name })
+            } else if (date.getHours() >= 11 && date.getHours() <= 17) {
+               this.setState({ title: 'Tünaydın ' + User.name })
+            } else if (date.getHours() >= 17 && date.getHours() <= 22) {
+               this.setState({ title: 'İyi Akşamlar ' + User.name })
+            } else {
+               this.setState({ title: 'İyi Geceler ' + User.name })
+            }
          }
       }
    }
@@ -95,7 +103,7 @@ class ProfileView extends React.Component {
                   <View style={styles.profileContainer}>
                      <View style={styles.header}>
                         <TouchableOpacity style={styles.backButton} onPress={() => this.props.navigation.goBack()}><BackIcon name='chevron-back-outline' size={35} color={'#ffa31a'} /></TouchableOpacity>
-                        <Text style={{ color: 'white', fontSize: 20, maxWidth: '80%', maxHeight: 50 }}>{parseInt(date.getHours()) <= 11 ? 'Günaydın ' + this.state.user.name : parseInt(date.getHours()) >= 11 && parseInt(date.getHours()) <= 17 ? 'Tünaydın ' + this.state.user.name : 'İyi Akşamlar ' + this.state.user.name}</Text>
+                        <Text style={{ color: 'white', fontSize: 20, maxWidth: '80%', maxHeight: 50 }}>{this.state.title}</Text>
                         <TouchableOpacity style={styles.settingsButton} onPress={() => this.props.navigation.navigate("Settings")}><SettingsIcon name='setting' size={35} color={'#ffa31a'} /></TouchableOpacity>
                      </View>
                      <View style={styles.body}>

@@ -269,6 +269,7 @@ export default ({ navigation }) => {
                animationType={"slide"}
                transparent={true}
                visible={modal}
+               onRequestClose={()=>setModal(false)}
             >
                <View style={{ borderRadius: 15, flexDirection: 'row', width: '70%', height: '25%', backgroundColor: '#212121', alignSelf: 'center', bottom: '30%', position: 'absolute', justifyContent: 'center' }}>
                   <TouchableOpacity onPress={() => setModal(false)} style={{ position: 'absolute', right: 10, top: 0 }}><Text style={{ color: 'white', fontWeight: '600', fontSize: 35 }}>x</Text></TouchableOpacity>
