@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, Text, TouchableOpacity, TextInput, Keyboard, FlatList, Image } from 'react-native'
+import { View, StyleSheet, Text, TouchableOpacity, TextInput, Keyboard, FlatList, Image,Vibration } from 'react-native'
 import BackIcon from 'react-native-vector-icons/Ionicons';
 import SendIcon from 'react-native-vector-icons/Feather';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -68,6 +68,7 @@ export default ({ navigation }) => {
             .ref('/spchat/' + User._id)
             .limitToLast(10)
             .on('value', snapshot => {
+                Vibration.vibrate()
                 setMessages([])
                 snapshot.forEach(message => { setMessages(old => [...old, { message: message.val().message, fromWho: message.val().fromWho, time: message.val().time }]) })
             })
