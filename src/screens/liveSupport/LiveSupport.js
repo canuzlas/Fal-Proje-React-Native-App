@@ -118,12 +118,14 @@ export default ({ navigation }) => {
                 {messages[0] !== undefined ?
                     messages[0].length != 0 ?
                         <FlatList
-                            ref={ref => { setScrollView(ref) }}
+                            //ref={ref => { setScrollView(ref) }}
                             data={messages}
                             renderItem={renderMessage}
                             keyExtractor={(item, i) => i}
-                            onContentSizeChange={() => scrollView.scrollToEnd({ animated: true })}
-                            onLayout={() => scrollView.scrollToEnd({ animated: true })}
+                            // onContentSizeChange={() => scrollView.scrollToEnd({ animated: true })}
+                            // onLayout={() => scrollView.scrollToEnd({ animated: true })}
+                            inverted
+                            contentContainerStyle={{ flexDirection: 'column-reverse' }}
                             style={kbIsShow ? styles.chatScrolViewKeyboard : styles.chatScrolView}
                         >
                         </FlatList>
