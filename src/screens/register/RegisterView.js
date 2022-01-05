@@ -58,7 +58,7 @@ class RegisterView extends React.Component {
          if (!validator.isEmail(this.state.mail)) {
             ToastAndroid.show("Lütfen doğru bir mail adresi girin", ToastAndroid.LONG)
          } else {
-            const result = await Axios.default.post('http://10.0.2.2:3000/api/checkEmail', { mail: this.state.mail })
+            const result = await Axios.default.post('https://falhub.com/api/checkEmail', { mail: this.state.mail })
             if (result.data.success) {
                this.setState({ secondStep: false, thirdStep: true, focus: false })
             } else {
@@ -83,7 +83,7 @@ class RegisterView extends React.Component {
    }
    signUp = async () => {
       this.setState({ sending: true })
-      const result = await Axios.default.post('http://10.0.2.2:3000/api/register', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), name: this.state.name, mail: this.state.mail, password: this.state.pass })
+      const result = await Axios.default.post('https://falhub.com/api/register', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), name: this.state.name, mail: this.state.mail, password: this.state.pass })
       if (result.data.success) {
          ToastAndroid.show("Kayıt Olma Başarılı", ToastAndroid.LONG)
          await AsyncStorage.setItem('User', JSON.stringify(result.data.data))

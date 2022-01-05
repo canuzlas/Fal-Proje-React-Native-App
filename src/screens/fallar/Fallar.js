@@ -81,7 +81,7 @@ export default () => {
       const _user = JSON.parse(await AsyncStorage.getItem('User'))
       setUser(_user)
       if (_user !== null) {
-         const fals = await Axios.default.post('http://10.0.2.2:3000/api/getAllFall', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), u_id: _user._id })
+         const fals = await Axios.default.post('https://falhub.com/api/getAllFall', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), u_id: _user._id })
          if (fals.data.success) {
             // console.log(fals.data.data)
             setRefresh(false)
@@ -158,7 +158,7 @@ export default () => {
       const _user = JSON.parse(await AsyncStorage.getItem('User'))
       setUser(_user)
       if (_user !== null) {
-         const fals = await Axios.default.post('http://10.0.2.2:3000/api/getAllFall', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), u_id: _user._id })
+         const fals = await Axios.default.post('https://falhub.com/api/getAllFall', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), u_id: _user._id })
          if (fals.data.success) {
             setRefresh(false)
             setFal((oldArray) => [...oldArray, fals.data.data])

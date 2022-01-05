@@ -141,35 +141,42 @@ export default ({ navigation }) => {
    }
    const sendFal = async () => {
       setSendingFal(true)
-      const verify = await Axios.default.post('http://10.0.2.2:3000/api/coffeeFal?verify=true', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), u_id: user._id, mail: user.mail })
-      if (verify.data.success) {
-         const data = new FormData()
-         photos.forEach(photo => data.append('files', photo))
-         const photoResult = await Axios.default.post('http://10.0.2.2:3000/api/coffeeFal?savePhoto=true', data, {
-            headers: {
-               'accept': 'application/json',
-               'Content-Type': 'multipart/form-data',
-               'Content-Type': `multipart/form-data; boundary=${data._boundary}`
+      const verify = await Axios.default.post('https://falhub.com/api/coffeeFal?verify=true', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), u_id: user._id, mail: user.mail })
+      if (verify.data.success == 'didsend') {
+         setPhoto([])
+         setFormVisible(false)
+         setSendingFal(false)
+         ToastAndroid.show("Önceden gönderdiğiniz falınız mevcut. Yorumlanmasını bekleyin.", ToastAndroid.LONG)
+      } else {
+         if (verify.data.success) {
+            const data = new FormData()
+            photos.forEach(photo => data.append('files', photo))
+            const photoResult = await Axios.default.post('https://falhub.com/api/coffeeFal?savePhoto=true', data, {
+               headers: {
+                  'accept': 'application/json',
+                  'Content-Type': 'multipart/form-data',
+                  'Content-Type': `multipart/form-data; boundary=${data._boundary}`
+               }
+            })
+            if (photoResult.data.success) {
+               await AsyncStorage.setItem('coffeeCount', JSON.stringify(parseInt(JSON.parse(await AsyncStorage.getItem('coffeeCount'))) + 1))
+               setSendingFal(false)
+               setPhoto([])
+               setFormVisible(false)
+               ToastAndroid.show("Falınız en kısa sürede yorumlanacaktır, teşekkürler.. :)", ToastAndroid.LONG)
+               navigation.navigate('Fal')
+            } else {
+               setPhoto([])
+               setFormVisible(false)
+               setSendingFal(false)
+               ToastAndroid.show("Tekrar deneyin, teşekkürler.. :)", ToastAndroid.LONG)
             }
-         })
-         if (photoResult.data.success) {
-            await AsyncStorage.setItem('coffeeCount', JSON.stringify(parseInt(JSON.parse(await AsyncStorage.getItem('coffeeCount'))) + 1))
-            setSendingFal(false)
-            setPhoto([])
-            setFormVisible(false)
-            ToastAndroid.show("Falınız en kısa sürede yorumlanacaktır, teşekkürler.. :)", ToastAndroid.LONG)
-            navigation.navigate('Fal')
          } else {
             setPhoto([])
             setFormVisible(false)
             setSendingFal(false)
-            ToastAndroid.show("Tekrar deneyin, teşekkürler.. :)", ToastAndroid.LONG)
+            ToastAndroid.show("Hesabınızı onayladığınızdan emin olun. Ayarlara giderek hesabınızı onaylayın.", ToastAndroid.LONG)
          }
-      } else {
-         setPhoto([])
-         setFormVisible(false)
-         setSendingFal(false)
-         ToastAndroid.show("Hesabınızı onayladığınızdan emin olun. Ayarlara giderek hesabınızı onaylayın.", ToastAndroid.LONG)
       }
    }
    return (
@@ -269,7 +276,7 @@ export default ({ navigation }) => {
                animationType={"slide"}
                transparent={true}
                visible={modal}
-               onRequestClose={()=>setModal(false)}
+               onRequestClose={() => setModal(false)}
             >
                <View style={{ borderRadius: 15, flexDirection: 'row', width: '70%', height: '25%', backgroundColor: '#212121', alignSelf: 'center', bottom: '30%', position: 'absolute', justifyContent: 'center' }}>
                   <TouchableOpacity onPress={() => setModal(false)} style={{ position: 'absolute', right: 10, top: 0 }}><Text style={{ color: 'white', fontWeight: '600', fontSize: 35 }}>x</Text></TouchableOpacity>

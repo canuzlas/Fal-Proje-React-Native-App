@@ -58,7 +58,7 @@ export default ({ navigation }) => {
             for (let i = 0; i < cards.length; i++) {
                 if (cards[i] == card) {
                     if (index == 21) {
-                        card--
+                        card = card - 3
                     } else {
                         card++
                     }
@@ -85,29 +85,35 @@ export default ({ navigation }) => {
 
     const sendTarotFal = async () => {
         setSendTarot(true)
-        const verify = await Axios.default.post('http://10.0.2.2:3000/api/coffeeFal?verify=true', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), u_id: user._id, mail: user.mail })
-        if (verify.data.success) {
-
-            const photoResult = await Axios.default.post('http://10.0.2.2:3000/api/coffeeFal?tarot=true', { cards })
-            if (photoResult.data.success) {
-                console.log(photoResult.data)
-                await AsyncStorage.setItem('tarotCount', JSON.stringify(parseInt(JSON.parse(await AsyncStorage.getItem('tarotCount'))) + 1))
-                setSendTarot(false)
-                setCard([])
-                setCardsVisible(true)
-                ToastAndroid.show("Tarot falınız en kısa sürede yorumlanacaktır, teşekkürler.. :)", ToastAndroid.LONG)
-                navigation.navigate('Fal')
+        const verify = await Axios.default.post('https://falhub.com/api/coffeeFal?verify=true', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), u_id: user._id, mail: user.mail })
+        if (verify.data.success == 'didsend') {
+            setCard([])
+            setCardsVisible(true)
+            setSendTarot(false)
+            ToastAndroid.show("Önceden gönderdiğiniz falınız mevcut. Yorumlanmasını bekleyin.", ToastAndroid.LONG)
+        } else {
+            if (verify.data.success) {
+                const photoResult = await Axios.default.post('https://falhub.com/api/coffeeFal?tarot=true', { cards })
+                if (photoResult.data.success) {
+                    console.log(photoResult.data)
+                    await AsyncStorage.setItem('tarotCount', JSON.stringify(parseInt(JSON.parse(await AsyncStorage.getItem('tarotCount'))) + 1))
+                    setSendTarot(false)
+                    setCard([])
+                    setCardsVisible(true)
+                    ToastAndroid.show("Tarot falınız en kısa sürede yorumlanacaktır, teşekkürler.. :)", ToastAndroid.LONG)
+                    navigation.navigate('Fal')
+                } else {
+                    setCard([])
+                    setCardsVisible(true)
+                    setSendTarot(false)
+                    ToastAndroid.show("Tekrar deneyin, teşekkürler.. :)", ToastAndroid.LONG)
+                }
             } else {
                 setCard([])
                 setCardsVisible(true)
                 setSendTarot(false)
-                ToastAndroid.show("Tekrar deneyin, teşekkürler.. :)", ToastAndroid.LONG)
+                ToastAndroid.show("Hesabınızı onayladığınızdan emin olun. Ayarlara giderek hesabınızı onaylayın.", ToastAndroid.LONG)
             }
-        } else {
-            setCard([])
-            setCardsVisible(true)
-            setSendTarot(false)
-            ToastAndroid.show("Hesabınızı onayladığınızdan emin olun. Ayarlara giderek hesabınızı onaylayın.", ToastAndroid.LONG)
         }
     }
     let _carousel

@@ -30,13 +30,13 @@ export default class AppStartScreen extends React.Component {
                PushNotification.localNotification({
                   channelId: "1",
                   vibrate: true,
-                  largeIconUrl: 'http://10.0.2.2:3000/notification.png',
+                  largeIconUrl: 'https://falhub.com/notification.png',
                   title: snapshot.val().title,
                   message: snapshot.val().body
                });
             }
          })
-      const result = await axios.default.post("http://10.0.2.2:3000/api", { device: await DeviceInfo.getAndroidId() })
+      const result = await axios.default.post("https://falhub.com/api", { device: await DeviceInfo.getAndroidId() })
       await AsyncStorage.setItem("token", String(result.data.token))
       await PushNotification.configure({
          onNotification: async function (notification) {

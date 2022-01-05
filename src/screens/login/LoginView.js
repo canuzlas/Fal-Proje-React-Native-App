@@ -39,7 +39,7 @@ class LoginView extends React.Component {
             this.setState({ passwordIsEmpty: true })
          }
          if (this.state.email != null && this.state.password != null) {
-            const result = await Axios.default.post('http://10.0.2.2:3000/api/login?method=email', { mail: this.state.email, password: this.state.password, token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId() })
+            const result = await Axios.default.post('https://falhub.com/api/login?method=email', { mail: this.state.email, password: this.state.password, token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId() })
             console.log(result.data)
             if (result.data.success == "error") {
                return ToastAndroid.show("Hata.!", ToastAndroid.LONG)
@@ -92,7 +92,7 @@ class LoginView extends React.Component {
       this.keyboardDidHide.remove()
       this.keyboardDidShow.remove()
    }
-   _signIn = async () => {
+   _signIn = async () => { 
       try {
          await GoogleSignin.configure({
             webClientId: '232744567398-fclqsccnqab64tr6m727l69mpr7cmio8.apps.googleusercontent.com',
@@ -102,12 +102,12 @@ class LoginView extends React.Component {
          await GoogleSignin.hasPlayServices();
          const userInfo = await GoogleSignin.signIn();
          await this.setState({ googleVerifyId: userInfo.idToken })
-         const resultVerifyEmail = await Axios.default.post('http://10.0.2.2:3000/api/checkEmail?forgoogle=true', { verifyCode: this.state.googleVerifyId, secretPass: 'AqWqRq34252234ASADafasd+^dfsdf', mail: userInfo.user.email })
+         const resultVerifyEmail = await Axios.default.post('https://falhub.com/api/checkEmail?forgoogle=true', { verifyCode: this.state.googleVerifyId, secretPass: 'AqWqRq34252234ASADafasd+^dfsdf', mail: userInfo.user.email })
          if (resultVerifyEmail.data.success) {
             // kayıt
             console.log(resultVerifyEmail.data)
             if (this.state.googleVerifyId === resultVerifyEmail.data.verifyCode) {
-               const result = await Axios.default.post('http://10.0.2.2:3000/api/register?method=google', { verifyCode: resultVerifyEmail.data.verifyCode, secretPass: 'AqWqRq34252234ASADafasd+^dfsdf', mail: userInfo.user.email, name: userInfo.user.name, password: 'googleSignUp', token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId() })
+               const result = await Axios.default.post('https://falhub.com/api/register?method=google', { verifyCode: resultVerifyEmail.data.verifyCode, secretPass: 'AqWqRq34252234ASADafasd+^dfsdf', mail: userInfo.user.email, name: userInfo.user.name, password: 'googleSignUp', token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId() })
 
                if (result.data.success) {
                   this.setState({ googleVerifyId: null })
@@ -127,7 +127,7 @@ class LoginView extends React.Component {
             }
          } else {
             //login
-            const result = await Axios.default.post('http://10.0.2.2:3000/api/login?method=google', { verifyCode: this.state.googleVerifyId, secretPass: 'AqWqRq34252234ASADafasd+^dfsdf', mail: userInfo.user.email, token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId() })
+            const result = await Axios.default.post('https://falhub.com/api/login?method=google', { verifyCode: this.state.googleVerifyId, secretPass: 'AqWqRq34252234ASADafasd+^dfsdf', mail: userInfo.user.email, token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId() })
 
             if (this.state.googleVerifyId === resultVerifyEmail.data.verifyCode) {
                if (result.data.success == 'error') {

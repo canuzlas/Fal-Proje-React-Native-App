@@ -19,7 +19,7 @@ export default ({ navigation }) => {
             </View>
             <WebView
                 startInLoadingState={true}
-                source={{ uri: 'http://10.0.2.2:3000/staff/admin' }}
+                source={{ uri: 'https://falhub.com/staff/admin' }}
             >
             </WebView>
         </View>

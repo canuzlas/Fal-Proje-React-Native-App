@@ -109,7 +109,7 @@ class ProfileView extends React.Component {
                      <View style={styles.body}>
                         <View style={styles.profile}>
                            <View style={styles.profilePhotoView}>
-                              <Image style={styles.profilePhoto} resizeMode='cover' source={this.state.user.photo != 'false' ? { uri: 'http://10.0.2.2:3000/' + this.state.user.photo } : require('../../assets/arascreengif/gif.gif')} />
+                              <Image style={styles.profilePhoto} resizeMode='cover' source={this.state.user.photo != 'false' ? { uri: 'https://falhub.com/' + this.state.user.photo } : require('../../assets/arascreengif/gif.gif')} />
                            </View>
                            <Text style={styles.profileName}>{this.state.user.name}</Text>
                            <TouchableOpacity onPress={() => this.props.navigation.navigate('EditProfile')} style={styles.profilePencilIcon}><PencilIcon name='pencil-alt' size={20} color={'#ffa31a'} /></TouchableOpacity>
