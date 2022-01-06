@@ -7,6 +7,8 @@ import { GoogleSignin, GoogleSigninButton, statusCodes } from '@react-native-goo
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Axios from 'axios'
 import DeviceInfo from 'react-native-device-info'
+import auth from '@react-native-firebase/auth';
+
 
 class LoginView extends React.Component {
    constructor(props) {
@@ -45,6 +47,14 @@ class LoginView extends React.Component {
                return ToastAndroid.show("Hata.!", ToastAndroid.LONG)
             } else {
                if (result.data.success) {
+                  const firebaseAdmin = JSON.parse(await AsyncStorage.getItem('firebaseAdmin'))
+                  auth().signInWithEmailAndPassword(firebaseAdmin.mail, firebaseAdmin.pass)
+                     .then(async () => {
+                        await AsyncStorage.setItem('supportChatIsUsable', 'true')
+                     })
+                     .catch(async () => {
+                        await AsyncStorage.setItem('supportChatIsUsable', 'false')
+                     })
                   ToastAndroid.show("Giriş Başarılı", ToastAndroid.LONG)
                   await AsyncStorage.setItem('User', JSON.stringify(result.data.data[0]))
                   await AsyncStorage.setItem('coffeeCount', JSON.stringify(result.data.coffeeCount))
@@ -92,7 +102,7 @@ class LoginView extends React.Component {
       this.keyboardDidHide.remove()
       this.keyboardDidShow.remove()
    }
-   _signIn = async () => { 
+   _signIn = async () => {
       try {
          await GoogleSignin.configure({
             webClientId: '232744567398-fclqsccnqab64tr6m727l69mpr7cmio8.apps.googleusercontent.com',
@@ -112,6 +122,15 @@ class LoginView extends React.Component {
                if (result.data.success) {
                   this.setState({ googleVerifyId: null })
                   ToastAndroid.show("Kayıt Olma Başarılı", ToastAndroid.LONG)
+                  const firebaseAdmin = JSON.parse(await AsyncStorage.getItem('firebaseAdmin'))
+                  auth().signInWithEmailAndPassword(firebaseAdmin.mail, firebaseAdmin.pass)
+                     .then(async () => {
+                        await AsyncStorage.setItem('supportChatIsUsable', 'true')
+                     })
+                     .catch(async () => {
+                        await AsyncStorage.setItem('supportChatIsUsable', 'false')
+                        return ToastAndroid.show('Beklenmedik bir hata meydana geldi. Lütfen uygulamaya kapatıp tekrar açınız.!', ToastAndroid.LONG)
+                     })
                   await AsyncStorage.setItem('User', JSON.stringify(result.data.data))
                   await AsyncStorage.setItem('UserLoggedAt', 'google')
                   await AsyncStorage.setItem('coffeeCount', JSON.stringify(result.data.coffeeCount))
@@ -136,6 +155,15 @@ class LoginView extends React.Component {
                   if (result.data.success) {
                      this.setState({ googleVerifyId: null })
                      ToastAndroid.show("Giriş Başarılı", ToastAndroid.LONG)
+                     const firebaseAdmin = JSON.parse(await AsyncStorage.getItem('firebaseAdmin'))
+                     auth().signInWithEmailAndPassword(firebaseAdmin.mail, firebaseAdmin.pass)
+                        .then(async () => {
+                           await AsyncStorage.setItem('supportChatIsUsable', 'true')
+                        })
+                        .catch(async () => {
+                           await AsyncStorage.setItem('supportChatIsUsable', 'false')
+                           return ToastAndroid.show('Beklenmedik bir hata meydana geldi. Lütfen uygulamaya kapatıp tekrar açınız.!', ToastAndroid.LONG)
+                        })
                      await AsyncStorage.setItem('User', JSON.stringify(result.data.data[0]))
                      await AsyncStorage.setItem('coffeeCount', JSON.stringify(result.data.coffeeCount))
                      await AsyncStorage.setItem('tarotCount', JSON.stringify(result.data.tarotCount))

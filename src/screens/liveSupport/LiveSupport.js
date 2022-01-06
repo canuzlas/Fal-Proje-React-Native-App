@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { View, StyleSheet, Text, TouchableOpacity, TextInput, Keyboard, FlatList, Image,Vibration } from 'react-native'
+import { View, StyleSheet, Text, TouchableOpacity, TextInput, Keyboard, FlatList, Image, Vibration, ToastAndroid } from 'react-native'
 import BackIcon from 'react-native-vector-icons/Ionicons';
 import SendIcon from 'react-native-vector-icons/Feather';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { firebase } from '@react-native-firebase/database';
+import auth from '@react-native-firebase/auth';
 import trDate from 'tr-date'
 const date = new trDate()
 
@@ -53,10 +54,13 @@ export default ({ navigation }) => {
     const [kbIsShow, setKbIsShow] = useState(false)
     const [text, setText] = useState(null)
     const [sendButton, setSendButton] = useState(false)
+    const [liveChatIsUsable, setLiveChatIsUsable] = useState(null)
+
     let kbHide, kbShow
     useEffect(async () => {
         const User = JSON.parse(await AsyncStorage.getItem('User'))
         setUser(User)
+        setLiveChatIsUsable(await AsyncStorage.getItem('supportChatIsUsable'))
         kbHide = Keyboard.addListener('keyboardDidHide', () => { setKbIsShow(false) })
         kbShow = Keyboard.addListener('keyboardDidShow', () => { setKbIsShow(true) })
 
@@ -73,7 +77,7 @@ export default ({ navigation }) => {
                 snapshot.forEach(message => { setMessages(old => [...old, { message: message.val().message, fromWho: message.val().fromWho, time: message.val().time }]) })
             })
 
-        return () => {
+        return async () => {
             kbHide.remove()
             kbShow.remove()
             setUser({})
@@ -82,6 +86,7 @@ export default ({ navigation }) => {
             setKbIsShow(false)
             setText(null)
             setSendButton(false)
+            await auth().signOut()
         }
     }, [])
 
@@ -102,11 +107,16 @@ export default ({ navigation }) => {
         )
     }
     const sendMessage = async () => {
-        const date = new trDate()
-        const reference = await firebase
-            .app()
-            .database('https://falhub-6c7a2-default-rtdb.europe-west1.firebasedatabase.app/')
-        reference.ref('/spchat/' + user._id).push({ fromWho: 'user', message: text, time: date.getClock() })
+        if (liveChatIsUsable == 'true') {
+            const date = new trDate()
+            const reference = await firebase
+                .app()
+                .database('https://falhub-6c7a2-default-rtdb.europe-west1.firebasedatabase.app/')
+
+            reference.ref('/spchat/' + user._id).push({ fromWho: 'user', message: text, time: date.getClock() })
+        } else {
+            return ToastAndroid.show('Beklenmedik bir hata meydana geldi. Lütfen uygulamaya kapatıp tekrar açınız.!', ToastAndroid.LONG)
+        }
     }
     return (
         <View style={styles.profileEditContainer}>

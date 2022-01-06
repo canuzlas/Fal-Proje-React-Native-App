@@ -3,6 +3,7 @@ import { View, StyleSheet, Image, Text, TouchableOpacity, SafeAreaView, ScrollVi
 import { useNavigation } from '@react-navigation/core'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { GoogleSignin } from '@react-native-google-signin/google-signin'
+import auth from '@react-native-firebase/auth';
 import BackIcon from 'react-native-vector-icons/Ionicons';
 import SettingsIcon from 'react-native-vector-icons/AntDesign';
 import PencilIcon from 'react-native-vector-icons/FontAwesome5';
@@ -78,6 +79,8 @@ class ProfileView extends React.Component {
       });
       await GoogleSignin.signOut();
 
+      await auth().signOut()
+      
       await AsyncStorage.setItem('User', '')
       await AsyncStorage.setItem('UserLoggedAt', '')
       const User = JSON.parse(await AsyncStorage.getItem('User'))

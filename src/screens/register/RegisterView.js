@@ -9,6 +9,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import NextIcon from 'react-native-vector-icons/MaterialIcons'
 import EyeIcon from 'react-native-vector-icons/Feather'
 import Sözlesme from '../../components/Sözlesme';
+import auth from '@react-native-firebase/auth';
+
 
 class RegisterView extends React.Component {
    constructor(props) {
@@ -86,6 +88,15 @@ class RegisterView extends React.Component {
       const result = await Axios.default.post('https://falhub.com/api/register', { token: await AsyncStorage.getItem('token'), device: await DeviceInfo.getAndroidId(), name: this.state.name, mail: this.state.mail, password: this.state.pass })
       if (result.data.success) {
          ToastAndroid.show("Kayıt Olma Başarılı", ToastAndroid.LONG)
+         const firebaseAdmin = JSON.parse(await AsyncStorage.getItem('firebaseAdmin'))
+         auth().signInWithEmailAndPassword(firebaseAdmin.mail, firebaseAdmin.pass)
+            .then(async () => {
+               await AsyncStorage.setItem('supportChatIsUsable', 'true')
+            })
+            .catch(async () => {
+               await AsyncStorage.setItem('supportChatIsUsable', 'false')
+               return ToastAndroid.show('Beklenmedik bir hata meydana geldi. Lütfen uygulamaya kapatıp tekrar açınız.!', ToastAndroid.LONG)
+            })
          await AsyncStorage.setItem('User', JSON.stringify(result.data.data))
          await AsyncStorage.setItem('UserLoggedAt', 'email/phone')
          await AsyncStorage.setItem('coffeeCount', JSON.stringify(result.data.coffeeCount))
