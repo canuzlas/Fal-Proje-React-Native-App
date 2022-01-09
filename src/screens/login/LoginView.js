@@ -197,7 +197,7 @@ class LoginView extends React.Component {
          (this.state.userIsConnected) ?
             <View style={styles.backgroundColorView}>
                <View style={styles.header}>
-                  <TouchableOpacity style={styles.backButton} onPress={this.goBack}><Icon name='chevron-back-outline' size={30} color={'#ffa31a'} /></TouchableOpacity>
+                  <TouchableOpacity style={styles.backButton} onPress={this.goBack}><Icon name='chevron-back-outline' size={30} color={'#BB86CC'} /></TouchableOpacity>
                   <Text style={styles.headerText}>Giriş Yap</Text>
                </View>
                <View style={styles.logoView}>
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
    backgroundColorView: { backgroundColor: 'black', width: '100%', height: '100%' },
    header: { alignItems: 'center', justifyContent: 'center', padding: 20, flexDirection: 'row' },
    backButton: { position: 'absolute', left: 15 },
-   headerText: { color: '#ffa31a', fontSize: 20, fontWeight: '600' },
+   headerText: { color: '#BB86CC', fontSize: 20, fontWeight: '600' },
    logoView: { justifyContent: 'center', marginTop: 5 },
    loginLogo: { alignSelf: 'center' },
    loginForm: { alignItems: 'center', marginTop: 15 },
@@ -266,14 +266,14 @@ const styles = StyleSheet.create({
       width: 300, height: 50, color: 'white', backgroundColor: 'black', fontWeight: '600', marginTop: 10, fontSize: 20, borderRadius: 5, paddingLeft: 20, borderColor: 'white', borderWidth: 1
    },
    textInputFocus: {
-      width: 300, height: 50, color: 'white', backgroundColor: 'black', fontWeight: '600', marginTop: 10, fontSize: 20, borderRadius: 5, paddingLeft: 20, borderColor: '#ffa31a', borderWidth: 1
+      width: 300, height: 50, color: 'white', backgroundColor: 'black', fontWeight: '600', marginTop: 10, fontSize: 20, borderRadius: 5, paddingLeft: 20, borderColor: '#BB86CC', borderWidth: 1
    },
-   button: { width: 220, height: 50, backgroundColor: '#ffa31a', justifyContent: 'center', marginTop: 15, borderRadius: 30 },
+   button: { width: 220, height: 50, backgroundColor: '#BB86CC', justifyContent: 'center', marginTop: 15, borderRadius: 30 },
    buttonText: { alignSelf: 'center', color: 'white', fontSize: 20, fontWeight: '600' },
    footer: { justifyContent: 'center', position: 'absolute', bottom: 15, alignSelf: 'center' },
    footerRelative: { justifyContent: 'center', position: 'relative', bottom: 15, alignSelf: 'center' },
    footerText: { color: 'white', fontSize: 15, alignSelf: 'center' },
-   resgisterFreeText: { color: '#ffa31a', fontSize: 20, marginLeft: 5 },
+   resgisterFreeText: { color: '#BB86CC', fontSize: 20, marginLeft: 5 },
 
    //netConnected Styles
    ScrollView: { justifyContent: 'center', backgroundColor: 'black', width: '100%', height: '100%' },

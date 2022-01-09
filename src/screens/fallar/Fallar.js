@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
    container: { width: '100%', height: '100%', backgroundColor: 'black', padding: 20 },
    pageTitle: { color: 'white', alignSelf: 'center' },
 
-   renderItemView: { alignSelf: 'center', borderLeftWidth: 2, borderLeftColor: '#ffa31a', padding: 20, width: 300, marginVertical: 5 },
+   renderItemView: { alignSelf: 'center', borderLeftWidth: 2, borderLeftColor: '#BB86CC', padding: 20, width: 300, marginVertical: 5 },
    renderItemViewBorderRight: { alignSelf: 'center', padding: 20, width: 300, marginVertical: 5 },
    renderItemTıtle: { alignSelf: 'flex-start', color: 'white' },
    renderItemDate: { position: 'absolute', alignSelf: 'center', right: 15, color: 'white' },
@@ -242,7 +242,7 @@ export default () => {
                      <View style={{ flexDirection: 'row', alignSelf: 'center', justifyContent: 'center', height: 70, width: '100%' }}>
                         <Text style={styles.modalTitle}>{willShowFal.type == 'coffee' ? 'Kahve Falınız' : 'Tarot Falınız'}</Text>
                         <Text style={styles.modalTime}>{new Date(willShowFal.createdAt).getDate() + '.' + parseInt(new Date(willShowFal.createdAt).getMonth() + 1) + '.' + new Date(willShowFal.createdAt).getFullYear()}</Text>
-                        <TouchableOpacity onPress={() => { setModal(false); setWillShowFal([]) }} style={styles.closeIconStyle}><CloseIcon name='close' size={25} color={'#ffa31a'}></CloseIcon></TouchableOpacity>
+                        <TouchableOpacity onPress={() => { setModal(false); setWillShowFal([]) }} style={styles.closeIconStyle}><CloseIcon name='close' size={25} color={'#BB86CC'}></CloseIcon></TouchableOpacity>
                      </View>
                      {willShowFal.type == 'coffee' ?
                         <ScrollView style={styles.modalScrollView}>

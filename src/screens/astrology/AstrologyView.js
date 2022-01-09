@@ -127,7 +127,7 @@ class AstrologyView extends Component {
                         <View style={styles.modalHeader}>
                            <Text style={styles.modalHeaderDate}>{this.state.date}</Text>
                            <Text style={styles.modalHeaderTitle}>{this.state.burcData.gunluk.Burc}</Text>
-                           <TouchableOpacity onPress={() => this.setState({ burcData: null, isVisible: false, modalLoading: true, activeButton: 0 })} style={styles.modalHeaderCloseIcon}><CloseIcon name='close' size={25} color={'#ffa31a'}></CloseIcon></TouchableOpacity>
+                           <TouchableOpacity onPress={() => this.setState({ burcData: null, isVisible: false, modalLoading: true, activeButton: 0 })} style={styles.modalHeaderCloseIcon}><CloseIcon name='close' size={25} color={'#BB86CC'}></CloseIcon></TouchableOpacity>
                         </View>
                         <View style={styles.modalBurcFeatures}>
                            <Text style={styles.modalBurcMotto}>Mottosu : <Text style={{ fontWeight: 'bold' }}>{this.state.burcData.motto}</Text></Text>
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
    modalYorum: { padding: 15, justifyContent: 'center', maxHeight: 450 },
    modalYorumTabs: { justifyContent: 'space-between', alignSelf: 'center', flexDirection: 'row', marginTop: 20 },
    modalYorumTabsButton: { padding: 10, justifyContent: 'center' },
-   modalYorumTabsActiveButton: { padding: 10, justifyContent: 'center', borderBottomColor: '#ffa31a', borderBottomWidth: 1 },
+   modalYorumTabsActiveButton: { padding: 10, justifyContent: 'center', borderBottomColor: '#BB86CC', borderBottomWidth: 1 },
    modalYorumTabsTitle: { alignSelf: 'center', color: 'white', fontSize: 20 },
    modalYorumScrollView: { padding: 15, marginTop: 10 },
    modalYorumText: { color: 'white', fontSize: 17, alignSelf: 'center', paddingBottom: 25 }

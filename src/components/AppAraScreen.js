@@ -19,8 +19,8 @@ const style = StyleSheet.create({
    bgimage: {width: '100%', height: '100%', justifyContent: 'center'},
    textHeader: { color: 'white', fontSize: 30, marginLeft: 10 },
    textUnder: { color: 'white', fontSize: 15, marginLeft: 5, marginTop: 20 },
-   textFalhub: { color: '#ffa31a', fontSize: 20 },
+   textFalhub: { color: '#BB86CC', fontSize: 20 },
    // textWriter: { color: 'white', alignSelf: 'center', fontSize: 10, marginLeft: 100, marginTop: 5 },
-   button: { borderRadius: 5, backgroundColor: '#ffa31a', position: 'absolute', padding: 10, width: '80%', bottom: 50, alignSelf: 'center', justifyContent: 'center' },
+   button: { borderRadius: 5, backgroundColor: '#BB86CC', position: 'absolute', padding: 10, width: '80%', bottom: 50, alignSelf: 'center', justifyContent: 'center' },
    buttonText: { fontSize: 18, alignSelf: 'center', color: 'black', fontWeight: '500' }
 })

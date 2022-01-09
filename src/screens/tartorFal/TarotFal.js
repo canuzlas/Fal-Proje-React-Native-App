@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     // header
     header: { alignItems: 'center', justifyContent: 'center', padding: 20, flexDirection: 'row' },
     backButton: { position: 'absolute', left: 15 },
-    headerText: { color: '#ffa31a', fontSize: 20, fontWeight: '600' },
+    headerText: { color: '#BB86CC', fontSize: 20, fontWeight: '600' },
     //cards
     cardsView: { alignSelf: 'center', position: 'absolute', bottom: 30 },
     cardsTitle: { color: 'white', fontSize: 18, alignSelf: 'center', marginBottom: 20 },
@@ -125,7 +125,7 @@ export default ({ navigation }) => {
             :
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}><BackIcon name='chevron-back-outline' size={30} color={'#ffa31a'} /></TouchableOpacity>
+                    <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}><BackIcon name='chevron-back-outline' size={30} color={'#BB86CC'} /></TouchableOpacity>
                     <Text style={styles.headerText}>Ücretsiz Tarot Falı</Text>
                 </View>
                 <View style={styles.selectedCardView}>

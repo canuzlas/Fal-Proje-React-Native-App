@@ -34,12 +34,12 @@ const Tab = createBottomTabNavigator();
 const TabNavigator = () => {
   return (
     <Tab.Navigator screenOptions={{
-      headerText: { color: '#ffa31a', fontSize: 20, fontWeight: '600' },
-      tabBarActiveTintColor: '#ffa31a',
+      headerText: { color: '#BB86CC', fontSize: 20, fontWeight: '600' },
+      tabBarActiveTintColor: '#BB86CC',
       tabBarInactiveTintColor: 'white',
       tabBarStyle: { backgroundColor: 'black', borderTopWidth: 0 },
       headerStyle: { backgroundColor: 'black', shadowColor: 'transparent', height: 70 },
-      headerTitleStyle: { color: '#ffa31a' },
+      headerTitleStyle: { color: '#BB86CC' },
       headerTitleAlign: 'center'
     }} initialRouteName='Home'>
       <Tab.Screen options={{ tabBarIcon: ({ color }) => <Icon name={'home'} color={color} size={30}></Icon>, tabBarLabel: 'Anasayfa', headerTitle: () => <HomeHeader></HomeHeader> }} component={HomeView} name='Home' />

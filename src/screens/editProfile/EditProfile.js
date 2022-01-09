@@ -129,14 +129,14 @@ export default ({ navigation }) => {
    return (
       <View style={styles.profileEditContainer}>
          <View style={styles.header}>
-            <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}><BackIcon name='chevron-back-outline' size={35} color={'#ffa31a'} /></TouchableOpacity>
+            <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}><BackIcon name='chevron-back-outline' size={35} color={'#BB86CC'} /></TouchableOpacity>
             <Text style={styles.headerTitle}>{user.name}</Text>
          </View>
          <View style={styles.body}>
 
             <Image resizeMode='cover' style={styles.profilePhoto} source={user.photo != 'false' ? { uri: 'https://falhub.com/' + user.photo } : require('../../assets/arascreengif/gif.gif')}></Image>
 
-            <TouchableOpacity onPress={() => editProfilePhoto()} style={styles.profilePhotoEdit}><PencilIcon name='pencil-alt' size={35} color={'#ffa31a'} /></TouchableOpacity>
+            <TouchableOpacity onPress={() => editProfilePhoto()} style={styles.profilePhotoEdit}><PencilIcon name='pencil-alt' size={35} color={'#BB86CC'} /></TouchableOpacity>
             <View style={styles.form}>
                <View style={{ flexDirection: 'row' }}>
                   <Text style={styles.nameLabel}>Adınız :</Text>
@@ -162,8 +162,8 @@ export default ({ navigation }) => {
             <View style={{ width: '80%', paddingVertical: 20, backgroundColor: '#0f0f0f', alignSelf: 'center', marginTop: '40%' }}>
 
                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                  <Text style={{ alignSelf: 'center', fontSize: 20, color: '#ffa31a' }}>Adını Değiştir</Text>
-                  <TouchableOpacity onPress={() => setNameModal(false)} style={{ position: 'absolute', alignSelf: 'center', right: 15 }}><CloseIcon name='close' size={25} color={'#ffa31a'}></CloseIcon></TouchableOpacity>
+                  <Text style={{ alignSelf: 'center', fontSize: 20, color: '#BB86CC' }}>Adını Değiştir</Text>
+                  <TouchableOpacity onPress={() => setNameModal(false)} style={{ position: 'absolute', alignSelf: 'center', right: 15 }}><CloseIcon name='close' size={25} color={'#BB86CC'}></CloseIcon></TouchableOpacity>
                </View>
 
                <View style={{ flexDirection: 'row', marginTop: 10, padding: 20 }}>
@@ -172,7 +172,7 @@ export default ({ navigation }) => {
                </View>
 
                <View style={{ marginTop: 10, padding: 10 }}>
-                  <TouchableOpacity style={{ borderRadius: 5, backgroundColor: '#ffa31a', padding: 10, width: '80%', alignSelf: 'center', justifyContent: 'center' }} onPress={() => updateProfile('name')}><Text style={{ fontSize: 18, alignSelf: 'center', color: 'white', fontWeight: '500' }}>Güncelle</Text></TouchableOpacity>
+                  <TouchableOpacity style={{ borderRadius: 5, backgroundColor: '#BB86CC', padding: 10, width: '80%', alignSelf: 'center', justifyContent: 'center' }} onPress={() => updateProfile('name')}><Text style={{ fontSize: 18, alignSelf: 'center', color: 'white', fontWeight: '500' }}>Güncelle</Text></TouchableOpacity>
                </View>
 
             </View>
@@ -191,8 +191,8 @@ export default ({ navigation }) => {
             <View style={{ width: '80%', paddingVertical: 20, backgroundColor: '#0f0f0f', alignSelf: 'center', marginTop: '40%' }}>
 
                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                  <Text style={{ alignSelf: 'center', fontSize: 20, color: '#ffa31a' }}>Mailini Değiştir</Text>
-                  <TouchableOpacity onPress={() => setMailModal(false)} style={{ position: 'absolute', alignSelf: 'center', right: 15 }}><CloseIcon name='close' size={25} color={'#ffa31a'}></CloseIcon></TouchableOpacity>
+                  <Text style={{ alignSelf: 'center', fontSize: 20, color: '#BB86CC' }}>Mailini Değiştir</Text>
+                  <TouchableOpacity onPress={() => setMailModal(false)} style={{ position: 'absolute', alignSelf: 'center', right: 15 }}><CloseIcon name='close' size={25} color={'#BB86CC'}></CloseIcon></TouchableOpacity>
                </View>
 
                <View style={{ flexDirection: 'row', marginTop: 10, padding: 20 }}>
@@ -201,7 +201,7 @@ export default ({ navigation }) => {
                </View>
 
                <View style={{ marginTop: 10, padding: 10 }}>
-                  <TouchableOpacity style={{ borderRadius: 5, backgroundColor: '#ffa31a', padding: 10, width: '80%', alignSelf: 'center', justifyContent: 'center' }} onPress={() => updateProfile('mail')}><Text style={{ fontSize: 18, alignSelf: 'center', color: 'white', fontWeight: '500' }}>Güncelle</Text></TouchableOpacity>
+                  <TouchableOpacity style={{ borderRadius: 5, backgroundColor: '#BB86CC', padding: 10, width: '80%', alignSelf: 'center', justifyContent: 'center' }} onPress={() => updateProfile('mail')}><Text style={{ fontSize: 18, alignSelf: 'center', color: 'white', fontWeight: '500' }}>Güncelle</Text></TouchableOpacity>
                </View>
 
             </View>

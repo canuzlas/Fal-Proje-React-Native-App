@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     //verify
     container: { backgroundColor: 'black', width: '100%', height: '100%' },
     backButton: { position: 'absolute', left: 15 },
-    headerText: { color: '#ffa31a', fontSize: 20, fontWeight: '600' },
+    headerText: { color: '#BB86CC', fontSize: 20, fontWeight: '600' },
     logoView: { justifyContent: 'center', marginTop: 5 },
     loginLogo: { alignSelf: 'center' },
 
@@ -71,7 +71,7 @@ export default ({ navigation }) => {
     return (
         <View style={styles.profileEditContainer}>
             <View style={styles.header}>
-                <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}><BackIcon name='chevron-back-outline' size={35} color={'#ffa31a'} /></TouchableOpacity>
+                <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}><BackIcon name='chevron-back-outline' size={35} color={'#BB86CC'} /></TouchableOpacity>
                 <Text style={styles.headerTitle}>Hesabını Onayla</Text>
             </View>
             {stepOne ?
@@ -92,7 +92,7 @@ export default ({ navigation }) => {
                         <Text style={{ color: 'white', fontSize: 20, alignSelf: 'center', marginTop: 10 }}>Lütfen mail adresinize gelen kodu giriniz.</Text>
                         <CodeInput
                             containerStyle={{ alignSelf: 'center' }}
-                            activeColor={'#ffa31a'}
+                            activeColor={'#BB86CC'}
                             className={'border-b'}
                             keyboardType="numeric"
                             space={6}

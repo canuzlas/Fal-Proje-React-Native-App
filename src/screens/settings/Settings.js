@@ -68,19 +68,19 @@ export default ({ navigation }) => {
    return (
       <View style={styles.profileEditContainer}>
          <View style={styles.header}>
-            <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}><BackIcon name='chevron-back-outline' size={35} color={'#ffa31a'} /></TouchableOpacity>
+            <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}><BackIcon name='chevron-back-outline' size={35} color={'#BB86CC'} /></TouchableOpacity>
             <Text style={styles.headerTitle}>Ayarlar</Text>
          </View>
          <TouchableOpacity style={{ justifyContent: 'center', paddingHorizontal: 20, marginTop: 10 }} onPress={() => navigation.navigate('FalhubCom')}>
             <View style={styles.webPage}>
-               <WebIcon style={styles.webPageIcon} name='web' color={'#ffa31a'} size={30} />
+               <WebIcon style={styles.webPageIcon} name='web' color={'#BB86CC'} size={30} />
                <Text style={styles.webPageText}>Web Sitemiz</Text>
                <SettingsIcon style={styles.webPageRightIcon} name='arrowright' color={'white'} size={20} />
             </View>
          </TouchableOpacity>
          <TouchableOpacity style={{ justifyContent: 'center', paddingHorizontal: 20, marginTop: 10 }} onPress={() => ShareToApp()}>
             <View style={styles.webPage}>
-               <SettingsIcon style={styles.webPageIcon} name='sharealt' color={'#ffa31a'} size={30} />
+               <SettingsIcon style={styles.webPageIcon} name='sharealt' color={'#BB86CC'} size={30} />
                <Text style={styles.webPageText}>Bizi Önerin</Text>
                <SettingsIcon style={styles.webPageRightIcon} name='arrowright' color={'white'} size={20} />
             </View>
@@ -88,7 +88,7 @@ export default ({ navigation }) => {
 
          {userIsVerifyToMail ? <TouchableOpacity style={{ justifyContent: 'center', paddingHorizontal: 20, marginTop: 10 }} onPress={() => navigation.navigate('VerifyToMail')}>
             <View style={styles.adminPage}>
-               <AdminIcon style={styles.adminPageIcon} name='verified' color={'#ffa31a'} size={30} />
+               <AdminIcon style={styles.adminPageIcon} name='verified' color={'#BB86CC'} size={30} />
                <Text style={styles.adminPageText}>Hesabını Onayla</Text>
                <SettingsIcon style={styles.adminPageRightIcon} name='arrowright' color={'white'} size={20} />
             </View>
@@ -99,7 +99,7 @@ export default ({ navigation }) => {
          {/* Admin */}
          {userIsAdmin ? <TouchableOpacity style={{ justifyContent: 'center', paddingHorizontal: 20, marginTop: 10 }} onPress={() => navigation.navigate('AdminPanelWeb')}>
             <View style={styles.adminPage}>
-               <AdminIcon style={styles.adminPageIcon} name='admin-panel-settings' color={'#ffa31a'} size={30} />
+               <AdminIcon style={styles.adminPageIcon} name='admin-panel-settings' color={'#BB86CC'} size={30} />
                <Text style={styles.adminPageText}>Admin Panel Giriş</Text>
                <SettingsIcon style={styles.adminPageRightIcon} name='arrowright' color={'white'} size={20} />
             </View>
@@ -109,7 +109,7 @@ export default ({ navigation }) => {
          {/* Admin */}
          <TouchableOpacity style={{ justifyContent: 'center', paddingHorizontal: 20, marginTop: 10 }} onPress={() => navigation.navigate('LiveSupport')}>
             <View style={styles.webPage}>
-               <ChatIcon style={styles.webPageIcon} name='chat' color={'#ffa31a'} size={30} />
+               <ChatIcon style={styles.webPageIcon} name='chat' color={'#BB86CC'} size={30} />
                <Text style={styles.webPageText}>Canlı Destek</Text>
                <SettingsIcon style={styles.webPageRightIcon} name='arrowright' color={'white'} size={20} />
             </View>

@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     chatScrolView: { width: '100%', height: '75%', position: 'absolute', top: 0, padding: 5 },
     chatScrolViewKeyboard: { width: '100%', height: '55%', position: 'absolute', top: 0, padding: 5 },
     sendedFromMe: { backgroundColor: 'black', maxWidth: '60%', alignSelf: 'flex-end', marginVertical: 3, borderRadius: 20, borderWidth: 1, borderColor: 'white' },
-    sendedFromAdmin: { backgroundColor: '#ffa31a', maxWidth: '60%', marginVertical: 3, alignSelf: 'flex-start', borderRadius: 20, borderWidth: 1, borderColor: 'white' },
+    sendedFromAdmin: { backgroundColor: '#BB86CC', maxWidth: '60%', marginVertical: 3, alignSelf: 'flex-start', borderRadius: 20, borderWidth: 1, borderColor: 'white' },
     sendedFromMeText: { color: 'white', justifyContent: 'center', paddingVertical: 10, paddingHorizontal: 10 },
     sendedFromAdminText: { color: 'black', justifyContent: 'center', paddingVertical: 10, paddingHorizontal: 10 },
     sendedFromAdminTime: { color: 'white', fontSize: 10, alignSelf: 'flex-end', paddingHorizontal: 10, paddingBottom: 5 }
@@ -121,7 +121,7 @@ export default ({ navigation }) => {
     return (
         <View style={styles.profileEditContainer}>
             <View style={styles.header}>
-                <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}><BackIcon name='chevron-back-outline' size={35} color={'#ffa31a'} /></TouchableOpacity>
+                <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}><BackIcon name='chevron-back-outline' size={35} color={'#BB86CC'} /></TouchableOpacity>
                 <Text style={styles.headerTitle}>Canlı Destek</Text>
             </View>
             <View style={styles.chatView}>

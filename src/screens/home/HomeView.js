@@ -85,8 +85,8 @@ const styles = StyleSheet.create({
    container: { backgroundColor: 'black', width: '100%', height: '100%' },
 
    //titles
-   titleFirst: { fontSize: 20, fontWeight: '700', color: '#ffa31a', marginLeft: 20, marginTop: 15 },
-   titleSecond: { fontSize: 20, fontWeight: '700', color: '#ffa31a', marginLeft: 20, marginTop: 15 },
+   titleFirst: { fontSize: 20, fontWeight: '700', color: '#BB86CC', marginLeft: 20, marginTop: 15 },
+   titleSecond: { fontSize: 20, fontWeight: '700', color: '#BB86CC', marginLeft: 20, marginTop: 15 },
 
    //coffe
    kahveFaliView: { width: '90%', height: 180, alignSelf: 'center', justifyContent: 'center', marginTop: 20, backgroundColor: 'black', borderRadius: 20, flexDirection: 'row' },

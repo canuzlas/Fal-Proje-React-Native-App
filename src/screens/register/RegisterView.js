@@ -117,7 +117,7 @@ class RegisterView extends React.Component {
             :
             <View style={styles.container}>
                <View style={styles.header}>
-                  <TouchableOpacity style={styles.backButton} onPress={this.goBack}><Icon name='chevron-back-outline' size={30} color={'#ffa31a'} /></TouchableOpacity>
+                  <TouchableOpacity style={styles.backButton} onPress={this.goBack}><Icon name='chevron-back-outline' size={30} color={'#BB86CC'} /></TouchableOpacity>
                   <Text style={styles.headerText}>Ücretsiz Kaydol</Text>
                </View>
                <View style={styles.logoView}>
@@ -150,17 +150,17 @@ class RegisterView extends React.Component {
 
                   <View style={styles.checkForUserStepView}>
                      <Text style={{ color: 'white', fontSize: 15 }}>Aşağıda girmiş olduğunuz bilgiler yer almaktadır lütfen kontrol edin.!</Text>
-                     <Text style={{ color: 'white', fontSize: 20, marginTop: 40 }}>Adınız : <Text style={{ color: '#ffa31a' }}>{this.state.name}</Text></Text>
-                     <Text style={{ color: 'white', fontSize: 20, marginTop: 5 }}>Mail Adresiniz : <Text style={{ color: '#ffa31a' }}>{this.state.mail}</Text></Text>
+                     <Text style={{ color: 'white', fontSize: 20, marginTop: 40 }}>Adınız : <Text style={{ color: '#BB86CC' }}>{this.state.name}</Text></Text>
+                     <Text style={{ color: 'white', fontSize: 20, marginTop: 5 }}>Mail Adresiniz : <Text style={{ color: '#BB86CC' }}>{this.state.mail}</Text></Text>
                      <View style={{ flexDirection: 'row', marginTop: 5 }}>
-                        <Text style={{ color: 'white', fontSize: 20, }}>Şifreniz : {this.state.showPass ? <Text style={{ color: '#ffa31a' }}>{this.state.pass}</Text> : <Text style={{ color: '#ffa31a' }}>********</Text>}</Text>
+                        <Text style={{ color: 'white', fontSize: 20, }}>Şifreniz : {this.state.showPass ? <Text style={{ color: '#BB86CC' }}>{this.state.pass}</Text> : <Text style={{ color: '#BB86CC' }}>********</Text>}</Text>
                         <TouchableOpacity onPress={() => this.setState({ showPass: !this.state.showPass })} style={{ justifyContent: 'center', marginLeft: 10 }}>{this.state.showPass ? <EyeIcon name='eye' color={'white'} size={30}></EyeIcon> : <EyeIcon name='eye-off' color={'white'} size={20}></EyeIcon>}</TouchableOpacity>
                      </View>
 
                      <TouchableOpacity onPress={() => this.setState({ thirdStep: true, checkForUserStep: false })} style={styles.formBackText}><Text style={{ color: 'white' }}>Geri dön(sifre)..</Text></TouchableOpacity>
 
                      <TouchableOpacity onPress={() => this.signUp()} style={styles.formButton}><Text style={styles.formButtonText}>Kaydol</Text></TouchableOpacity>
-                     <Text style={{ color: 'white', fontSize: 12, marginTop: 10 }}><TouchableOpacity onPress={() => this.setState({ sözlesmeModal: true })}><Text style={{ color: '#ffa31a', fontSize: 13 }}>***Üyelik Sözleşmesi***</Text></TouchableOpacity>'ni okudum, kabul ediyorum.</Text>
+                     <Text style={{ color: 'white', fontSize: 12, marginTop: 10 }}><TouchableOpacity onPress={() => this.setState({ sözlesmeModal: true })}><Text style={{ color: '#BB86CC', fontSize: 13 }}>***Üyelik Sözleşmesi***</Text></TouchableOpacity>'ni okudum, kabul ediyorum.</Text>
 
                      <Modal
                         animationType={"slide"}
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
    container: { backgroundColor: 'black', width: '100%', height: '100%' },
    header: { alignItems: 'center', justifyContent: 'center', padding: 20, flexDirection: 'row' },
    backButton: { position: 'absolute', left: 15 },
-   headerText: { color: '#ffa31a', fontSize: 20, fontWeight: '600' },
+   headerText: { color: '#BB86CC', fontSize: 20, fontWeight: '600' },
    logoView: { justifyContent: 'center', marginTop: 5 },
    loginLogo: { alignSelf: 'center' },
 
@@ -196,14 +196,14 @@ const styles = StyleSheet.create({
    firstStepView: { width: '90%', alignSelf: 'center' },
    firstStepText: { color: 'white', fontSize: 18, marginTop: 10 },
    firstStepTextInput: { alignSelf: 'center', marginTop: 30, width: '60%', height: 55, color: 'white', backgroundColor: 'black', borderRadius: 8, borderColor: 'white', borderWidth: 1, paddingHorizontal: 20 },
-   firstStepTextInputFocus: { alignSelf: 'center', marginTop: 30, width: '60%', height: 55, color: 'white', backgroundColor: 'black', borderRadius: 8, borderColor: '#ffa31a', borderWidth: 1, paddingHorizontal: 20 },
+   firstStepTextInputFocus: { alignSelf: 'center', marginTop: 30, width: '60%', height: 55, color: 'white', backgroundColor: 'black', borderRadius: 8, borderColor: '#BB86CC', borderWidth: 1, paddingHorizontal: 20 },
    firstStepNextButton: { justifyContent: 'center', alignSelf: 'center', marginTop: 20 },
 
    //SecondStepView
    secondStepView: { width: '90%', alignSelf: 'center' },
    secondStepText: { color: 'white', fontSize: 18, marginTop: 10 },
    secondStepTextInput: { alignSelf: 'center', marginTop: 10, width: '60%', height: 55, color: 'white', backgroundColor: 'black', borderRadius: 8, borderColor: 'white', borderWidth: 1, paddingHorizontal: 20 },
-   secondStepTextInputFocus: { alignSelf: 'center', marginTop: 10, width: '60%', height: 55, color: 'white', backgroundColor: 'black', borderRadius: 8, borderColor: '#ffa31a', borderWidth: 1, paddingHorizontal: 20 },
+   secondStepTextInputFocus: { alignSelf: 'center', marginTop: 10, width: '60%', height: 55, color: 'white', backgroundColor: 'black', borderRadius: 8, borderColor: '#BB86CC', borderWidth: 1, paddingHorizontal: 20 },
    secondStepNextButton: { justifyContent: 'center', alignSelf: 'center', marginTop: 20 },
    formBackText: { alignSelf: 'center', marginTop: 20 },
 
@@ -211,13 +211,13 @@ const styles = StyleSheet.create({
    thirdStepView: { width: '90%', alignSelf: 'center' },
    thirdStepText: { color: 'white', fontSize: 18, marginTop: 10 },
    thirdStepTextInput: { alignSelf: 'center', marginTop: 10, width: '60%', height: 55, color: 'white', backgroundColor: 'black', borderRadius: 8, borderColor: 'white', borderWidth: 1, paddingHorizontal: 20 },
-   thirdStepTextInputFocus: { alignSelf: 'center', marginTop: 10, width: '60%', height: 55, color: 'white', backgroundColor: 'black', borderRadius: 8, borderColor: '#ffa31a', borderWidth: 1, paddingHorizontal: 20 },
+   thirdStepTextInputFocus: { alignSelf: 'center', marginTop: 10, width: '60%', height: 55, color: 'white', backgroundColor: 'black', borderRadius: 8, borderColor: '#BB86CC', borderWidth: 1, paddingHorizontal: 20 },
    thirdStepNextButton: { justifyContent: 'center', alignSelf: 'center', marginTop: 20 },
    formBackText: { alignSelf: 'center', marginTop: 20 },
 
    //checkForUserStep
    checkForUserStepView: { width: '90%', alignSelf: 'center', marginTop: 50 },
-   formButton: { width: '50%', height: 40, justifyContent: 'center', alignSelf: 'center', backgroundColor: '#ffa31a', borderRadius: 5, marginTop: 50 },
+   formButton: { width: '50%', height: 40, justifyContent: 'center', alignSelf: 'center', backgroundColor: '#BB86CC', borderRadius: 5, marginTop: 50 },
    formButtonText: { alignSelf: 'center', justifyContent: 'center', color: 'white', fontWeight: '600', fontSize: 20 },
 
    //sending form 

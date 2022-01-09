@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
    // header
    header: { alignItems: 'center', justifyContent: 'center', padding: 20, flexDirection: 'row' },
    backButton: { position: 'absolute', left: 15 },
-   headerText: { color: '#ffa31a', fontSize: 20, fontWeight: '600' },
+   headerText: { color: '#BB86CC', fontSize: 20, fontWeight: '600' },
    // coffee images
    coffeeFalImagesTitle: { color: 'white', fontSize: 20, alignSelf: 'flex-start', marginLeft: 20, marginTop: 10, fontWeight: '700' },
    coffeeFalImagesSubTitle: { color: '#FF7800', fontSize: 15, alignSelf: 'flex-start', marginLeft: 20, marginTop: 10, fontWeight: '700' },
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
    //form
    coffeeFormView: { justifyContent: 'space-between', width: '90%', alignSelf: 'center', marginTop: 20 },
    burclarView: { backgroundColor: 'black', borderColor: 'white', borderWidth: 1, justifyContent: 'center' },
-   formButton: { width: '50%', height: 40, justifyContent: 'center', alignSelf: 'center', backgroundColor: '#ffa31a', borderRadius: 5, marginTop: 50 },
+   formButton: { width: '50%', height: 40, justifyContent: 'center', alignSelf: 'center', backgroundColor: '#BB86CC', borderRadius: 5, marginTop: 50 },
    formButtonText: { alignSelf: 'center', justifyContent: 'center', color: 'white', fontWeight: '600', fontSize: 20 },
 
    //sending form 
@@ -187,7 +187,7 @@ export default ({ navigation }) => {
          :
          <View style={styles.container}>
             <View style={styles.header}>
-               <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}><Icon name='chevron-back-outline' size={30} color={'#ffa31a'} /></TouchableOpacity>
+               <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}><Icon name='chevron-back-outline' size={30} color={'#BB86CC'} /></TouchableOpacity>
                <Text style={styles.headerText}>Ücretsiz Kahve Falı</Text>
             </View>
             <Text style={styles.coffeeFalImagesTitle}>Fincan fotoğraflarını yükle</Text>

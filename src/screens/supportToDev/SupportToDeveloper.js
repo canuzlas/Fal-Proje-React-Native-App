@@ -13,7 +13,7 @@ export default ({ navigation }) => {
     return (
         <View style={styles.profileEditContainer}>
             <View style={styles.header}>
-                <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}><BackIcon name='chevron-back-outline' size={35} color={'#ffa31a'} /></TouchableOpacity>
+                <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}><BackIcon name='chevron-back-outline' size={35} color={'#BB86CC'} /></TouchableOpacity>
                 <Text style={styles.headerTitle}>Beni Destekle</Text>
             </View>
             <WebView

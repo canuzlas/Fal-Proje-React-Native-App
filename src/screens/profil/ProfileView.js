@@ -105,9 +105,9 @@ class ProfileView extends React.Component {
                <ScrollView refreshControl={<RefreshControl onRefresh={() => this.refreshPage()} refreshing={this.state.refresh}></RefreshControl>} contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }} style={{ width: '100%', height: '100%', backgroundColor: 'black' }}>
                   <View style={styles.profileContainer}>
                      <View style={styles.header}>
-                        <TouchableOpacity style={styles.backButton} onPress={() => this.props.navigation.goBack()}><BackIcon name='chevron-back-outline' size={35} color={'#ffa31a'} /></TouchableOpacity>
+                        <TouchableOpacity style={styles.backButton} onPress={() => this.props.navigation.goBack()}><BackIcon name='chevron-back-outline' size={35} color={'#BB86CC'} /></TouchableOpacity>
                         <Text style={{ color: 'white', fontSize: 20, maxWidth: '80%', maxHeight: 50 }}>{this.state.title}</Text>
-                        <TouchableOpacity style={styles.settingsButton} onPress={() => this.props.navigation.navigate("Settings")}><SettingsIcon name='setting' size={35} color={'#ffa31a'} /></TouchableOpacity>
+                        <TouchableOpacity style={styles.settingsButton} onPress={() => this.props.navigation.navigate("Settings")}><SettingsIcon name='setting' size={35} color={'#BB86CC'} /></TouchableOpacity>
                      </View>
                      <View style={styles.body}>
                         <View style={styles.profile}>
@@ -115,11 +115,11 @@ class ProfileView extends React.Component {
                               <Image style={styles.profilePhoto} resizeMode='cover' source={this.state.user.photo != 'false' ? { uri: 'https://falhub.com/' + this.state.user.photo } : require('../../assets/arascreengif/gif.gif')} />
                            </View>
                            <Text style={styles.profileName}>{this.state.user.name}</Text>
-                           <TouchableOpacity onPress={() => this.props.navigation.navigate('EditProfile')} style={styles.profilePencilIcon}><PencilIcon name='pencil-alt' size={20} color={'#ffa31a'} /></TouchableOpacity>
+                           <TouchableOpacity onPress={() => this.props.navigation.navigate('EditProfile')} style={styles.profilePencilIcon}><PencilIcon name='pencil-alt' size={20} color={'#BB86CC'} /></TouchableOpacity>
                         </View>
                         <TouchableOpacity onPress={() => this.props.navigation.navigate('SupportToDeveloper')}>
                            <View style={styles.supportToDeveloper}>
-                              <DiamondIcon style={styles.supportIcon} name='diamond' color={'#ffa31a'} size={30} />
+                              <DiamondIcon style={styles.supportIcon} name='diamond' color={'#BB86CC'} size={30} />
                               <Text style={styles.supporText}>Geliştiriciyi destekle</Text>
                               <SettingsIcon style={styles.supportRightIcon} name='arrowright' color={'white'} size={20} />
                            </View>
@@ -129,16 +129,16 @@ class ProfileView extends React.Component {
                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 15 }}>
                               <View style={styles.istatistikCoffeeView}>
                                  <Text style={{ color: 'white', alignSelf: 'center' }}>Kahve Falı</Text>
-                                 <Text style={{ color: '#ffa31a', alignSelf: 'center' }}>{this.state.coffeeCount}</Text>
+                                 <Text style={{ color: '#BB86CC', alignSelf: 'center' }}>{this.state.coffeeCount}</Text>
                               </View>
                               <View style={styles.istatistikTarotView}>
                                  <Text style={{ color: 'white', alignSelf: 'center' }}>Tarot Falı</Text>
-                                 <Text style={{ color: '#ffa31a', alignSelf: 'center' }}>{this.state.tarotCount}</Text>
+                                 <Text style={{ color: '#BB86CC', alignSelf: 'center' }}>{this.state.tarotCount}</Text>
                               </View>
                            </View>
                         </View>
                         <View style={styles.puanlama}>
-                           <SettingsIcon style={styles.supportIcon} name='star' color={'#ffa31a'} size={30} />
+                           <SettingsIcon style={styles.supportIcon} name='star' color={'#BB86CC'} size={30} />
                            <Text style={styles.supporText}>Bizi puanlayın</Text>
                            <SettingsIcon style={styles.supportRightIcon} name='arrowright' color={'white'} size={20} />
                         </View>
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
 
    containerNotLogged: { backgroundColor: 'black', width: '100%', height: '100%', justifyContent: 'center' },
    notLoggedText: { color: 'white', fontSize: 20, alignSelf: 'center' },
-   notLoggedButton: { marginTop: 50, borderRadius: 5, backgroundColor: '#ffa31a', padding: 10, width: '80%', alignSelf: 'center', justifyContent: 'center' },
+   notLoggedButton: { marginTop: 50, borderRadius: 5, backgroundColor: '#BB86CC', padding: 10, width: '80%', alignSelf: 'center', justifyContent: 'center' },
    notLoggedButtonText: { fontSize: 18, alignSelf: 'center', color: 'black', fontWeight: '500' },
 
    //logout 
