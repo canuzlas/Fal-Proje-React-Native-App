@@ -69,12 +69,10 @@ export default ({ navigation }) => {
             .database('https://falhub-6c7a2-default-rtdb.europe-west1.firebasedatabase.app/')
 
         reference
-            .ref('/spchat/' + User._id)
-            .limitToLast(10)
-            .on('value', snapshot => {
+            .ref('spchat/' + User._id)
+            .on('child_added', (message) => {
                 Vibration.vibrate()
-                setMessages([])
-                snapshot.forEach(message => { setMessages(old => [...old, { message: message.val().message, fromWho: message.val().fromWho, time: message.val().time }]) })
+                setMessages(old => [...old, { message: message.val().message, fromWho: message.val().fromWho, time: message.val().time }])
             })
 
         return async () => {
